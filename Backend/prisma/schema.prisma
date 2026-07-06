@@ -33,6 +33,7 @@ model Vehicle {
   price       String?
   colors      String?  // Өнгөнүүд (нэр, код, зураг) - JSON string
   variants    String?  // Хувилбарууд (мотор, тоноглол, үнэ, зураг, үзүүлэлт) - JSON string
+  features    String?  // Үзүүлэлтүүд (Interior, Exterior, Safety...) - JSON string
   updatedAt   DateTime @updatedAt
 }
 
@@ -69,6 +70,7 @@ model ToyotaQ {
   engine      String?
   engineType  String?
   description String?
+  serviceHistory String? // Засварын түүх PDF URL
   updatedAt   DateTime @updatedAt
 }
 
