@@ -175,26 +175,26 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
 });
 
 // --- CRUD HELPER ---
-const setupRoutes = (path, model, options = {}) => {
+const setupRoutes = (routePath, model, options = {}) => {
   const checkAccess = (req, res, next) => {
     if (req.user.role === 'SUPER_ADMIN') return next();
-    if (path === 'users') return res.status(403).json({ message: "Зөвхөн SUPER_ADMIN хэрэглэгч удирдах эрхтэй." });
+    if (routePath === 'users') return res.status(403).json({ message: "Зөвхөн SUPER_ADMIN хэрэглэгч удирдах эрхтэй." });
     if (req.user.role === 'ADMIN') return next();
-    if (req.user.role === 'EDITOR' && req.user.permissions && req.user.permissions[path]) return next();
+    if (req.user.role === 'EDITOR' && req.user.permissions && req.user.permissions[routePath]) return next();
     return res.status(403).json({ message: "Танд энэ хэсгийг удирдах эрх байхгүй байна." });
   };
 
-  app.get(`/api/${path}`, async (req, res) => {
+  app.get(`/api/${routePath}`, async (req, res) => {
     try {
       // Users болон Bookings хэсгийг хамгаалах
-      if (path === 'users' || path === 'bookings') {
+      if (routePath === 'users' || routePath === 'bookings') {
           const authHeader = req.headers['authorization'];
           const token = authHeader && authHeader.split(' ')[1];
           if (!token) return res.status(401).json({ message: "Нэвтрэх шаардлагатай" });
           try {
               const decoded = jwt.verify(token, JWT_SECRET);
-              if (path === 'users' && decoded.role !== 'SUPER_ADMIN') return res.sendStatus(403);
-              if (path === 'bookings' && decoded.role === 'EDITOR' && !decoded.permissions.bookings) return res.sendStatus(403);
+              if (routePath === 'users' && decoded.role !== 'SUPER_ADMIN') return res.sendStatus(403);
+              if (routePath === 'bookings' && decoded.role === 'EDITOR' && !decoded.permissions.bookings) return res.sendStatus(403);
               req.user = decoded;
           } catch (e) { return res.sendStatus(403); }
       }
@@ -209,14 +209,14 @@ const setupRoutes = (path, model, options = {}) => {
       }
       res.json(items);
     } catch (err) {
-      console.error(`GET /api/${path} Error:`, err);
+      console.error(`GET /api/${routePath} Error:`, err);
       res.status(500).json({ message: "Мэдээлэл авахад алдаа гарлаа." });
     }
   });
 
   const writeMiddlewares = options.publicPost ? [] : [authenticateToken, checkAccess];
 
-  app.post(`/api/${path}`, ...writeMiddlewares, async (req, res) => {
+  app.post(`/api/${routePath}`, ...writeMiddlewares, async (req, res) => {
     try {
       let data = req.body;
       if (model === 'user' && data.password) {
@@ -230,14 +230,14 @@ const setupRoutes = (path, model, options = {}) => {
       }
       res.json(item);
     } catch (err) {
-      console.error(`POST /api/${path} Error:`, err);
+      console.error(`POST /api/${routePath} Error:`, err);
       res.status(500).json({ message: "Хадгалахад алдаа гарлаа." });
     }
   });
 
-  app.put(`/api/${path}/:id`, authenticateToken, checkAccess, async (req, res) => {
+  app.put(`/api/${routePath}/:id`, authenticateToken, checkAccess, async (req, res) => {
     try {
-      const id = (path === 'vehicles' || isNaN(req.params.id)) ? req.params.id : parseInt(req.params.id);
+      const id = (routePath === 'vehicles' || isNaN(req.params.id)) ? req.params.id : parseInt(req.params.id);
       const { id: _, updatedAt, createdAt, ...updateData } = req.body;
 
       if (model === 'user' && updateData.password) {
@@ -252,14 +252,14 @@ const setupRoutes = (path, model, options = {}) => {
       }
       res.json(item);
     } catch (err) {
-      console.error(`PUT /api/${path} Error:`, err);
+      console.error(`PUT /api/${routePath} Error:`, err);
       res.status(500).json({ message: "Шинэчлэхэд алдаа гарлаа." });
     }
   });
 
-  app.delete(`/api/${path}/:id`, authenticateToken, checkAccess, async (req, res) => {
+  app.delete(`/api/${routePath}/:id`, authenticateToken, checkAccess, async (req, res) => {
     try {
-      const id = (path === 'vehicles' || isNaN(req.params.id)) ? req.params.id : parseInt(req.params.id);
+      const id = (routePath === 'vehicles' || isNaN(req.params.id)) ? req.params.id : parseInt(req.params.id);
 
       // 1. Устгах гэж буй өгөгдлийг эхлээд авах
       const item = await prisma[model].findUnique({ where: { id } });
@@ -329,7 +329,7 @@ const setupRoutes = (path, model, options = {}) => {
       await prisma[model].delete({ where: { id } });
       res.json({ message: "Амжилттай устлаа" });
     } catch (err) {
-      console.error(`DELETE /api/${path} Error:`, err);
+      console.error(`DELETE /api/${routePath} Error:`, err);
       res.status(500).json({ message: "Устгахад алдаа гарлаа." });
     }
   });
@@ -342,5 +342,6 @@ setupRoutes('toyota-q', 'toyotaQ');
 setupRoutes('users', 'user');
 setupRoutes('bookings', 'booking', { publicPost: true });
 setupRoutes('staff', 'staff');
+setupRoutes('home-banner', 'homeBanner');
 
 app.listen(5000, '0.0.0.0', () => console.log('Server running on 5000 (accessible on 10.0.3.50:5000)'));
