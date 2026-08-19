@@ -8,6 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const rateLimit = require('express-rate-limit');
 const compression = require('compression'); // Нэмэх
+const helmet = require('helmet');
 require('dotenv').config();
 
 const prisma = new PrismaClient();
