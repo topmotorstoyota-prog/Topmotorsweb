@@ -48,9 +48,10 @@ const loginLimiter = rateLimit({
   message: { message: "Нэвтрэх оролдлого хэтэрсэн байна. 15 минут хүлээгээд дахин оролдоно уу." }
 });
 
-// CORS тохиргоог production-д хязгаарлах
+// CORS тохиргоог production-д хязгаарлах (таслалаар тусгаарлаж олон домэйн зөвшөөрнө)
+const allowedOrigins = (process.env.ALLOWED_ORIGIN || '*').split(',').map(o => o.trim());
 const corsOptions = {
-  origin: process.env.ALLOWED_ORIGIN || '*',
+  origin: allowedOrigins.includes('*') ? '*' : allowedOrigins,
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
