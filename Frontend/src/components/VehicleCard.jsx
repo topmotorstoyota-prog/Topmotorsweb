@@ -11,7 +11,7 @@ const VehicleCard = ({ id, name, series, price, image, specs, isFixedPrice, link
   };
 
   return (
-    <div className="group bg-white border border-zinc-100 hover:border-transparent hover:shadow-2xl transition-all duration-500 rounded-none overflow-hidden flex flex-col h-full">
+    <Link to={detailLink} className="group bg-white border border-zinc-100 hover:border-transparent hover:shadow-2xl transition-all duration-500 rounded-none overflow-hidden flex flex-col h-full">
       {/* Image Container */}
       <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100">
         <img
@@ -52,17 +52,14 @@ const VehicleCard = ({ id, name, series, price, image, specs, isFixedPrice, link
         )}
 
         <div className="mt-auto flex items-center justify-between pt-2 md:pt-4 border-t border-zinc-100">
-          <Link
-            to={detailLink}
-            className="flex items-center text-[8px] md:text-[10px] font-black uppercase tracking-wider md:tracking-[0.2em] hover:text-toyota-red transition-colors group/link"
-          >
+          <span className="flex items-center text-[8px] md:text-[10px] font-black uppercase tracking-wider md:tracking-[0.2em] group-hover:text-toyota-red transition-colors">
             <span className="hidden sm:inline">Дэлгэрэнгүй үзэх</span>
             <span className="sm:hidden">Дэлгэрэнгүй</span>
-            <ChevronRight size={12} className="ml-0.5 md:ml-1 group-hover/link:translate-x-1 transition-transform" />
-          </Link>
+            <ChevronRight size={12} className="ml-0.5 md:ml-1 group-hover:translate-x-1 transition-transform" />
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
