@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 const rateLimit = require('express-rate-limit');
 const compression = require('compression'); // Нэмэх
 const helmet = require('helmet');
+const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
 const prisma = new PrismaClient();
@@ -18,14 +18,21 @@ const app = express();
 app.use(helmet()); // Аюулгүй байдлын HTTP толгой мэдээллүүдийг тохируулна
 app.use(compression()); // Өгөгдлийг шахаж хурд нэмнэ
 
-// Uploads хавтас байхгүй бол үүсгэх
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
+// --- SUPABASE STORAGE ---
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+const SUPABASE_BUCKET = process.env.SUPABASE_BUCKET || 'uploads';
+
+const uploadToSupabase = async (file) => {
+  const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+  const filename = uniqueSuffix + path.extname(file.originalname);
+  const { error } = await supabase.storage.from(SUPABASE_BUCKET).upload(filename, file.buffer, {
+    contentType: file.mimetype,
+  });
+  if (error) throw error;
+  return supabase.storage.from(SUPABASE_BUCKET).getPublicUrl(filename).data.publicUrl;
+};
 
 // --- SECURITY SETTINGS ---
-const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_change_me_now';
 
 // Rate limiting тохиргоо
@@ -52,19 +59,8 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/api/', generalLimiter);
 app.set('trust proxy', 1); // Proxy-ийн ард байгаа бол IP-г зөв таних тохиргоо
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// --- IMAGE UPLOAD ---
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => { cb(null, 'uploads/'); },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
-
-// Зөвхөн зураг хүлээн авах шүүлтүүр
-const fileFilter = (req, file, cb) => {
+// --- IMAGE UPLOAD (Supabase Storage) ---
+const imageFileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|webp|gif/;
   const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
@@ -77,28 +73,25 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
+  storage: multer.memoryStorage(),
+  fileFilter: imageFileFilter,
   limits: { fileSize: 50 * 1024 * 1024 } // 50MB болгож нэмэгдүүлэв
 });
 
 app.post('/api/upload', (req, res) => {
-  upload.single('image')(req, res, (err) => {
+  upload.single('image')(req, res, async (err) => {
     if (err) {
       return res.status(400).json({ message: err.message });
     }
     if (!req.file) return res.status(400).json({ message: 'Файл сонгоогүй байна.' });
-    res.json({ imageUrl: `${BASE_URL}/uploads/${req.file.filename}` });
+    try {
+      const imageUrl = await uploadToSupabase(req.file);
+      res.json({ imageUrl });
+    } catch (error) {
+      console.error('Supabase upload error:', error);
+      res.status(500).json({ message: 'Зураг хуулахад алдаа гарлаа.' });
+    }
   });
-});
-
-// PDF болон бусад файл хуулах тусдаа тохиргоо
-const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => { cb(null, 'uploads/'); },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
 });
 
 const pdfFilter = (req, file, cb) => {
@@ -109,18 +102,24 @@ const pdfFilter = (req, file, cb) => {
   }
 };
 
-const uploadPdf = multer({ storage: fileStorage, fileFilter: pdfFilter });
+const uploadPdf = multer({ storage: multer.memoryStorage(), fileFilter: pdfFilter });
 
 app.post('/api/upload-pdf', (req, res) => {
-  uploadPdf.single('pdf')(req, res, (err) => {
+  uploadPdf.single('pdf')(req, res, async (err) => {
     if (err) return res.status(400).json({ message: err.message });
     if (!req.file) return res.status(400).json({ message: 'Файл сонгоогүй байна.' });
-    res.json({ pdfUrl: `${BASE_URL}/uploads/${req.file.filename}` });
+    try {
+      const pdfUrl = await uploadToSupabase(req.file);
+      res.json({ pdfUrl });
+    } catch (error) {
+      console.error('Supabase upload error:', error);
+      res.status(500).json({ message: 'Файл хуулахад алдаа гарлаа.' });
+    }
   });
 });
 
 app.post('/api/upload-multiple', (req, res) => {
-  upload.array('images', 30)(req, res, (err) => {
+  upload.array('images', 30)(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
       console.error('Multer Error:', err);
       return res.status(400).json({ message: `Файлын хэмжээ хэтэрсэн эсвэл хэт олон файл байна: ${err.code}` });
@@ -131,9 +130,10 @@ app.post('/api/upload-multiple', (req, res) => {
 
     try {
       if (!req.files || req.files.length === 0) return res.status(400).json({ message: 'Зураг сонгоогүй байна.' });
-      const imageUrls = req.files.map(file => `${BASE_URL}/uploads/${file.filename}`);
+      const imageUrls = await Promise.all(req.files.map(uploadToSupabase));
       res.json({ imageUrls });
     } catch (error) {
+      console.error('Supabase upload error:', error);
       res.status(500).json({ message: "Зураг боловсруулахад алдаа гарлаа." });
     }
   });
@@ -273,19 +273,13 @@ const setupRoutes = (routePath, model, options = {}) => {
       const item = await prisma[model].findUnique({ where: { id } });
       if (!item) return res.status(404).json({ message: "Олдсонгүй" });
 
-      // 2. Зургуудыг устгах логик
+      // 2. Зургуудыг Supabase Storage-с устгах логик
       const deleteFile = (url) => {
-        if (!url || typeof url !== 'string' || !url.includes('/uploads/')) return;
-        const fileName = url.split('/uploads/')[1];
-        const filePath = path.join(__dirname, 'uploads', fileName);
-        if (fs.existsSync(filePath)) {
-          try {
-            fs.unlinkSync(filePath);
-            console.log(`Deleted file: ${fileName}`);
-          } catch (e) {
-            console.error(`Error deleting file ${fileName}:`, e);
-          }
-        }
+        if (!url || typeof url !== 'string' || !url.includes(`/storage/v1/object/public/${SUPABASE_BUCKET}/`)) return;
+        const fileName = url.split(`/storage/v1/object/public/${SUPABASE_BUCKET}/`)[1];
+        supabase.storage.from(SUPABASE_BUCKET).remove([fileName])
+          .then(() => console.log(`Deleted file: ${fileName}`))
+          .catch((e) => console.error(`Error deleting file ${fileName}:`, e));
       };
 
       // Тухайн моделоос хамаарч бүх зургийн талбаруудыг шалгах
@@ -354,7 +348,7 @@ setupRoutes('home-banner', 'homeBanner');
 
 const PORT = process.env.PORT || 5000;
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, '0.0.0.0', () => console.log(`Server running on ${PORT} (accessible on ${BASE_URL})`));
+  app.listen(PORT, '0.0.0.0', () => console.log(`Server running on ${PORT}`));
 }
 
 module.exports = app;
