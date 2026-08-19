@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Toyota Type';
+  src: url('./assets/fonts/ToyotaType-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Toyota Type';
+  src: url('./assets/fonts/ToyotaType-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Toyota Type';
+  src: url('./assets/fonts/ToyotaType-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Toyota Type';
+  src: url('./assets/fonts/ToyotaType-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Toyota Type';
+  src: url('./assets/fonts/ToyotaType-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* 1900px-ээс дээш болон доош дэлгэцүүдэд пропорциональ хэмжээг хадгалах */
+    font-size: 16px; /* Үндсэн хэмжээ */
+  }
+
+  /* Зөвхөн Desktop (1280px-ээс дээш) дэлгэцүүдэд хамаарна */
+  @media (min-width: 1280px) {
+    html {
+      /* 1900px дэлгэцийг суурь болгож, түүнээс хамаарч бүх rem хэмжээсийг хувиргана */
+      font-size: calc(14px + (16 - 14) * ((100vw - 1280px) / (1900 - 1280)));
+    }
+  }
+
+  /* Маш том дэлгэцүүдэд (2K, 4K) хэт жижиг харагдахаас сэргийлнэ */
+  @media (min-width: 1901px) {
+    html {
+      font-size: calc(16px + (20 - 16) * ((100vw - 1900px) / (3840 - 1900)));
+    }
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
