@@ -1,26 +1,29 @@
 # Dependencies
 node_modules/
 **/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
 # Build artifacts
 dist/
 **/dist/
 dist-ssr/
+*.local
 
-# Environment variables
+# Environment variables (MUST NOT PUSH TO GITHUB)
 .env
 **/.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*.local
 
 # Database
 *.db
 *.db-journal
 Backend/prisma/dev.db
+Backend/prisma/migrations/
 
-# Uploads
+# Uploads (Vercel doesn't support persistent disk storage)
 Backend/uploads/*
 !Backend/uploads/.gitkeep
 
@@ -36,6 +39,11 @@ Backend/uploads/*
 .DS_Store
 Thumbs.db
 
+# Logs
+logs/
+*.log
+
 # Project specific
 .artifacts/
-package-lock.json (root)
+package-lock.json
+**/package-lock.json

@@ -14,6 +14,7 @@ const prisma = new PrismaClient();
 const app = express();
 
 // --- PRODUCTION PREP ---
+app.use(helmet()); // Аюулгүй байдлын HTTP толгой мэдээллүүдийг тохируулна
 app.use(compression()); // Өгөгдлийг шахаж хурд нэмнэ
 
 // Uploads хавтас байхгүй бол үүсгэх
@@ -219,6 +220,12 @@ const setupRoutes = (routePath, model, options = {}) => {
   app.post(`/api/${routePath}`, ...writeMiddlewares, async (req, res) => {
     try {
       let data = req.body;
+
+      // Strip ID for autoincrement models to prevent P2002 errors
+      if (routePath !== 'vehicles' && data.id) {
+        delete data.id;
+      }
+
       if (model === 'user' && data.password) {
         data.password = await bcrypt.hash(data.password, 12);
       }
@@ -344,4 +351,9 @@ setupRoutes('bookings', 'booking', { publicPost: true });
 setupRoutes('staff', 'staff');
 setupRoutes('home-banner', 'homeBanner');
 
-app.listen(5000, '0.0.0.0', () => console.log('Server running on 5000 (accessible on 10.0.3.50:5000)'));
+const PORT = process.env.PORT || 5000;
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, '0.0.0.0', () => console.log(`Server running on ${PORT} (accessible on ${BASE_URL})`));
+}
+
+module.exports = app;

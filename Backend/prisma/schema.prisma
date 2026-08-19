@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -57,6 +57,7 @@ model Product {
   images      String?  // Цомгийн зургууд - JSON string
   description String?
   stock       String?  @default("Бэлэн байгаа")
+  quantity    Int      @default(0)
 }
 
 model ToyotaQ {
