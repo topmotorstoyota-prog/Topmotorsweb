@@ -7,6 +7,7 @@ import {
   Layers, PlusCircle, Phone, Mail, Calendar, Clock, MapPin, User, Star, Users, RotateCcw
 } from 'lucide-react';
 import API_BASE_URL from '../config';
+import logo from '../assets/home/logo-1.png';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('vehicles');
@@ -81,7 +82,7 @@ export default function AdminDashboard() {
         <div className="p-8 border-b border-zinc-800/50">
           <div className="flex items-center gap-3 text-white">
              <div className="w-10 h-10 bg-toyota-red flex items-center justify-center rounded-sm text-white">
-                <img src="/src/assets/home/logo-1.png" className="w-6 invert brightness-0" alt="Logo" />
+                <img src={logo} className="w-6 invert brightness-0" alt="Logo" />
              </div>
              <div>
                 <h1 className="text-lg font-black uppercase tracking-tighter leading-none">Toyota</h1>

@@ -5,6 +5,7 @@ import VehicleCard from '../components/VehicleCard';
 import ComparisonModal from '../components/ComparisonModal';
 import API_BASE_URL from '../config';
 import { Link } from 'react-router-dom';
+import hiluxImage from '../assets/vehicles/hilux.png';
 
 const categories = ['Бүх загварууд', 'SUV', 'Седан', 'Пикап', 'VAN', 'MPV'];
 
@@ -194,7 +195,7 @@ const VehicleList = () => {
       <section className="container-custom px-4 md:px-6 pb-24">
         <div className="bg-toyota-black p-8 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10 relative overflow-hidden group shadow-2xl">
             <div className="absolute right-0 top-0 w-1/2 h-full opacity-30 grayscale group-hover:grayscale-0 transition-all duration-1000 hidden md:block pointer-events-none">
-              <img src="/src/assets/vehicles/hilux.png" alt="Comparison" className="w-full h-full object-contain object-right translate-x-12 scale-125" />
+              <img src={hiluxImage} alt="Comparison" className="w-full h-full object-contain object-right translate-x-12 scale-125" />
             </div>
             <div className="text-white relative z-10 max-w-lg text-center md:text-left">
                 <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-4 leading-tight">Шийдвэр гаргаж <br />чадахгүй байна уу?</h3>

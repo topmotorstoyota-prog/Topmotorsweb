@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, ChevronLeft } from 'lucide-react';
 import API_BASE_URL from '../config';
+import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const NewsDetail = () => {
   const { id } = useParams();
@@ -68,7 +69,7 @@ const NewsDetail = () => {
 
           <div className="w-full bg-zinc-100 mb-8 lg:mb-12 rounded-sm overflow-hidden shadow-sm aspect-video lg:aspect-auto">
             <img
-              src={news.image || '/src/assets/placeholder.jpg'}
+              src={news.image || placeholderImage}
               alt={news.title}
               className="w-full h-full lg:h-auto object-cover lg:object-contain"
             />
@@ -89,7 +90,7 @@ const NewsDetail = () => {
                   <Link key={item.id} to={`/news/${item.id}`} className="group">
                     <div className="aspect-[4/3] lg:aspect-video overflow-hidden mb-3 lg:mb-4 bg-zinc-100 rounded-sm">
                       <img
-                        src={item.image || '/src/assets/placeholder.jpg'}
+                        src={item.image || placeholderImage}
                         alt={item.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />

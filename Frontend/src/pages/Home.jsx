@@ -5,25 +5,31 @@ import { ArrowRight, ShieldCheck, Cog, Award, MapPin, Zap, ChevronDown, Calendar
 import Button from '../components/Button';
 import VehicleCard from '../components/VehicleCard';
 import API_BASE_URL from '../config';
+import background1 from '../assets/home/background-1.jpg';
+import background2 from '../assets/home/background-2.jpg';
+import background3 from '../assets/home/background-3.jpg';
+import serviceImage from '../assets/home/service.jpg';
+import chiglelImage from '../assets/home/chiglel.jpg';
+import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const slides = [
   {
     id: 1,
-    image: '/src/assets/home/background-1.jpg',
+    image: background1,
     title: 'ДОМОГТ',
     titleRed: 'ГҮЙЦЭТГЭЛ',
     desc: 'Монголын ямар ч хүнд нөхцөлд зориулагдсан цоо шинэ Land Cruiser 300-ийн хосгүй хүч чадал, тансаг байдлыг мэдэр. '
   },
   {
     id: 2,
-    image: '/src/assets/home/background-2.jpg',
+    image: background2,
     title: 'ХЯЗГААРГҮЙ',
     titleRed: 'АЯЛАЛ',
     desc: 'Хязгааргүй аялалд тань зориулав. Цоо шинэ Land Cruiser Prado 250 - Домогт туулах чадвар, орчин үеийн загвар. '
   },
   {
     id: 3,
-    image: '/src/assets/home/background-3.jpg',
+    image: background3,
     title: 'УХААЛАГ',
     titleRed: 'СОНГОЛТ',
     desc: 'Toyota RAV4 - Амьдралын тань хором бүрийг эрч хүчээр дүүргэх ухаалаг, хүчирхэг SUV. Ямар ч замын нөхцөлд таны найдвартай хамтрагч.'
@@ -35,7 +41,7 @@ const Home = () => {
   const [latestNews, setLatestNews] = useState([]);
   const [featuredVehicles, setFeaturedVehicles] = useState([]);
   const [homeBanner, setHomeBanner] = useState(null);
-  const trustImage = '/src/assets/home/service.jpg';
+  const trustImage = serviceImage;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -190,7 +196,7 @@ const Home = () => {
         <div className="container-custom px-4 md:px-0">
           <div className="w-full relative overflow-hidden rounded-sm shadow-2xl">
              <img
-               src={homeBanner || '/src/assets/home/service.jpg'}
+               src={homeBanner || serviceImage}
                className="w-full h-auto block"
                alt="Toyota Banner"
              />
@@ -215,7 +221,7 @@ const Home = () => {
               <motion.div key={news.id} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="group">
                 <Link to={`/news/${news.id}`}>
                   <div className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden mb-2 md:mb-6 bg-zinc-100">
-                    <img src={news.image || '/src/assets/placeholder.jpg'} alt={news.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <img src={news.image || placeholderImage} alt={news.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   </div>
                   <span className="text-zinc-400 text-[6px] md:text-xs font-medium uppercase tracking-widest">{news.date}</span>
                   <h3 className="text-[9px] md:text-xl font-bold mt-1 group-hover:text-toyota-red transition-colors line-clamp-2 uppercase tracking-tight leading-tight h-7 md:h-auto">{news.title}</h3>
@@ -252,7 +258,7 @@ const Home = () => {
           {/* Left Side: Image (60%) */}
           <div className="lg:w-[60%] h-[180px] md:h-[400px] lg:h-auto relative overflow-hidden">
             <img
-              src="/src/assets/home/chiglel.jpg"
+              src={chiglelImage}
               alt="Toyota Showroom"
               className="w-full h-full object-cover"
             />

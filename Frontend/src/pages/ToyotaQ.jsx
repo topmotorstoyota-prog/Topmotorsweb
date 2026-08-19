@@ -18,6 +18,8 @@ import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import VehicleCard from '../components/VehicleCard';
 import API_BASE_URL from '../config';
+import toyotaQHero from '../assets/toyota-q/hero.jpg';
+import inspection150 from '../assets/toyota-q/150.jpg';
 
 const ToyotaQ = () => {
   const [qVehicles, setQVehicles] = useState([]);
@@ -156,7 +158,7 @@ const ToyotaQ = () => {
         {/* Right Side: Image - Pushed down to be fully visible under navbar */}
         <div className="w-full md:w-[60%] h-full relative order-1 md:order-2 pt-[80px] md:pt-0 bg-toyota-black">
           <img
-            src="/src/assets/toyota-q/hero.jpg"
+            src={toyotaQHero}
             alt="Toyota Q Certified Pre-owned"
             className="w-full h-full object-cover object-left-top"
           />
@@ -371,7 +373,7 @@ const ToyotaQ = () => {
         <div className="container-custom px-4">
             <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-20">
                 <div className="w-full lg:w-1/2 relative">
-                    <img src="/src/assets/toyota-q/150.jpg" alt="150 Points Inspection" className="w-full h-40 md:h-auto object-cover shadow-lg md:shadow-2xl" />
+                    <img src={inspection150} alt="150 Points Inspection" className="w-full h-40 md:h-auto object-cover shadow-lg md:shadow-2xl" />
                     <div className="absolute -top-4 md:-top-10 -right-4 md:-right-10 bg-toyota-red p-4 md:p-12 text-white">
                         <span className="text-2xl md:text-6xl font-black block leading-none">150</span>
                         <span className="text-[7px] md:text-xs font-bold uppercase tracking-widest">Цэгийн оношилгоо</span>

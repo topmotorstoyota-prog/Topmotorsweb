@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
+import filterImage from '../assets/parts/filter.jpg';
+import aisinImage from '../assets/parts/aisin.webp';
 
 const Parts = () => {
   const responsibilities = [
@@ -89,7 +91,7 @@ const Parts = () => {
             >
               <div className="aspect-[4/3] rounded-sm overflow-hidden shadow-2xl relative z-10">
                 <img
-                  src="/src/assets/parts/filter.jpg"
+                  src={filterImage}
                   alt="Toyota Genuine Parts"
                   className="w-full h-full object-cover"
                 />
@@ -166,7 +168,7 @@ const Parts = () => {
                  >
                     <div className="aspect-video bg-zinc-100 rounded-sm overflow-hidden border border-zinc-200 shadow-lg lg:shadow-xl group mb-4 lg:mb-6">
                        <img
-                          src="/src/assets/parts/aisin.webp"
+                          src={aisinImage}
                           alt="AISIN Manufacturing"
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                        />

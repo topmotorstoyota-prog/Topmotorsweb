@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { Phone, Mail, MessageSquare, User, PhoneCall, ChevronRight, FileText, CheckCircle2 } from 'lucide-react';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
+import reqImage from '../assets/sales/req.png';
+import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const Sales = () => {
   const [salesStaff, setSalesStaff] = useState([]);
@@ -38,7 +40,7 @@ const Sales = () => {
              <div className="relative z-10 w-full max-w-xl mx-auto flex flex-col items-center">
                 <div className="w-full mb-6 md:mb-8 shadow-lg md:shadow-xl rounded-sm overflow-hidden">
                    <img
-                     src="/src/assets/sales/req.png"
+                     src={reqImage}
                      alt="Toyota Sales Request"
                      className="w-full h-auto"
                    />
@@ -86,7 +88,7 @@ const Sales = () => {
                 >
                   <div className="relative aspect-[3/4] bg-zinc-100 overflow-hidden mb-2">
                      <img
-                       src={staff.image || '/src/assets/placeholder.jpg'}
+                       src={staff.image || placeholderImage}
                        alt={staff.name}
                        className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
                      />

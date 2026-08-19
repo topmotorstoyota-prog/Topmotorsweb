@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import API_BASE_URL from '../config';
+import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const News = () => {
   const [newsList, setNewsList] = useState([]);
@@ -47,7 +48,7 @@ const News = () => {
                 <Link to={`/news/${news.id}`} className="block">
                   <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100">
                     <img
-                      src={news.image || '/src/assets/placeholder.jpg'}
+                      src={news.image || placeholderImage}
                       alt={news.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />

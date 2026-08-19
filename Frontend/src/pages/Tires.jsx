@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { CircleDot, ChevronRight } from 'lucide-react';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
+import yokohamaLogo from '../assets/acc/yokohama logo.png';
+import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const formatPrice = (price) => {
   if (!price) return '';
@@ -41,7 +43,7 @@ const Tires = () => {
               className="mb-8 h-16 md:h-32"
             >
               <img
-                src="/src/assets/acc/yokohama logo.png"
+                src={yokohamaLogo}
                 alt="Yokohama Tires"
                 className="h-full object-contain brightness-0 invert"
               />
@@ -76,7 +78,7 @@ const Tires = () => {
                 <Link to={`/tires/${item.id}`}>
                   <div className="aspect-square bg-white overflow-hidden relative mb-4 md:mb-6 rounded-none transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.15)] border border-transparent group-hover:border-toyota-red/30">
                     <img
-                      src={item.image || '/src/assets/placeholder.jpg'}
+                      src={item.image || placeholderImage}
                       alt={item.name}
                       className="w-full h-full object-contain p-4 md:p-8 group-hover:scale-110 transition-transform duration-700 mix-blend-multiply"
                     />

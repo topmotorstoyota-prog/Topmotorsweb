@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import yokohamaGallery from '../assets/acc/yokohama gallery.png';
+import yokohamaLogo from '../assets/acc/yokohama logo.png';
+import braidGallery from '../assets/acc/Braid Gallery.jpg';
+import braidLogo from '../assets/acc/braid logo.png';
+import grGallery from '../assets/acc/GR Gallery.webp';
+import grLogo from '../assets/acc/GR logo.jpg';
 
 const AccordionGallery = () => {
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -12,24 +18,24 @@ const AccordionGallery = () => {
       title: 'ДУГУЙ',
       subtitle: 'YOKOHAMA',
       desc: 'Японы алдарт Yokohama брэндийн бүх төрлийн замын нөхцөлд тохирсон өндөр чанартай дугуйнууд.',
-      img: '/src/assets/acc/yokohama gallery.png',
-      logo: '/src/assets/acc/yokohama logo.png',
+      img: yokohamaGallery,
+      logo: yokohamaLogo,
       path: '/tires'
     },
     {
       title: 'ОБУД',
       subtitle: 'BRAID',
       desc: 'Бартаат замын уралдааны дэлхийн шилдэг BRAID брэндийн хөнгөн цагаан хайлшин обуднууд.',
-      img: '/src/assets/acc/Braid Gallery.jpg',
-      logo: '/src/assets/acc/braid logo.png',
+      img: braidGallery,
+      logo: braidLogo,
       path: '/wheels'
     },
     {
       title: 'GR MERCH',
       subtitle: 'GAZOO RACING',
       desc: 'Toyota Gazoo Racing-ийн албан ёсны хувцас, хэрэглэл болон аксессуарууд.',
-      img: '/src/assets/acc/GR Gallery.webp',
-      logo: '/src/assets/acc/GR logo.jpg',
+      img: grGallery,
+      logo: grLogo,
       path: '/merch'
     }
   ];

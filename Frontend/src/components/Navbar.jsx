@@ -4,6 +4,7 @@ import { Menu, X, Phone, User, ChevronDown, Home as HomeIcon, Car, Info, MapPin,
 import { clsx } from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
 import { WheelIcon } from './FloatingCalculator';
+import logo from '../assets/home/logo-1.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +80,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center">
               <img
-                src="/src/assets/home/logo-1.png"
+                src={logo}
                 alt="Toyota Top Motors"
                 className={clsx(
                   "transition-all duration-300 w-auto",

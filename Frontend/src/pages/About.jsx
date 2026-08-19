@@ -14,6 +14,7 @@ import {
   Settings,
   Shield
 } from 'lucide-react';
+import aboutImage from '../assets/common/about.jpg';
 
 const About = () => {
   const stats = [
@@ -140,7 +141,7 @@ const About = () => {
               {/* Main Image Container */}
               <div className="relative h-full w-full overflow-hidden shadow-2xl transition-all duration-700">
                 <img
-                  src="/src/assets/common/about.jpg"
+                  src={aboutImage}
                   alt="Toyota Top Motors Team"
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />

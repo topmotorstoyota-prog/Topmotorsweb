@@ -24,6 +24,7 @@ import cafeImg from '../assets/service/00.jpg';
 import togloomImg from '../assets/service/huuhed.jpg';
 import tanhimImg from '../assets/service/Tanhim.jpg';
 import zogsoolImg from '../assets/service/zogsol.jpg';
+import serviceHeroImg from '../assets/service/service.jpg';
 
 const Service = () => {
   const servicesRef = useRef(null);
@@ -133,7 +134,7 @@ const Service = () => {
             >
               <div className="relative aspect-video md:aspect-[4/3] rounded-sm overflow-hidden shadow-xl md:shadow-2xl z-10">
                 <img
-                  src="/src/assets/service/service.jpg"
+                  src={serviceHeroImg}
                   alt="Toyota Service Center"
                   className="w-full h-full object-cover"
                 />
