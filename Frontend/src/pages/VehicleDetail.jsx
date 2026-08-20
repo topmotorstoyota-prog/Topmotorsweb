@@ -427,19 +427,22 @@ const VehicleDetail = () => {
                   <div className="mb-8 md:mb-10 px-2">
                     <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-3 md:mb-4 text-center md:text-left">Хөдөлгүүр</p>
                     <div className="flex flex-col gap-1.5 md:gap-2">
-                      <AnimatePresence>
-                        {vehicleModel.variants.filter(v => v.series === selectedVariant.series).map(v => v.engineType).filter((v, i, a) => a.indexOf(v) === i).map((engine) => (
-                            <motion.button
-                              key={engine}
-                              initial={{ opacity: 0, x: 20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              onClick={() => handleEngineChange(engine)}
-                              className={`w-full px-4 md:px-5 py-3 md:py-4 text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] border transition-all duration-300 relative text-left flex justify-between items-center ${selectedEngine === engine ? "bg-toyota-black border-toyota-black text-white shadow-lg" : "bg-white border-zinc-200 text-zinc-400 hover:border-zinc-400"}`}
-                            >
-                              {engine}
-                              {selectedEngine === engine && <motion.div layoutId="engineDot" className="w-1 md:w-1.5 h-1 md:h-1.5 bg-toyota-red rounded-full" />}
-                            </motion.button>
-                        ))}
+                      <AnimatePresence mode="wait">
+                        <motion.div key={selectedVariant.series} className="flex flex-col gap-1.5 md:gap-2">
+                          {vehicleModel.variants.filter(v => v.series === selectedVariant.series).map(v => v.engineType).filter((v, i, a) => a.indexOf(v) === i).map((engine) => (
+                              <motion.button
+                                key={engine}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                onClick={() => handleEngineChange(engine)}
+                                className={`w-full px-4 md:px-5 py-3 md:py-4 text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] border transition-all duration-300 relative text-left flex justify-between items-center ${selectedEngine === engine ? "bg-toyota-black border-toyota-black text-white shadow-lg" : "bg-white border-zinc-200 text-zinc-400 hover:border-zinc-400"}`}
+                              >
+                                {engine}
+                                {selectedEngine === engine && <motion.div layoutId="engineDot" className="w-1 md:w-1.5 h-1 md:h-1.5 bg-toyota-red rounded-full" />}
+                              </motion.button>
+                          ))}
+                        </motion.div>
                       </AnimatePresence>
                     </div>
                   </div>
