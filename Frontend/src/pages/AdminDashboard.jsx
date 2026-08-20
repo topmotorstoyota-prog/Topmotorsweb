@@ -73,6 +73,7 @@ export default function AdminDashboard() {
 
   const tabs = ['vehicles', 'news', 'products', 'toyota-q', 'home-banner', 'staff', 'bookings'].filter(tab => {
     if (userRole === 'SUPER_ADMIN' || userRole === 'ADMIN') return true;
+    if (tab === 'products') return permissions['wheels-tires'] || permissions.merch;
     return permissions[tab];
   });
 
@@ -126,7 +127,7 @@ export default function AdminDashboard() {
                     ) : activeTab === 'users' ? (
                       <UserAdminForm key={editingItem?.id || 'new'} token={token} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
                     ) : (
-                      <AdminForm key={`${activeTab}-${editingItem?.id || 'new'}`} type={activeTab} token={token} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
+                      <AdminForm key={`${activeTab}-${editingItem?.id || 'new'}`} type={activeTab} token={token} userRole={userRole} permissions={permissions} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
                     )}
                   </div>
                 </div>
@@ -973,7 +974,9 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
   );
 }
 
-function AdminForm({ type, token, initialData, onSuccess }) {
+function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuccess }) {
+  const canManageWheelsTires = userRole === 'SUPER_ADMIN' || userRole === 'ADMIN' || permissions['wheels-tires'];
+  const canManageMerch = userRole === 'SUPER_ADMIN' || userRole === 'ADMIN' || permissions.merch;
   const [formData, setFormData] = useState(initialData ? {
     ...initialData,
     images: typeof initialData.images === 'string' ? JSON.parse(initialData.images || '[]') : (initialData.images || [])
@@ -1208,7 +1211,7 @@ function AdminForm({ type, token, initialData, onSuccess }) {
         <div className="grid grid-cols-2 gap-4">
             {type !== 'toyota-q' && type !== 'users' && type !== 'staff' && (
               <>
-                <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Ангилал</label>{type === 'products' ? <select name="category" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold"><option value="">Сонгох</option><option value="Обуд">Обуд</option><option value="Дугуй">Дугуй</option><option value="GR Merch">GR Merch</option></select> : <input name="category" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" />}</div>
+                <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Ангилал</label>{type === 'products' ? <select name="category" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold"><option value="">Сонгох</option>{canManageWheelsTires && <option value="Обуд">Обуд</option>}{canManageWheelsTires && <option value="Дугуй">Дугуй</option>}{canManageMerch && <option value="GR Merch">GR Merch</option>}</select> : <input name="category" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" />}</div>
                 <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Үлдэгдэл / Төлөв</label>
                   <select name="stock" value={formData.stock || 'Бэлэн байгаа'} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold">
                     <option value="Бэлэн байгаа">Бэлэн байгаа</option>
@@ -1310,9 +1313,11 @@ function UserAdminForm({ token, initialData, onSuccess }) {
     role: 'EDITOR',
     canManageVehicles: false,
     canManageNews: false,
-    canManageProducts: false,
+    canManageWheelsTires: false,
+    canManageMerch: false,
     canManageToyotaQ: false,
-    canManageBookings: false
+    canManageBookings: false,
+    canManageHomeBanner: false
   });
 
   const handleSubmit = async (e) => {
@@ -1357,9 +1362,11 @@ function UserAdminForm({ token, initialData, onSuccess }) {
   const permissionFields = [
     { name: 'canManageVehicles', label: 'Загварууд удирдах' },
     { name: 'canManageNews', label: 'Мэдээ удирдах' },
-    { name: 'canManageProducts', label: 'Бүтээгдэхүүн удирдах' },
+    { name: 'canManageWheelsTires', label: 'Дугуй, Обуд удирдах' },
+    { name: 'canManageMerch', label: 'GR Merch удирдах' },
     { name: 'canManageToyotaQ', label: 'Toyota-Q удирдах' },
     { name: 'canManageBookings', label: 'Захиалга удирдах' },
+    { name: 'canManageHomeBanner', label: 'Нүүр хуудасны баннер удирдах' },
   ];
 
   return (

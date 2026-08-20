@@ -162,9 +162,11 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
       const permissions = {
         vehicles: user.canManageVehicles || false,
         news: user.canManageNews || false,
-        products: user.canManageProducts || false,
+        'wheels-tires': user.canManageWheelsTires || false,
+        merch: user.canManageMerch || false,
         'toyota-q': user.canManageToyotaQ || false,
-        bookings: user.canManageBookings || false
+        bookings: user.canManageBookings || false,
+        'home-banner': user.canManageHomeBanner || false
       };
       const token = jwt.sign({ id: user.id, role: user.role, permissions }, JWT_SECRET, { expiresIn: '24h' });
       res.json({ token, role: user.role, name: user.name, permissions });
@@ -177,14 +179,40 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
   }
 });
 
+// Бүтээгдэхүүний ангиллаас хамаарч аль эрхэд харьяалагдахыг тодорхойлох
+const WHEELS_TIRES_CATEGORIES = ['Дугуй', 'GR Tyres', 'Обуд'];
+const getProductPermissionKey = (category) => {
+  if (WHEELS_TIRES_CATEGORIES.includes(category)) return 'wheels-tires';
+  if (category === 'GR Merch') return 'merch';
+  return null;
+};
+
 // --- CRUD HELPER ---
 const setupRoutes = (routePath, model, options = {}) => {
-  const checkAccess = (req, res, next) => {
-    if (req.user.role === 'SUPER_ADMIN') return next();
-    if (routePath === 'users') return res.status(403).json({ message: "Зөвхөн SUPER_ADMIN хэрэглэгч удирдах эрхтэй." });
-    if (req.user.role === 'ADMIN') return next();
-    if (req.user.role === 'EDITOR' && req.user.permissions && req.user.permissions[routePath]) return next();
-    return res.status(403).json({ message: "Танд энэ хэсгийг удирдах эрх байхгүй байна." });
+  const checkAccess = async (req, res, next) => {
+    try {
+      if (req.user.role === 'SUPER_ADMIN') return next();
+      if (routePath === 'users') return res.status(403).json({ message: "Зөвхөн SUPER_ADMIN хэрэглэгч удирдах эрхтэй." });
+      if (req.user.role === 'ADMIN') return next();
+      if (req.user.role !== 'EDITOR') return res.status(403).json({ message: "Танд энэ хэсгийг удирдах эрх байхгүй байна." });
+
+      if (routePath === 'products') {
+        let category = req.body && req.body.category;
+        if (!category && req.params.id) {
+          const existing = await prisma.product.findUnique({ where: { id: parseInt(req.params.id) } });
+          category = existing && existing.category;
+        }
+        const key = getProductPermissionKey(category);
+        if (key && req.user.permissions && req.user.permissions[key]) return next();
+        return res.status(403).json({ message: "Танд энэ бүтээгдэхүүний ангиллыг удирдах эрх байхгүй байна." });
+      }
+
+      if (req.user.permissions && req.user.permissions[routePath]) return next();
+      return res.status(403).json({ message: "Танд энэ хэсгийг удирдах эрх байхгүй байна." });
+    } catch (err) {
+      console.error('checkAccess error:', err);
+      return res.status(500).json({ message: "Эрх шалгахад алдаа гарлаа." });
+    }
   };
 
   app.get(`/api/${routePath}`, async (req, res) => {

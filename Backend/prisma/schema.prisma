@@ -16,9 +16,11 @@ model User {
   role              String   @default("EDITOR")
   canManageVehicles  Boolean  @default(false)
   canManageNews      Boolean  @default(false)
-  canManageProducts  Boolean  @default(false)
+  canManageWheelsTires Boolean @default(false) // Дугуй, Обуд
+  canManageMerch     Boolean  @default(false) // GR Merch
   canManageToyotaQ   Boolean  @default(false)
   canManageBookings  Boolean  @default(false)
+  canManageHomeBanner Boolean @default(false)
   createdAt         DateTime @default(now())
 }
 
