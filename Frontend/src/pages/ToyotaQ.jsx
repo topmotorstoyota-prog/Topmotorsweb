@@ -18,7 +18,7 @@ import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import VehicleCard from '../components/VehicleCard';
 import API_BASE_URL from '../config';
-import toyotaQHero from '../assets/toyota-q/hero.jpg';
+import toyotaQHero from '../assets/toyota-q/q.png';
 import inspection150 from '../assets/toyota-q/150.jpg';
 
 const ToyotaQ = () => {
