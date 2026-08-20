@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import VehicleList from './pages/VehicleList';
@@ -32,6 +33,13 @@ function AppContent() {
   const location = useLocation();
   // Админ хуудсууд дээр Navbar болон Footer-ийг нуух
   const isAdminPage = location.pathname.startsWith('/admin');
+
+  // Google Analytics: SPA дотор шилжих бүрд шинэ хуудас үзсэн гэж бүртгэх
+  useEffect(() => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('config', 'G-4NSW6V81XF', { page_path: location.pathname + location.search });
+    }
+  }, [location]);
 
   return (
     <div className="flex flex-col min-h-screen">
