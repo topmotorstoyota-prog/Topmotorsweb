@@ -337,29 +337,6 @@ const ToyotaQ = () => {
         </div>
       </section>
 
-      {/* Warranty Section */}
-      <section className="py-16 bg-white">
-        <div className="container-custom px-4">
-          <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
-            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-3">Баталгаат хугацаа</h2>
-            <p className="text-zinc-500 text-xs md:text-base">Бид танд сэтгэл амар ашиглах баталгааг санал болгож байна.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-            <div className="bg-toyota-gray-100 p-6 md:p-10 border-l-4 border-toyota-red shadow-sm">
-                <h3 className="text-sm md:text-xl font-black uppercase mb-3 md:mb-6 flex items-center gap-2">
-                    <ShieldCheck className="text-toyota-red w-4 h-4 md:w-6 md:h-6" />
-                    Үйлдвэрийн баталгаатай
-                </h3>
-                <p className="text-zinc-600 text-[10px] md:text-sm leading-relaxed text-justify font-medium">
-                    Үйлдвэрийн баталгаат хугацаа дуусаагүй тохиолдолд Тоёота Мотор Корпорацын зүгээс <strong>3 жил эсвэл 100,000 км</strong>-ийн хүрээнд аливаа гэмтэл, доголдлыг үнэгүй засварлах, эсвэл солих үүргийг хүлээнэ.
-                </p>
-            </div>
-           
-          </div>
-        </div>
-      </section>
-
       {/* Diagnostic 150 Points */}
       <section className="py-12 md:py-16 bg-toyota-gray-100 overflow-hidden relative">
         <div className="container-custom px-4">

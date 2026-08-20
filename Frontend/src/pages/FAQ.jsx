@@ -18,7 +18,7 @@ const faqCategories = [
       },
       {
         q: "Ажиллах цаг болон байршил?",
-        a: "Улаанбаатар хот: Баянгол дүүрэг, 6-р хороо, 25-р эмийн сангаас баруун зүгт, төв зам дагуу. 7777:8090 09:00-18:00\n\nӨмнөговь аймаг, Цогтцэций сум, Өгөөмөр IV баг 07:00 - 19:00"
+        a: "Салбар 1: Улаанбаатар хот, Баянгол дүүрэг, 6-р хороо, 10 дугаар хороолол, И мартын зүүн талд. Утас: 7777-8090. Ажиллах цаг: 09:00-18:00\n\nСалбар 2: Өмнөговь аймаг, Цогтцэций сум, Өгөөмөр IV баг. Утас: 7777-8090. Ажиллах цаг: 09:00-18:00"
       }
     ]
   },
@@ -195,7 +195,7 @@ const FAQ = () => {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
                       >
-                        <div className="p-6 pt-0 border-t border-zinc-50 text-[#555] leading-relaxed font-medium text-sm md:text-base text-justify">
+                        <div className="p-6 pt-0 border-t border-zinc-50 text-[#555] leading-relaxed font-medium text-sm md:text-base text-justify whitespace-pre-line">
                           {faq.a}
                         </div>
                       </motion.div>
