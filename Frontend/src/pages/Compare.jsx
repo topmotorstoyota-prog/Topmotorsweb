@@ -88,7 +88,7 @@ const Compare = () => {
     { label: 'ХӨТЛӨГЧ', key: 'drive_spec' },
     { label: 'МОРИНЫ ХҮЧ (HP)', key: 'hp_spec' },
     { label: 'МУШГИХ ХҮЧ (NM)', key: 'torque_spec' },
-    { label: 'ЗАРЦУУЛАЛТ', key: 'fuel_spec' },
+    { label: 'ТҮЛШНИЙ САВНЫ БАГТААМЖ', key: 'fuel_spec' },
     { label: 'НЭМЭЛТ ҮЗҮҮЛЭЛТ', key: 'extra_spec' },
   ];
 

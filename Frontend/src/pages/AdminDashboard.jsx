@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Trash2, Edit, Plus, X, Upload, LogOut, LayoutDashboard, Car,
-  Newspaper, Box, Package, UserCircle, MessageSquare, Info, ChevronRight,
+  Newspaper, Box, Package, UserCircle, MessageSquare, Info, ChevronRight, ChevronLeft,
   ChevronDown, Settings, Fuel, Palette, SlidersHorizontal, Image as ImageIcon,
   Layers, PlusCircle, Phone, Mail, Calendar, Clock, MapPin, User, Star, Users, RotateCcw
 } from 'lucide-react';
@@ -549,6 +549,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
   } : { id: '', name: '', category: 'SUV', isFeatured: false, image: '', images: [], images360: [], description: '', colors: [], variants: [] });
 
   const [activeSubTab, setActiveTab] = useState('basic');
+  const [editingVariantIdx, setEditingVariantIdx] = useState(null);
 
   const addFeatureCategory = (vIdx) => {
     const nv = [...formData.variants];
@@ -770,15 +771,39 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
       )}
 
       {activeSubTab === 'variants' && (
-        <div className="space-y-10">
-           {formData.variants?.map((v, vIdx) => (
-             <div key={vIdx} className="border-2 border-zinc-200 rounded-sm bg-white overflow-hidden shadow-sm">
+        <div className="space-y-6">
+        {editingVariantIdx === null ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+             {formData.variants?.map((v, vIdx) => (
+               <div key={vIdx} onClick={() => setEditingVariantIdx(vIdx)} className="border-2 border-zinc-200 rounded-sm bg-white hover:border-toyota-red cursor-pointer transition-all p-5 relative group shadow-sm">
+                  <button type="button" onClick={e => { e.stopPropagation(); let nv = [...formData.variants]; nv.splice(vIdx, 1); setFormData({ ...formData, variants: nv }); }} className="absolute top-3 right-3 text-zinc-300 hover:text-toyota-red opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={16}/></button>
+                  <span className="font-black uppercase text-[9px] tracking-widest bg-toyota-red text-white px-2 py-1 inline-block mb-3">{v.engineType || 'Хөдөлгүүр сонгоогүй'}</span>
+                  <h4 className="font-black uppercase text-sm tracking-tight mb-1">{v.series || 'Шинэ хувилбар'}</h4>
+                  <p className="text-toyota-red font-black text-xs">{v.price ? `₮${v.price}` : 'Үнэ оруулаагүй'}</p>
+                  <div className="flex items-center gap-1 mt-4 text-[9px] font-black uppercase text-zinc-400 group-hover:text-toyota-red transition-colors"><Edit size={12}/> Дэлгэрэнгүй засах</div>
+               </div>
+             ))}
+             <button type="button" onClick={() => {
+                const nv = [...(formData.variants || []), { series: '', engineType: 'Бензин', price: '', engine_spec: '', seats_spec: '', trans_spec: '', drive_spec: '', colors: [], interior360: '' }];
+                setFormData({ ...formData, variants: nv });
+                setEditingVariantIdx(nv.length - 1);
+             }} className="border-2 border-dashed border-toyota-red/30 text-toyota-red/50 rounded-sm p-5 flex flex-col items-center justify-center gap-2 font-black uppercase text-[10px] tracking-widest hover:bg-toyota-red/5 hover:text-toyota-red transition-all min-h-[140px]">
+                <Plus size={24}/> Шинэ хувилбар нэмэх
+             </button>
+          </div>
+        ) : (() => {
+           const vIdx = editingVariantIdx;
+           const v = formData.variants[vIdx];
+           if (!v) { setEditingVariantIdx(null); return null; }
+           return (
+             <div className="border-2 border-zinc-200 rounded-sm bg-white overflow-hidden shadow-sm">
                 <div className="bg-zinc-900 text-white p-4 flex justify-between items-center">
+                  <button type="button" onClick={() => setEditingVariantIdx(null)} className="flex items-center gap-2 text-zinc-300 hover:text-white font-black uppercase text-[10px] tracking-widest transition-colors"><ChevronLeft size={16}/> Буцах</button>
                   <div className="flex gap-4 items-center">
                     <span className="font-black uppercase text-[10px] tracking-widest bg-toyota-red px-2 py-1">{v.engineType}</span>
                     <span className="font-black uppercase text-sm tracking-tight">{v.series || 'Шинэ хувилбар'}</span>
                   </div>
-                  <button type="button" onClick={() => { let nv = [...formData.variants]; nv.splice(vIdx, 1); setFormData({ ...formData, variants: nv }); }} className="text-zinc-500 hover:text-white"><Trash2 size={18}/></button>
+                  <button type="button" onClick={() => { let nv = [...formData.variants]; nv.splice(vIdx, 1); setFormData({ ...formData, variants: nv }); setEditingVariantIdx(null); }} className="text-zinc-500 hover:text-white"><Trash2 size={18}/></button>
                 </div>
 
                 <div className="p-8 space-y-8">
@@ -806,7 +831,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                           { key: 'drive_spec', label: 'Drive (4WD...)' },
                           { key: 'hp_spec', label: 'HP (Horsepower)' },
                           { key: 'torque_spec', label: 'Torque (Nm)' },
-                          { key: 'fuel_spec', label: 'Fuel Cons (L/100km)' },
+                          { key: 'fuel_spec', label: 'Түлшний савны багтаамж' },
                           { key: 'extra_spec', label: 'Additional Spec' }
                         ].map(spec => (
                           <div key={spec.key}>
@@ -1017,8 +1042,8 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                     </div>
                 </div>
              </div>
-           ))}
-           <button type="button" onClick={() => setFormData({ ...formData, variants: [...(formData.variants || []), { series: '', engineType: 'Бензин', price: '', engine_spec: '', seats_spec: '', trans_spec: '', drive_spec: '', colors: [], interior360: '' }] })} className="w-full p-6 border-2 border-dashed border-toyota-red/20 text-toyota-red/40 font-black uppercase text-xs tracking-[0.4em] hover:bg-toyota-red/5 hover:text-toyota-red transition-all rounded-sm">Шинэ хувилбар нэмэх</button>
+           );
+        })()}
         </div>
       )}
       <button type="submit" className="w-full bg-black text-white py-6 rounded-sm font-black uppercase tracking-[0.6em] text-sm hover:bg-toyota-red transition-all shadow-2xl shadow-black/10">Мэдээллийг хадгалах</button>
