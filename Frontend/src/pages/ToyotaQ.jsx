@@ -124,7 +124,7 @@ const ToyotaQ = () => {
           >
   
             <h1 className="text-3xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-none mb-4 md:mb-8">
-              TOYOTA <span className="text-toyota-red">Q</span>
+              TOYOTA- <span className="text-toyota-red">Q</span>
             </h1>
             <p className="text-sm md:text-xl font-bold uppercase tracking-tight mb-4 md:mb-6 leading-tight">
                 Баталгаат, чанарын гэрчилгээтэй
@@ -355,15 +355,7 @@ const ToyotaQ = () => {
                     Үйлдвэрийн баталгаат хугацаа дуусаагүй тохиолдолд Тоёота Мотор Корпорацын зүгээс <strong>3 жил эсвэл 100,000 км</strong>-ийн хүрээнд аливаа гэмтэл, доголдлыг үнэгүй засварлах, эсвэл солих үүргийг хүлээнэ.
                 </p>
             </div>
-            <div className="bg-toyota-gray-100 p-6 md:p-10 border-l-4 border-toyota-red shadow-sm">
-                <h3 className="text-sm md:text-xl font-black uppercase mb-3 md:mb-6 flex items-center gap-2">
-                    <Clock className="text-toyota-red w-4 h-4 md:w-6 md:h-6" />
-                    Дилерийн нэмэлт баталгаа
-                </h3>
-                <p className="text-zinc-600 text-[10px] md:text-sm leading-relaxed text-justify font-medium">
-                    Үйлдвэрлэгчийн баталгаат хугацаа дууссан ч Toyota-Q Баталгааг <strong>1 жилийн хугацаанд</strong> Хөдөлгүүр болон Хурдны хайрцагт дилер нэмэлтээр олгох боломжтой.
-                </p>
-            </div>
+           
           </div>
         </div>
       </section>
