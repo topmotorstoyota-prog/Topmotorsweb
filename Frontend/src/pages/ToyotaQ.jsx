@@ -160,7 +160,7 @@ const ToyotaQ = () => {
           <img
             src={toyotaQHero}
             alt="Toyota Q Certified Pre-owned"
-            className="w-full h-full object-cover object-left-top"
+            className="w-full h-full object-contain object-left"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-toyota-black via-transparent to-transparent hidden md:block" />
         </div>
