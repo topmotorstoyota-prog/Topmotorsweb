@@ -30,9 +30,10 @@ const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelect
   );
 
   const handleDetailedCompare = () => {
-    // Pass variant IDs to the compare page
-    const ids = selectedVehicles.map(v => v.id).join(',');
-    navigate(`/compare?ids=${ids}`);
+    // Pass variant IDs to the compare page (each as its own param, since IDs can contain commas)
+    const params = new URLSearchParams();
+    selectedVehicles.forEach(v => params.append('ids', v.id));
+    navigate(`/compare?${params.toString()}`);
     onClose();
   };
 

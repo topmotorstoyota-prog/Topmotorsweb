@@ -8,7 +8,7 @@ const Compare = () => {
   const [searchParams] = useSearchParams();
   const [selectedVariants, setSelectedVariants] = useState([]);
   const [loading, setLoading] = useState(true);
-  const ids = searchParams.get('ids')?.split(',') || [];
+  const ids = searchParams.getAll('ids');
 
   const [openSections, setOpenSections] = useState({
     PERFORMANCE: false,
