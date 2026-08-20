@@ -8,6 +8,8 @@ import Button from '../components/Button';
 import ComparisonModal from '../components/ComparisonModal';
 import API_BASE_URL from '../config';
 
+const MIN_360_IMAGES = 16;
+
 const VehicleDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -150,7 +152,7 @@ const VehicleDetail = () => {
     const sensitivity = 8;
     if (Math.abs(diff) > sensitivity) {
       const step = diff > 0 ? -1 : 1;
-      if (images360.length > 0) {
+      if (images360.length >= MIN_360_IMAGES) {
         setRotationIndex((prev) => (prev + step + images360.length) % images360.length);
         setStartX(currentX);
       }
@@ -221,8 +223,9 @@ const VehicleDetail = () => {
 
   const variantColor = selectedVariant?.colors?.find(c => c.name === selectedColor?.name);
   const images360 = variantColor?.images360 || [];
+  const has360 = images360.length >= MIN_360_IMAGES;
 
-  const displayImage = (images360.length > 0)
+  const displayImage = has360
     ? images360[rotationIndex % images360.length]
     : (selectedColor?.image || selectedVariant?.image || vehicleModel.image);
 
@@ -342,16 +345,16 @@ const VehicleDetail = () => {
             {/* Center Column: Visual Viewer (Centered) */}
             <div className="lg:col-span-6 order-1 lg:order-2">
               <div
-                className={`relative aspect-[16/9] bg-[#F6F6F6] overflow-hidden mb-6 md:mb-8 rounded-sm shadow-inner group ${images360.length > 0 ? 'cursor-grab active:cursor-grabbing' : ''}`}
-                onMouseDown={images360.length > 0 ? handleRotationStart : undefined}
-                onMouseMove={images360.length > 0 ? handleRotationMove : undefined}
-                onMouseUp={images360.length > 0 ? handleRotationEnd : undefined}
-                onMouseLeave={images360.length > 0 ? handleRotationEnd : undefined}
-                onTouchStart={images360.length > 0 ? handleRotationStart : undefined}
-                onTouchMove={images360.length > 0 ? handleRotationMove : undefined}
-                onTouchEnd={images360.length > 0 ? handleRotationEnd : undefined}
+                className={`relative aspect-[16/9] bg-[#F6F6F6] overflow-hidden mb-6 md:mb-8 rounded-sm shadow-inner group ${has360 ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                onMouseDown={has360 ? handleRotationStart : undefined}
+                onMouseMove={has360 ? handleRotationMove : undefined}
+                onMouseUp={has360 ? handleRotationEnd : undefined}
+                onMouseLeave={has360 ? handleRotationEnd : undefined}
+                onTouchStart={has360 ? handleRotationStart : undefined}
+                onTouchMove={has360 ? handleRotationMove : undefined}
+                onTouchEnd={has360 ? handleRotationEnd : undefined}
               >
-                {images360.length > 0 ? (
+                {has360 ? (
                   <img src={displayImage} alt={vehicleModel.name} className="w-full h-full object-contain p-4 md:p-10 mix-blend-multiply pointer-events-none select-none" />
                 ) : (
                   <AnimatePresence mode="wait">
@@ -359,7 +362,7 @@ const VehicleDetail = () => {
                   </AnimatePresence>
                 )}
                 <div className="absolute bottom-3 md:bottom-6 left-1/2 -translate-x-1/2 bg-black/5 px-3 py-1.5 rounded-full backdrop-blur-sm pointer-events-none flex items-center gap-1.5 md:gap-2">
-                   {images360.length > 0 ? (
+                   {has360 ? (
                      <>
                         <RotateCcw size={10} className="text-zinc-400 animate-pulse" />
                         <p className="text-[7px] md:text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">360° харах</p>

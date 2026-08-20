@@ -716,6 +716,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                 {formData.features?.map((cat, catIdx) => (
                   <div key={catIdx} className="bg-white border-2 border-zinc-200 p-6 rounded-sm relative">
                     <button type="button" onClick={() => {
+                      if (!window.confirm('Энэ ангилал болон дотор нь байгаа бүх үзүүлэлтийг устгах уу?')) return;
                       const nf = [...formData.features];
                       nf.splice(catIdx, 1);
                       setFormData({ ...formData, features: nf });
@@ -780,7 +781,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
              {formData.variants?.map((v, vIdx) => (
                <div key={vIdx} onClick={() => setEditingVariantIdx(vIdx)} className="border-2 border-zinc-200 rounded-sm bg-white hover:border-toyota-red cursor-pointer transition-all p-5 relative group shadow-sm">
-                  <button type="button" onClick={e => { e.stopPropagation(); let nv = [...formData.variants]; nv.splice(vIdx, 1); setFormData({ ...formData, variants: nv }); }} className="absolute top-3 right-3 text-zinc-300 hover:text-toyota-red opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={16}/></button>
+                  <button type="button" onClick={e => { e.stopPropagation(); if (!window.confirm('Энэ хувилбарыг бүхэлд нь устгах уу?')) return; let nv = [...formData.variants]; nv.splice(vIdx, 1); setFormData({ ...formData, variants: nv }); }} className="absolute top-3 right-3 text-zinc-300 hover:text-toyota-red opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={16}/></button>
                   <span className="font-black uppercase text-[9px] tracking-widest bg-toyota-red text-white px-2 py-1 inline-block mb-3">{v.engineType || 'Хөдөлгүүр сонгоогүй'}</span>
                   <h4 className="font-black uppercase text-sm tracking-tight mb-1">{v.series || 'Шинэ хувилбар'}</h4>
                   <p className="text-toyota-red font-black text-xs">{v.price ? `₮${v.price}` : 'Үнэ оруулаагүй'}</p>
@@ -807,7 +808,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                     <span className="font-black uppercase text-[10px] tracking-widest bg-toyota-red px-2 py-1">{v.engineType}</span>
                     <span className="font-black uppercase text-sm tracking-tight">{v.series || 'Шинэ хувилбар'}</span>
                   </div>
-                  <button type="button" onClick={() => { let nv = [...formData.variants]; nv.splice(vIdx, 1); setFormData({ ...formData, variants: nv }); setEditingVariantIdx(null); }} className="text-zinc-500 hover:text-white"><Trash2 size={18}/></button>
+                  <button type="button" onClick={() => { if (!window.confirm('Энэ хувилбарыг бүхэлд нь устгах уу?')) return; let nv = [...formData.variants]; nv.splice(vIdx, 1); setFormData({ ...formData, variants: nv }); setEditingVariantIdx(null); }} className="text-zinc-500 hover:text-white"><Trash2 size={18}/></button>
                 </div>
 
                 <div className="p-8 space-y-8">
@@ -920,7 +921,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                        <div className="space-y-6">
                           {(v.colors || []).map((color, cIdx) => (
                             <div key={cIdx} className="p-6 bg-zinc-50 border rounded-sm relative">
-                               <button type="button" onClick={() => { let nv = [...formData.variants]; nv[vIdx].colors.splice(cIdx, 1); setFormData({ ...formData, variants: nv }); }} className="absolute top-4 right-4 text-zinc-300 hover:text-toyota-red"><X size={16}/></button>
+                               <button type="button" onClick={() => { if (!window.confirm('Энэ өнгө болон түүний бүх 360° зургийг устгах уу?')) return; let nv = [...formData.variants]; nv[vIdx].colors.splice(cIdx, 1); setFormData({ ...formData, variants: nv }); }} className="absolute top-4 right-4 text-zinc-300 hover:text-toyota-red"><X size={16}/></button>
 
                                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                                   {/* Color Identity */}
