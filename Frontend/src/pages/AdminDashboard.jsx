@@ -9,16 +9,25 @@ import {
 import API_BASE_URL from '../config';
 import logo from '../assets/home/logo-1.png';
 
+const TAB_ORDER = ['vehicles', 'news', 'products', 'toyota-q', 'home-banner', 'staff', 'bookings'];
+
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState('vehicles');
-  const [items, setItems] = useState([]);
-  const [editingItem, setEditingItem] = useState(null);
-  const [showForm, setShowForm] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const userRole = localStorage.getItem('role');
   const permissions = JSON.parse(localStorage.getItem('permissions') || '{}');
+
+  const hasTabAccess = (tab) => {
+    if (userRole === 'SUPER_ADMIN' || userRole === 'ADMIN') return true;
+    if (tab === 'products') return permissions['wheels-tires'] || permissions.merch;
+    return permissions[tab];
+  };
+
+  const [activeTab, setActiveTab] = useState(() => TAB_ORDER.find(hasTabAccess) || 'bookings');
+  const [items, setItems] = useState([]);
+  const [editingItem, setEditingItem] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   useEffect(() => {
     if (!token) navigate('/admin-login');
@@ -73,11 +82,7 @@ export default function AdminDashboard() {
     'activity-logs': 'Үйл ажиллагааны түүх'
   };
 
-  const tabs = ['vehicles', 'news', 'products', 'toyota-q', 'home-banner', 'staff', 'bookings'].filter(tab => {
-    if (userRole === 'SUPER_ADMIN' || userRole === 'ADMIN') return true;
-    if (tab === 'products') return permissions['wheels-tires'] || permissions.merch;
-    return permissions[tab];
-  });
+  const tabs = TAB_ORDER.filter(hasTabAccess);
 
   return (
     <div className="min-h-screen flex bg-[#f8f9fa] font-sans text-slate-900 text-sm">
