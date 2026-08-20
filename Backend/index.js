@@ -165,7 +165,8 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
         'wheels-tires': user.canManageWheelsTires || false,
         merch: user.canManageMerch || false,
         'toyota-q': user.canManageToyotaQ || false,
-        bookings: user.canManageBookings || false,
+        'sales-bookings': user.canManageSalesBookings || false,
+        'service-bookings': user.canManageServiceBookings || false,
         'home-banner': user.canManageHomeBanner || false
       };
       const token = jwt.sign({ id: user.id, role: user.role, email: user.email, name: user.name, permissions }, JWT_SECRET, { expiresIn: '24h' });
@@ -186,6 +187,9 @@ const getProductPermissionKey = (category) => {
   if (category === 'GR Merch') return 'merch';
   return null;
 };
+
+// Захиалгын төрлөөс хамаарч аль эрхэд харьяалагдахыг тодорхойлох
+const getBookingPermissionKey = (type) => (type === 'service' ? 'service-bookings' : 'sales-bookings');
 
 // Админ хэрэглэгчдийн CREATE/UPDATE/DELETE үйлдлийг бүртгэх
 const logActivity = async (req, action, entity, entityId, entityName) => {
@@ -226,6 +230,17 @@ const setupRoutes = (routePath, model, options = {}) => {
         return res.status(403).json({ message: "Танд энэ бүтээгдэхүүний ангиллыг удирдах эрх байхгүй байна." });
       }
 
+      if (routePath === 'bookings') {
+        let type = req.body && req.body.type;
+        if (!type && req.params.id) {
+          const existing = await prisma.booking.findUnique({ where: { id: parseInt(req.params.id) } });
+          type = existing && existing.type;
+        }
+        const key = getBookingPermissionKey(type);
+        if (req.user.permissions && req.user.permissions[key]) return next();
+        return res.status(403).json({ message: "Танд энэ хүсэлтийг удирдах эрх байхгүй байна." });
+      }
+
       if (req.user.permissions && req.user.permissions[routePath]) return next();
       return res.status(403).json({ message: "Танд энэ хэсгийг удирдах эрх байхгүй байна." });
     } catch (err) {
@@ -244,7 +259,7 @@ const setupRoutes = (routePath, model, options = {}) => {
           try {
               const decoded = jwt.verify(token, JWT_SECRET);
               if (routePath === 'users' && decoded.role !== 'SUPER_ADMIN') return res.sendStatus(403);
-              if (routePath === 'bookings' && decoded.role === 'EDITOR' && !decoded.permissions.bookings) return res.sendStatus(403);
+              if (routePath === 'bookings' && decoded.role === 'EDITOR' && !decoded.permissions['sales-bookings'] && !decoded.permissions['service-bookings']) return res.sendStatus(403);
               req.user = decoded;
           } catch (e) { return res.sendStatus(403); }
       }
@@ -256,6 +271,9 @@ const setupRoutes = (routePath, model, options = {}) => {
           const { password, ...userWithoutPassword } = u;
           return userWithoutPassword;
         });
+      }
+      if (routePath === 'bookings' && req.user && req.user.role === 'EDITOR') {
+        items = items.filter(b => req.user.permissions[getBookingPermissionKey(b.type)]);
       }
       res.json(items);
     } catch (err) {

@@ -9,7 +9,8 @@ import {
 import API_BASE_URL from '../config';
 import logo from '../assets/home/logo-1.png';
 
-const TAB_ORDER = ['vehicles', 'news', 'products', 'toyota-q', 'home-banner', 'staff', 'bookings'];
+const TAB_ORDER = ['vehicles', 'news', 'products', 'toyota-q', 'home-banner', 'staff', 'sales-bookings', 'service-bookings'];
+const apiPath = (tab) => (tab === 'sales-bookings' || tab === 'service-bookings') ? 'bookings' : tab;
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function AdminDashboard() {
     return permissions[tab];
   };
 
-  const [activeTab, setActiveTab] = useState(() => TAB_ORDER.find(hasTabAccess) || 'bookings');
+  const [activeTab, setActiveTab] = useState(() => TAB_ORDER.find(hasTabAccess) || 'sales-bookings');
   const [items, setItems] = useState([]);
   const [editingItem, setEditingItem] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -36,7 +37,7 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/${activeTab}`, {
+      const res = await fetch(`${API_BASE_URL}/api/${apiPath(activeTab)}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -46,7 +47,7 @@ export default function AdminDashboard() {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Устгахдаа итгэлтэй байна уу?')) return;
-    await fetch(`${API_BASE_URL}/api/${activeTab}/${id}`, {
+    await fetch(`${API_BASE_URL}/api/${apiPath(activeTab)}/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -66,7 +67,8 @@ export default function AdminDashboard() {
     'home-banner': <ImageIcon size={18} />,
     staff: <Users size={18} />,
     users: <UserCircle size={18} />,
-    bookings: <MessageSquare size={18} />,
+    'sales-bookings': <MessageSquare size={18} />,
+    'service-bookings': <Settings size={18} />,
     'activity-logs': <Clock size={18} />
   };
 
@@ -78,6 +80,8 @@ export default function AdminDashboard() {
     'home-banner': 'Нүүр хуудас',
     staff: 'Ажилчид',
     users: 'Хэрэглэгчид',
+    'sales-bookings': 'Шинэ машин & Тест драйв',
+    'service-bookings': 'Засварын хүсэлт',
     bookings: 'Захиалга & Хүсэлт',
     'activity-logs': 'Үйл ажиллагааны түүх'
   };
@@ -121,7 +125,7 @@ export default function AdminDashboard() {
       <div className="flex-1 ml-72">
         <header className="bg-white border-b h-24 flex items-center justify-between px-10 sticky top-0 z-10 shadow-sm">
            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-800">{tabLabels[activeTab]} <span className="text-toyota-red">удирдах</span></h2>
-           {!showForm && !editingItem && activeTab !== 'bookings' && activeTab !== 'activity-logs' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
+           {!showForm && !editingItem && activeTab !== 'sales-bookings' && activeTab !== 'service-bookings' && activeTab !== 'activity-logs' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
         </header>
 
         <div className="p-10">
@@ -139,14 +143,14 @@ export default function AdminDashboard() {
                     ) : activeTab === 'users' ? (
                       <UserAdminForm key={editingItem?.id || 'new'} token={token} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
                     ) : (
-                      <AdminForm key={`${activeTab}-${editingItem?.id || 'new'}`} type={activeTab} token={token} userRole={userRole} permissions={permissions} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
+                      <AdminForm key={`${activeTab}-${editingItem?.id || 'new'}`} type={apiPath(activeTab)} token={token} userRole={userRole} permissions={permissions} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
                     )}
                   </div>
                 </div>
               </div>
             ) : (
               <div className="bg-white rounded-sm border shadow-sm overflow-hidden">
-                {activeTab === 'bookings' ? (
+                {activeTab === 'sales-bookings' || activeTab === 'service-bookings' ? (
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
@@ -161,7 +165,7 @@ export default function AdminDashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {items.length > 0 ? items.map((item) => (
+                        {(() => { const bookingItems = items.filter(b => activeTab === 'service-bookings' ? b.type === 'service' : b.type !== 'service'); return bookingItems.length > 0 ? bookingItems.map((item) => (
                           <tr key={item.id} className="border-b hover:bg-zinc-50 transition-colors">
                             <td className="p-5 px-8">
                               <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-sm inline-block w-fit ${
@@ -244,7 +248,7 @@ export default function AdminDashboard() {
                           </tr>
                         )) : (
                           <tr><td colSpan="5" className="p-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Хүсэлт ирээгүй байна</td></tr>
-                        )}
+                        ); })()}
                       </tbody>
                     </table>
                   </div>
@@ -1403,7 +1407,8 @@ function UserAdminForm({ token, initialData, onSuccess }) {
     canManageWheelsTires: false,
     canManageMerch: false,
     canManageToyotaQ: false,
-    canManageBookings: false,
+    canManageSalesBookings: false,
+    canManageServiceBookings: false,
     canManageHomeBanner: false
   });
 
@@ -1452,7 +1457,8 @@ function UserAdminForm({ token, initialData, onSuccess }) {
     { name: 'canManageWheelsTires', label: 'Дугуй, Обуд удирдах' },
     { name: 'canManageMerch', label: 'GR Merch удирдах' },
     { name: 'canManageToyotaQ', label: 'Toyota-Q удирдах' },
-    { name: 'canManageBookings', label: 'Захиалга удирдах' },
+    { name: 'canManageSalesBookings', label: 'Шинэ машин & Тест драйв удирдах' },
+    { name: 'canManageServiceBookings', label: 'Засварын хүсэлт удирдах' },
     { name: 'canManageHomeBanner', label: 'Нүүр хуудасны баннер удирдах' },
   ];
 

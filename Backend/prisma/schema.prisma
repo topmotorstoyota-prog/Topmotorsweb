@@ -19,7 +19,8 @@ model User {
   canManageWheelsTires Boolean @default(false) // Дугуй, Обуд
   canManageMerch     Boolean  @default(false) // GR Merch
   canManageToyotaQ   Boolean  @default(false)
-  canManageBookings  Boolean  @default(false)
+  canManageSalesBookings   Boolean @default(false) // Шинэ машин захиалга, Тест драйв, Зурвас
+  canManageServiceBookings Boolean @default(false) // Засварын хүсэлт
   canManageHomeBanner Boolean @default(false)
   createdAt         DateTime @default(now())
 }
