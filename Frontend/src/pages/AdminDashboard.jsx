@@ -733,7 +733,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                     <div className="grid grid-cols-3 gap-4">
                         <div>
                           <label className="block text-[9px] font-black uppercase text-zinc-400 mb-1">Хөдөлгүүр</label>
-                          <select value={v.engineType} onChange={e => { let nv = [...formData.variants]; nv[vIdx].engineType = e.target.value; setFormData({ ...formData, variants: nv }); }} className="w-full p-3 bg-zinc-50 border rounded-sm text-xs font-bold"><option value="Petrol">Petrol</option><option value="Diesel">Diesel</option><option value="Hybrid">Hybrid</option></select>
+                          <select value={v.engineType} onChange={e => { let nv = [...formData.variants]; nv[vIdx].engineType = e.target.value; setFormData({ ...formData, variants: nv }); }} className="w-full p-3 bg-zinc-50 border rounded-sm text-xs font-bold"><option value="Бензин">Бензин</option><option value="Дизель">Дизель</option><option value="Хайбрид">Хайбрид</option><option value="Цахилгаан">Цахилгаан</option></select>
                         </div>
                         <div>
                           <label className="block text-[9px] font-black uppercase text-zinc-400 mb-1">Загвар (Series: VX, ZX...)</label>
@@ -965,7 +965,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                 </div>
              </div>
            ))}
-           <button type="button" onClick={() => setFormData({ ...formData, variants: [...(formData.variants || []), { series: '', engineType: 'Petrol', price: '', engine_spec: '', seats_spec: '', trans_spec: '', drive_spec: '', colors: [], interior360: '' }] })} className="w-full p-6 border-2 border-dashed border-toyota-red/20 text-toyota-red/40 font-black uppercase text-xs tracking-[0.4em] hover:bg-toyota-red/5 hover:text-toyota-red transition-all rounded-sm">Шинэ хувилбар нэмэх</button>
+           <button type="button" onClick={() => setFormData({ ...formData, variants: [...(formData.variants || []), { series: '', engineType: 'Бензин', price: '', engine_spec: '', seats_spec: '', trans_spec: '', drive_spec: '', colors: [], interior360: '' }] })} className="w-full p-6 border-2 border-dashed border-toyota-red/20 text-toyota-red/40 font-black uppercase text-xs tracking-[0.4em] hover:bg-toyota-red/5 hover:text-toyota-red transition-all rounded-sm">Шинэ хувилбар нэмэх</button>
         </div>
       )}
       <button type="submit" className="w-full bg-black text-white py-6 rounded-sm font-black uppercase tracking-[0.6em] text-sm hover:bg-toyota-red transition-all shadow-2xl shadow-black/10">Мэдээллийг хадгалах</button>
@@ -1251,10 +1251,11 @@ function AdminForm({ type, token, initialData, onSuccess }) {
                 <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Мотор (Engine)</label><input name="engine" value={formData.engine || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm" /></div>
                 <div>
                   <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Моторын төрөл</label>
-                  <select name="engineType" value={formData.engineType || 'Petrol'} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold">
-                    <option value="Petrol">Petrol</option>
-                    <option value="Diesel">Diesel</option>
-                    <option value="Hybrid">Hybrid</option>
+                  <select name="engineType" value={formData.engineType || 'Бензин'} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold">
+                    <option value="Бензин">Бензин</option>
+                    <option value="Дизель">Дизель</option>
+                    <option value="Хайбрид">Хайбрид</option>
+                    <option value="Цахилгаан">Цахилгаан</option>
                   </select>
                 </div>
             </div>
