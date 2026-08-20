@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Trash2, Edit, Plus, X, Upload, LogOut, LayoutDashboard, Car,
@@ -1035,6 +1035,8 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
   } : { stock: 'Бэлэн байгаа', images: [] });
   const [uploading, setUploading] = useState(false);
   const [uploadingPdf, setUploadingPdf] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
 
   const handleFileChange = async (e, isGallery = false) => {
     const file = e.target.files[0];
@@ -1076,6 +1078,9 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    setSubmitting(true);
     const method = initialData ? 'PUT' : 'POST';
     const url = `${API_BASE_URL}/api/${type}${initialData ? `/${initialData.id}` : ''}`;
     let body = { ...formData };
@@ -1128,8 +1133,13 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
         delete body.images;
     }
 
-    const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(body) });
-    if (res.ok) onSuccess(); else { let d = await res.json(); alert(d.message || 'Алдаа гарлаа'); }
+    try {
+      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(body) });
+      if (res.ok) onSuccess(); else { let d = await res.json(); alert(d.message || 'Алдаа гарлаа'); }
+    } finally {
+      submittingRef.current = false;
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -1214,8 +1224,8 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
            <p className="font-bold mb-1">Зөвлөмж:</p>
            <p>Баннер зургийн хэмжээ 1920x800 эсвэл түүнээс дээш, өндөр чанартай байхыг анхаарна уу.</p>
         </div>
-        <button type="submit" className="w-full bg-black text-white py-5 rounded-sm font-black uppercase tracking-[0.4em] text-xs hover:bg-toyota-red transition-all">
-          Баннер хадгалах
+        <button type="submit" disabled={submitting} className="w-full bg-black text-white py-5 rounded-sm font-black uppercase tracking-[0.4em] text-xs hover:bg-toyota-red transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+          {submitting ? 'Хадгалж байна...' : 'Баннер хадгалах'}
         </button>
       </form>
     );
@@ -1349,7 +1359,7 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
 
         <textarea name="description" placeholder="Тайлбар..." value={formData.description || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-32 resize-none font-medium" />
       </div>
-      <button type="submit" className="w-full bg-black text-white py-5 rounded-sm font-black uppercase tracking-[0.4em] text-xs hover:bg-toyota-red transition-all">Хадгалах</button>
+      <button type="submit" disabled={submitting} className="w-full bg-black text-white py-5 rounded-sm font-black uppercase tracking-[0.4em] text-xs hover:bg-toyota-red transition-all disabled:opacity-50 disabled:cursor-not-allowed">{submitting ? 'Хадгалж байна...' : 'Хадгалах'}</button>
     </form>
   );
 }
