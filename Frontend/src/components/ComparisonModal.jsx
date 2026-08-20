@@ -112,7 +112,7 @@ const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelect
                           </div>
                           <div className="flex flex-col border-b border-zinc-50 pb-1 md:pb-2">
                             <span className="text-[6px] md:text-[9px] text-zinc-400 uppercase font-black tracking-widest">М.хүч</span>
-                            <span className="text-[8px] md:text-[11px] font-bold uppercase text-toyota-black">{variant.hp_spec ? `${variant.hp_spec}HP` : '-'}</span>
+                            <span className="text-[8px] md:text-[11px] font-bold uppercase text-toyota-black">{variant.hp_spec || '-'}</span>
                           </div>
                         </div>
                       </>

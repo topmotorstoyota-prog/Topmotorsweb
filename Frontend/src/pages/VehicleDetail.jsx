@@ -231,8 +231,8 @@ const VehicleDetail = () => {
   const quickFeatures = selectedVariant ? [
     { icon: Zap, label: 'Хөдөлгүүр', value: selectedVariant.engine_spec || 'N/A' },
     { icon: Settings, label: 'Хурдны хайрцаг', value: selectedVariant.trans_spec || 'N/A' },
-    { icon: Rocket, label: 'Морины хүч', value: selectedVariant.hp_spec ? `${selectedVariant.hp_spec} HP` : 'N/A' },
-    { icon: RefreshCcw, label: 'Мушгих хүч', value: selectedVariant.torque_spec ? `${selectedVariant.torque_spec} Nm` : 'N/A' }
+    { icon: Rocket, label: 'Морины хүч', value: selectedVariant.hp_spec || 'N/A' },
+    { icon: RefreshCcw, label: 'Мушгих хүч', value: selectedVariant.torque_spec || 'N/A' }
   ] : [];
 
   // Үзүүлэлтүүдийг ангиллаар нь нэгтгэх функц
