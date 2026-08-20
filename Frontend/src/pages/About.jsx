@@ -93,9 +93,9 @@ const About = () => {
   return (
     <div className="pb-10 font-sans">
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] md:min-h-[85vh] flex items-center overflow-hidden bg-toyota-black pt-32 md:pt-20">
+      <section className="relative min-h-[70vh] md:min-h-[85vh] flex items-center overflow-hidden bg-white pt-32 md:pt-20">
         <div className="container-custom relative z-10 w-full px-4 pb-12 md:pb-0">
-          <div className="flex flex-col lg:flex-row items-center gap-10">
+          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
             {/* Left Content - Clean & Minimal */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -103,49 +103,31 @@ const About = () => {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="relative z-10 py-6 md:py-12 lg:py-0 lg:w-[35%] lg:pr-10"
             >
-              <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter leading-[0.9] mb-6 md:mb-10 text-center lg:text-left">
+              <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-toyota-black uppercase tracking-tighter leading-[0.9] mb-6 md:mb-10 text-center lg:text-left">
                 TOYOTA<br />
                 <span className="text-toyota-red">TOP MOTORS</span>
               </h1>
 
               <div className="max-w-lg relative mx-auto lg:mx-0">
                 <div className="absolute -left-4 md:-left-6 top-0 bottom-0 w-[2px] bg-toyota-red/30" />
-                <p className="text-xs md:text-base text-zinc-400 font-medium leading-relaxed italic text-justify px-2 md:px-0">
+                <p className="text-xs md:text-base text-zinc-600 font-medium leading-relaxed italic text-justify px-2 md:px-0">
                   "Топ Моторс" ХХК нь 2021 онд үүсгэн байгуулагдсан бөгөөд "ТОЁОТА МОТОР КОРПОРАЦ"-ийн албан ёсны дилер юм.
                 </p>
               </div>
             </motion.div>
 
-            {/* Right Image - Full Visibility */}
+            {/* Right Image - Original, No Crop/Effects */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                y: [0, -10, 0]
-              }}
-              transition={{
-                duration: 1.2,
-                ease: "circOut",
-                y: {
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }
-              }}
-              className="relative h-[300px] md:h-[600px] w-full lg:w-[65%] group"
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.9, ease: "easeOut" }}
+              className="relative w-full lg:w-[65%]"
             >
-              {/* Background Decorative Element */}
-              <div className="absolute -inset-1 md:-inset-2 border border-toyota-red/10 translate-x-1 translate-y-1 md:translate-x-2 md:translate-y-2" />
-
-              {/* Main Image Container */}
-              <div className="relative h-full w-full overflow-hidden shadow-2xl transition-all duration-700">
-                <img
-                  src={aboutImage}
-                  alt="Toyota Top Motors Team"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                />
-              </div>
+              <img
+                src={aboutImage}
+                alt="Toyota Top Motors Team"
+                className="w-full h-auto"
+              />
             </motion.div>
           </div>
         </div>
