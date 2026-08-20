@@ -189,7 +189,7 @@ const getProductPermissionKey = (category) => {
 };
 
 // Захиалгын төрлөөс хамаарч аль эрхэд харьяалагдахыг тодорхойлох
-const getBookingPermissionKey = (type) => (type === 'service' ? 'service-bookings' : 'sales-bookings');
+const getBookingPermissionKey = (type) => (type === 'service' || type === 'message' ? 'service-bookings' : 'sales-bookings');
 
 // Админ хэрэглэгчдийн CREATE/UPDATE/DELETE үйлдлийг бүртгэх
 const logActivity = async (req, action, entity, entityId, entityName) => {

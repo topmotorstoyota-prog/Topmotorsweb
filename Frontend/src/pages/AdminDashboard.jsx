@@ -81,7 +81,7 @@ export default function AdminDashboard() {
     staff: 'Ажилчид',
     users: 'Хэрэглэгчид',
     'sales-bookings': 'Шинэ машин & Тест драйв',
-    'service-bookings': 'Засварын хүсэлт',
+    'service-bookings': 'CRM',
     bookings: 'Захиалга & Хүсэлт',
     'activity-logs': 'Үйл ажиллагааны түүх'
   };
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {(() => { const bookingItems = items.filter(b => activeTab === 'service-bookings' ? b.type === 'service' : b.type !== 'service'); return bookingItems.length > 0 ? bookingItems.map((item) => (
+                        {(() => { const bookingItems = items.filter(b => activeTab === 'service-bookings' ? (b.type === 'service' || b.type === 'message') : (b.type !== 'service' && b.type !== 'message')); return bookingItems.length > 0 ? bookingItems.map((item) => (
                           <tr key={item.id} className="border-b hover:bg-zinc-50 transition-colors">
                             <td className="p-5 px-8">
                               <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-sm inline-block w-fit ${
@@ -1458,7 +1458,7 @@ function UserAdminForm({ token, initialData, onSuccess }) {
     { name: 'canManageMerch', label: 'GR Merch удирдах' },
     { name: 'canManageToyotaQ', label: 'Toyota-Q удирдах' },
     { name: 'canManageSalesBookings', label: 'Шинэ машин & Тест драйв удирдах' },
-    { name: 'canManageServiceBookings', label: 'Засварын хүсэлт удирдах' },
+    { name: 'canManageServiceBookings', label: 'CRM удирдах' },
     { name: 'canManageHomeBanner', label: 'Нүүр хуудасны баннер удирдах' },
   ];
 
