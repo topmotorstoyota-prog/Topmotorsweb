@@ -227,7 +227,7 @@ const VehicleDetail = () => {
 
   const displayImage = has360
     ? images360[rotationIndex % images360.length]
-    : (selectedColor?.image || selectedVariant?.image || vehicleModel.image);
+    : (images360[0] || selectedColor?.image || selectedVariant?.image || vehicleModel.image);
 
   const galleryImages = selectedVariant?.images?.length > 0 ? selectedVariant.images : (vehicleModel.images || []);
 
