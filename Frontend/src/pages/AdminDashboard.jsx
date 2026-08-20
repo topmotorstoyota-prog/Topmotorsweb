@@ -57,7 +57,8 @@ export default function AdminDashboard() {
     'home-banner': <ImageIcon size={18} />,
     staff: <Users size={18} />,
     users: <UserCircle size={18} />,
-    bookings: <MessageSquare size={18} />
+    bookings: <MessageSquare size={18} />,
+    'activity-logs': <Clock size={18} />
   };
 
   const tabLabels = {
@@ -68,7 +69,8 @@ export default function AdminDashboard() {
     'home-banner': 'Нүүр хуудас',
     staff: 'Ажилчид',
     users: 'Хэрэглэгчид',
-    bookings: 'Захиалга & Хүсэлт'
+    bookings: 'Захиалга & Хүсэлт',
+    'activity-logs': 'Үйл ажиллагааны түүх'
   };
 
   const tabs = ['vehicles', 'news', 'products', 'toyota-q', 'home-banner', 'staff', 'bookings'].filter(tab => {
@@ -102,6 +104,11 @@ export default function AdminDashboard() {
               {tabIcons.users} <span className="uppercase tracking-widest text-[10px]">Хэрэглэгчид</span>
             </button>
           )}
+          {userRole === 'SUPER_ADMIN' && (
+            <button onClick={() => { setActiveTab('activity-logs'); setShowForm(false); setEditingItem(null); }} className={`flex items-center gap-3 w-full text-left p-4 rounded-sm font-bold transition-all ${activeTab === 'activity-logs' ? 'bg-blue-600 text-white' : 'text-zinc-400 hover:text-white'}`}>
+              {tabIcons['activity-logs']} <span className="uppercase tracking-widest text-[10px]">Үйл ажиллагааны түүх</span>
+            </button>
+          )}
         </nav>
         <div className="p-6 mt-auto"><button onClick={handleLogout} className="flex items-center gap-3 w-full p-4 text-zinc-500 hover:text-white transition-all"><LogOut size={18} /> <span className="uppercase tracking-widest text-[10px] font-bold">Гарах</span></button></div>
       </div>
@@ -109,7 +116,7 @@ export default function AdminDashboard() {
       <div className="flex-1 ml-72">
         <header className="bg-white border-b h-24 flex items-center justify-between px-10 sticky top-0 z-10 shadow-sm">
            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-800">{tabLabels[activeTab]} <span className="text-toyota-red">удирдах</span></h2>
-           {!showForm && !editingItem && activeTab !== 'bookings' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
+           {!showForm && !editingItem && activeTab !== 'bookings' && activeTab !== 'activity-logs' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
         </header>
 
         <div className="p-10">
@@ -232,6 +239,46 @@ export default function AdminDashboard() {
                           </tr>
                         )) : (
                           <tr><td colSpan="5" className="p-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Хүсэлт ирээгүй байна</td></tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : activeTab === 'activity-logs' ? (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-zinc-50 border-b">
+                          <th className="p-5 px-8 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Огноо</th>
+                          <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Хэрэглэгч</th>
+                          <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Үйлдэл</th>
+                          <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Хэсэг</th>
+                          <th className="p-5 px-8 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Юу</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {items.length > 0 ? items.map((log) => (
+                          <tr key={log.id} className="border-b hover:bg-zinc-50 transition-colors">
+                            <td className="p-5 px-8 text-[11px] font-bold text-zinc-500">
+                              {log.createdAt ? new Date(log.createdAt).toLocaleString('mn-MN', { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '-'}
+                            </td>
+                            <td className="p-5">
+                              <p className="font-black uppercase text-[12px] text-slate-800">{log.userName}</p>
+                              <p className="text-[10px] text-zinc-400">{log.userEmail}</p>
+                            </td>
+                            <td className="p-5">
+                              <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-sm inline-block w-fit ${
+                                log.action === 'CREATE' ? 'bg-green-100 text-green-700' :
+                                log.action === 'UPDATE' ? 'bg-blue-100 text-blue-700' :
+                                'bg-red-100 text-red-700'
+                              }`}>
+                                {log.action === 'CREATE' ? 'Нэмсэн' : log.action === 'UPDATE' ? 'Зассан' : 'Устгасан'}
+                              </span>
+                            </td>
+                            <td className="p-5 text-[11px] font-bold text-zinc-600 uppercase">{tabLabels[log.entity] || log.entity}</td>
+                            <td className="p-5 px-8 text-[12px] font-bold text-slate-800">{log.entityName || '-'}</td>
+                          </tr>
+                        )) : (
+                          <tr><td colSpan="5" className="p-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Түүх алга байна</td></tr>
                         )}
                       </tbody>
                     </table>

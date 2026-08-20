@@ -168,7 +168,7 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
         bookings: user.canManageBookings || false,
         'home-banner': user.canManageHomeBanner || false
       };
-      const token = jwt.sign({ id: user.id, role: user.role, permissions }, JWT_SECRET, { expiresIn: '24h' });
+      const token = jwt.sign({ id: user.id, role: user.role, email: user.email, name: user.name, permissions }, JWT_SECRET, { expiresIn: '24h' });
       res.json({ token, role: user.role, name: user.name, permissions });
     } else {
       res.status(401).json({ message: "Имэйл эсвэл нууц үг буруу байна" });
@@ -185,6 +185,25 @@ const getProductPermissionKey = (category) => {
   if (WHEELS_TIRES_CATEGORIES.includes(category)) return 'wheels-tires';
   if (category === 'GR Merch') return 'merch';
   return null;
+};
+
+// Админ хэрэглэгчдийн CREATE/UPDATE/DELETE үйлдлийг бүртгэх
+const logActivity = async (req, action, entity, entityId, entityName) => {
+  try {
+    await prisma.activityLog.create({
+      data: {
+        userId: req.user.id,
+        userName: req.user.name || req.user.email || 'Тодорхойгүй',
+        userEmail: req.user.email || '',
+        action,
+        entity,
+        entityId: String(entityId),
+        entityName: entityName || null
+      }
+    });
+  } catch (err) {
+    console.error('Activity log error:', err);
+  }
 };
 
 // --- CRUD HELPER ---
@@ -261,6 +280,10 @@ const setupRoutes = (routePath, model, options = {}) => {
       }
       const item = await prisma[model].create({ data });
 
+      if (!options.publicPost) {
+        await logActivity(req, 'CREATE', routePath, item.id, data.name || data.title || data.email || null);
+      }
+
       if (model === 'user') {
         const { password, ...userWithoutPassword } = item;
         return res.json(userWithoutPassword);
@@ -282,6 +305,8 @@ const setupRoutes = (routePath, model, options = {}) => {
       }
 
       const item = await prisma[model].update({ where: { id }, data: updateData });
+
+      await logActivity(req, 'UPDATE', routePath, id, updateData.name || updateData.title || updateData.email || null);
 
       if (model === 'user') {
         const { password, ...userWithoutPassword } = item;
@@ -358,6 +383,9 @@ const setupRoutes = (routePath, model, options = {}) => {
 
       // 3. Өгөгдлийн сангаас устгах
       await prisma[model].delete({ where: { id } });
+
+      await logActivity(req, 'DELETE', routePath, id, item.name || item.title || item.email || null);
+
       res.json({ message: "Амжилттай устлаа" });
     } catch (err) {
       console.error(`DELETE /api/${routePath} Error:`, err);
@@ -374,6 +402,18 @@ setupRoutes('users', 'user');
 setupRoutes('bookings', 'booking', { publicPost: true });
 setupRoutes('staff', 'staff');
 setupRoutes('home-banner', 'homeBanner');
+
+// --- ACTIVITY LOG (зөвхөн SUPER_ADMIN) ---
+app.get('/api/activity-logs', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'SUPER_ADMIN') return res.sendStatus(403);
+  try {
+    const logs = await prisma.activityLog.findMany({ orderBy: { createdAt: 'desc' }, take: 300 });
+    res.json(logs);
+  } catch (err) {
+    console.error('GET /api/activity-logs Error:', err);
+    res.status(500).json({ message: "Мэдээлэл авахад алдаа гарлаа." });
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 if (process.env.NODE_ENV !== 'production') {

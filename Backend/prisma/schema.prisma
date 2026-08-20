@@ -108,3 +108,16 @@ model HomeBanner {
   image     String
   updatedAt DateTime @updatedAt
 }
+
+// Админ хэрэглэгчдийн үйл ажиллагааны түүх (SUPER_ADMIN-д зориулав)
+model ActivityLog {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  userName   String
+  userEmail  String
+  action     String   // CREATE, UPDATE, DELETE
+  entity     String   // vehicles, news, products, toyota-q, staff, home-banner, bookings, users
+  entityId   String
+  entityName String?
+  createdAt  DateTime @default(now())
+}
