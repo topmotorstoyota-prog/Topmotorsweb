@@ -1,18 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Trophy, ChevronRight, Search } from 'lucide-react';
+import { ChevronRight, Search, Phone, ShoppingBag, ArrowRight, PackageSearch } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
-import grLogo from '../assets/acc/GR logo.jpg';
+import grLogo from '../assets/acc/gr-logo-transparent.png';
+import grGallery from '../assets/acc/GR Gallery.webp';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const formatPrice = (price) => {
   if (!price) return '';
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+
+const numericPrice = (p) => parseInt(String(p || '').replace(/[^0-9]/g, ''), 10) || 0;
+
+// Toyota GR-ийн албан ёсны хар/цагаан/улаан зурвасын өнгө
+const RacingStripe = ({ className = '' }) => (
+  <div className={`flex h-1.5 w-24 overflow-hidden rounded-full ${className}`}>
+    <div className="flex-1 bg-white" />
+    <div className="flex-1 bg-toyota-red" />
+    <div className="flex-1 bg-white" />
+  </div>
+);
 
 const Merch = () => {
   const { t } = useTranslation();
@@ -33,8 +45,6 @@ const Merch = () => {
       .catch(() => setLoading(false));
   }, []);
 
-  const numericPrice = (p) => parseInt(String(p || '').replace(/[^0-9]/g, ''), 10) || 0;
-
   const filteredProducts = products
     .filter(p => loc(p.name, p.nameEn).toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => {
@@ -44,96 +54,117 @@ const Merch = () => {
     });
 
   return (
-    <div className="pt-24 md:pt-40 pb-20 bg-black min-h-screen relative overflow-hidden">
-      {/* Background Decorative Text */}
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 text-[80px] md:text-[200px] font-black text-white/[0.02] whitespace-nowrap select-none pointer-events-none uppercase tracking-tighter">
-        Gazoo Racing
-      </div>
+    <div className="bg-black min-h-screen">
+      {/* Hero */}
+      <section className="relative h-[60vh] md:h-[75vh] min-h-[420px] w-full overflow-hidden flex items-end">
+        <img
+          src={grGallery}
+          alt="Toyota Gazoo Racing"
+          className="absolute inset-0 w-full h-full object-cover object-center scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/40" />
 
-      <div className="container-custom px-4 relative z-10">
-        {/* Centered Header Section */}
-        <div className="mb-16 md:mb-32 text-center flex flex-col items-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="mb-8 h-16 md:h-32"
-            >
-              <img
-                src={grLogo}
-                alt="Gazoo Racing"
-                className="h-full object-contain"
-              />
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="text-zinc-400 max-w-xl text-sm md:text-lg leading-relaxed font-medium"
-            >
-              {t('products.merch.longDesc')}
-            </motion.p>
-
-            <div className="w-12 h-1 bg-toyota-red mt-10" />
-
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-md mt-10">
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={14} />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  placeholder={t('products.searchPlaceholder')}
-                  className="pl-10 pr-6 py-2.5 md:py-3 bg-zinc-900 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red w-full transition-all placeholder:text-zinc-500"
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2.5 md:py-3 bg-zinc-900 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red transition-all sm:w-56"
-              >
-                <option value="default">{t('products.sort.default')}</option>
-                <option value="priceAsc">{t('products.sort.priceAsc')}</option>
-                <option value="priceDesc">{t('products.sort.priceDesc')}</option>
-              </select>
+        <div className="container-custom px-4 relative z-10 pb-10 md:pb-16 pt-32">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="max-w-2xl"
+          >
+            <div className="mb-6 h-10 md:h-16 w-fit">
+              <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
             </div>
-        </div>
 
+            <RacingStripe className="mb-6" />
+
+            <p className="text-zinc-300 text-sm md:text-lg leading-relaxed font-medium max-w-xl">
+              {t('products.merch.longDesc')}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Filter Bar */}
+      <section className="border-b border-zinc-900 bg-black sticky top-[64px] lg:top-[80px] z-30 backdrop-blur-md bg-black/95">
+        <div className="container-custom px-4 py-4 md:py-5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 md:gap-6">
+          <p className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 shrink-0">
+            {loading ? t('vehicles.list.loading') : t('products.merch.itemCount', { count: filteredProducts.length })}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto md:min-w-[420px]">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={14} />
+              <input
+                type="text"
+                value={searchQuery}
+                placeholder={t('products.searchPlaceholder')}
+                className="pl-10 pr-6 py-2.5 md:py-3 bg-zinc-950 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red w-full transition-all placeholder:text-zinc-600 rounded-sm"
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-4 py-2.5 md:py-3 bg-zinc-950 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red transition-all sm:w-56 rounded-sm cursor-pointer"
+            >
+              <option value="default">{t('products.sort.default')}</option>
+              <option value="priceAsc">{t('products.sort.priceAsc')}</option>
+              <option value="priceDesc">{t('products.sort.priceDesc')}</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <div className="container-custom px-4 relative z-10 py-12 md:py-20">
         {loading ? (
           <div className="py-20 text-center font-black uppercase tracking-widest text-zinc-800">{t('vehicles.list.loading')}</div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
             {filteredProducts.map((item, idx) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ delay: Math.min(idx, 8) * 0.04, duration: 0.5 }}
                 className="group"
               >
-                <Link to={`/merch/${item.id}`}>
-                  <div className="aspect-square bg-white overflow-hidden relative mb-4 md:mb-6 rounded-none transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.15)] border border-transparent group-hover:border-toyota-red/30">
+                <Link to={`/merch/${item.id}`} className="block">
+                  <div className="aspect-square bg-white overflow-hidden relative mb-4 md:mb-5 rounded-sm border border-zinc-900 group-hover:border-toyota-red/40 transition-all duration-500 shadow-[0_0_0_rgba(235,10,30,0)] group-hover:shadow-[0_10px_50px_-10px_rgba(235,10,30,0.35)]">
                     <img
                       src={item.image || placeholderImage}
                       alt={loc(item.name, item.nameEn)}
-                      className="w-full h-full object-contain p-4 md:p-8 group-hover:scale-110 transition-transform duration-700 mix-blend-multiply"
+                      className="w-full h-full object-contain p-6 md:p-10 group-hover:scale-110 transition-transform duration-700 mix-blend-multiply"
                     />
 
-                    {/* Decorative Corner */}
-                    <div className="absolute top-0 right-0 w-8 h-8 bg-toyota-red translate-x-4 -translate-y-4 rotate-45 transition-transform group-hover:translate-x-3 group-hover:-translate-y-3" />
+                    {/* Racing stripe corner accent */}
+                    <div className="absolute top-0 right-0 flex flex-col opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div className="w-16 h-1 bg-white" />
+                      <div className="w-16 h-1 bg-toyota-red" />
+                    </div>
 
                     {item.stock === 'Дууссан' && (
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-30">
-                        <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[12px] border border-white px-4 py-2">Дууссан</span>
+                      <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px] flex items-center justify-center z-30">
+                        <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[11px] border border-white px-4 py-2">
+                          {t('products.merch.soldOut')}
+                        </span>
                       </div>
                     )}
+
+                    {/* Quick view hint */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-toyota-black/90 text-white text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] py-2.5 flex items-center justify-center gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      {t('products.viewDetails')} <ArrowRight size={11} />
+                    </div>
                   </div>
 
-                  <div className="mt-4 space-y-2">
-                    <h4 className="font-medium uppercase text-[10px] md:text-xs tracking-[0.15em] text-zinc-400 group-hover:text-white transition-colors line-clamp-1">{loc(item.name, item.nameEn)}</h4>
-                    <div className="flex items-center gap-1.5">
+                  <div className="space-y-1.5 px-0.5">
+                    <span className="text-toyota-red font-black text-[8px] md:text-[9px] uppercase tracking-[0.25em]">GR Merch</span>
+                    <h4 className="font-bold uppercase text-[11px] md:text-sm tracking-tight text-zinc-200 group-hover:text-white transition-colors line-clamp-1">
+                      {loc(item.name, item.nameEn)}
+                    </h4>
+                    <div className="flex items-center gap-1.5 pt-0.5">
                       <span className="text-white font-black text-lg md:text-2xl tracking-tighter">{formatPrice(item.price)}</span>
                       <span className="text-white font-black text-base md:text-xl">₮</span>
                     </div>
@@ -145,11 +176,35 @@ const Merch = () => {
         )}
 
         {!loading && filteredProducts.length === 0 && (
-          <div className="py-20 text-center text-zinc-800 font-bold uppercase tracking-widest">
-            {products.length === 0 ? t('products.noProducts') : t('products.noResults')}
+          <div className="py-24 text-center flex flex-col items-center">
+            <PackageSearch size={40} className="text-zinc-800 mb-4" />
+            <p className="text-zinc-600 font-bold uppercase tracking-widest text-xs">
+              {products.length === 0 ? t('products.noProducts') : t('products.noResults')}
+            </p>
           </div>
         )}
       </div>
+
+      {/* Bottom CTA */}
+      <section className="border-t border-zinc-900 py-16 md:py-24 relative overflow-hidden">
+        <div className="absolute top-0 right-0 opacity-[0.03] translate-x-1/4 -translate-y-1/4 pointer-events-none text-[150px] md:text-[260px] font-black text-white whitespace-nowrap select-none">GR</div>
+        <div className="container-custom px-4 relative z-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 text-center md:text-left">
+            <div className="max-w-xl">
+              <h3 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-4 text-white leading-[1.1]">
+                {t('products.merch.ctaTitlePlain')} <span className="text-toyota-red">{t('products.merch.ctaTitleRed')}</span>
+              </h3>
+              <p className="text-zinc-400 text-sm md:text-base leading-relaxed">{t('products.merch.ctaDesc')}</p>
+            </div>
+            <a href="tel:77778090" className="w-full md:w-auto shrink-0">
+              <Button variant="primary" className="w-full md:w-auto px-10 py-4 md:py-5 flex items-center justify-center gap-3 text-[10px] md:text-xs">
+                <Phone size={16} />
+                <span>7777 8090</span>
+              </Button>
+            </a>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
