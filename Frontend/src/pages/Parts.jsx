@@ -19,36 +19,30 @@ import {
 } from 'lucide-react';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import filterImage from '../assets/parts/filter.jpg';
 import aisinImage from '../assets/parts/aisin.webp';
 
 const Parts = () => {
+  const { t } = useTranslation();
   const responsibilities = [
-    {
-      title: "Зориулалтын дагуу ашиглах",
-      desc: "Автомашиныг эзэмшигчийн гарын авлага, зориулалтын дагуу ашиглах, засварлах, хадгалах, тээвэрлэх.",
-      icon: FileText
-    },
-    {
-      title: "Албан ёсны дилерт үйлчлүүлэх",
-      desc: "Бүх төрлийн засвар үйлчилгээг зөвхөн албан ёсны дилерт хийлгэж байх нь таны баталгааг хамгаална.",
-      icon: MapPin
-    },
-    {
-      title: "Тогтмол засвар үйлчилгээ",
-      desc: "Засвар үйлчилгээг үйлдвэрлэгчээс тогтоосон хуваарь, давтамж, технологийг нарийн чанд дагаж мөрдөх.",
-      icon: Calendar
-    },
-    {
-      title: "Эвдрэл гарсан үед хандах",
-      desc: "Гэмтэл гарсан тохиолдолд шууд албан ёсны дилерт хандаж зөвлөгөө авч дагаж мөрдөх.",
-      icon: AlertTriangle
-    },
-    {
-      title: "Баримт бичгийг хадгалах",
-      desc: "Засвар үйлчилгээг цаг тухайд нь хийж гүйцэтгэсэн эсэхийг баталгаажуулсан баримт, чек, ажлын захиалгын хуудсын хуулбар болон бусад шаардлагатай баримт бичгийг бүрэн хадгалж байх.",
-      icon: FileText
-    }
+    { title: t('parts.responsibilities.usage.title'), desc: t('parts.responsibilities.usage.desc'), icon: FileText },
+    { title: t('parts.responsibilities.dealer.title'), desc: t('parts.responsibilities.dealer.desc'), icon: MapPin },
+    { title: t('parts.responsibilities.regular.title'), desc: t('parts.responsibilities.regular.desc'), icon: Calendar },
+    { title: t('parts.responsibilities.issues.title'), desc: t('parts.responsibilities.issues.desc'), icon: AlertTriangle },
+    { title: t('parts.responsibilities.records.title'), desc: t('parts.responsibilities.records.desc'), icon: FileText }
+  ];
+
+  const videos = [
+    { id: 'cqFmOFrTz6M', titleKey: 'brakePad1' },
+    { id: 'YVq8pen7E2E', titleKey: 'brakePad2' },
+    { id: 'Vt-05sD2UG4', titleKey: 'airFilter' },
+    { id: 'HxPbfPW-Fbg', titleKey: 'sparkPlug' },
+    { id: 'lEe6JZ0WZAY', titleKey: 'saveMoney' },
+    { id: 'U5vgSyLB4jw', titleKey: 'safety' },
+    { id: 'EKI8fXfEbvI', titleKey: 'enginePower' },
+    { id: 'JuHYZtBIHtk', titleKey: 'oilFilter' },
+    { id: '35FbTCKAqbE', titleKey: 'injectorCleaner' }
   ];
 
 
@@ -67,17 +61,17 @@ const Parts = () => {
               className="text-center lg:text-left"
             >
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-toyota-black mb-6 lg:mb-8 leading-tight">
-                Яагаад оригинал <br /><span className="text-toyota-red">сэлбэг гэж?</span>
+                {t('parts.heroTitleLine1')} <br /><span className="text-toyota-red">{t('parts.heroTitleLine2')}</span>
               </h1>
               <div className="space-y-4 lg:space-y-6 text-zinc-600 leading-relaxed text-sm lg:text-base font-medium text-left lg:text-justify">
                 <p>
-                  Дуураймал сэлбэг нь харагдах байдлаараа оригинал сэлбэгээс ялгарахгүй ч, сэлбэгийг үйлдвэрлэхэд ашигласан материал нь жолоодлогын болон цаг агаарын хүнд нөхцөлд оригинал сэлбэгийн үйлдвэрлэлд ашигласан материалтай харьцуулшгүй үр дүнтэй байдаг мөн эргээд таны тээврийн хэрэгслийн үндсэн эд ангид нөлөөлөх эрсдэлийг үүсгэдэг.
+                  {t('parts.heroPara1')}
                 </p>
                 <p className="hidden md:block">
-                  Иймд албан ёсны дилерийн борлуулж буй оригинал сэлбэг нь зөвхөн Toyota загварын машинд зориулагдаж үйлдвэрлэгддэг учир таны тээврийн хэрэгслийн аюулгүй байдлыг бүрэн хангаж танд 100% сэтгэл ханамжийн баталгааг олгохоос гадна тээврийн хэрэгслийн ашиглалтыг уртасган ирээдүйд гарч болох үндсэн эд ангийн засвар үйлчилгээний зардлыг хэмнэдэг.
+                  {t('parts.heroPara2')}
                 </p>
                 <p className="font-bold text-toyota-black border-l-4 border-toyota-red pl-4 lg:pl-6 italic text-[13px] lg:text-base">
-                  Тоёота брэндийн албан ёсны баталгаат сэлбэг нь таны автомашиныг хамгаалах болон эдэлгээг уртасгахад тустай бүтээгдэхүүн юм.
+                  {t('parts.heroQuote')}
                 </p>
               </div>
             </motion.div>
@@ -107,23 +101,13 @@ const Parts = () => {
         <div className="container-custom px-4 lg:px-8">
           <div className="text-center mb-10 lg:mb-16">
             <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tighter text-toyota-black">
-              СЭЛБЭГИЙН ТУХАЙ <span className="text-toyota-red">ЗӨВЛӨГӨӨ</span>
+              {t('parts.tipsTitlePlain')} <span className="text-toyota-red">{t('parts.tipsTitleRed')}</span>
             </h2>
             <div className="w-16 lg:w-20 h-1 bg-toyota-red mx-auto mt-4 lg:mt-6" />
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-8">
-            {[
-              { id: 'cqFmOFrTz6M', title: 'Тоормосны наклад' },
-              { id: 'YVq8pen7E2E', title: 'Тоормосны наклад 1' },
-              { id: 'Vt-05sD2UG4', title: 'Агаар шүүгч' },
-              { id: 'HxPbfPW-Fbg', title: 'Очлуур (Spark Plug)' },
-              { id: 'lEe6JZ0WZAY', title: 'Мөнгөө хэмнэх' },
-              { id: 'U5vgSyLB4jw', title: 'Аюулгүй байдал' },
-              { id: 'EKI8fXfEbvI', title: 'Хөдөлгүүрийн чадал' },
-              { id: 'JuHYZtBIHtk', title: 'Тосны шүүр' },
-              { id: '35FbTCKAqbE', title: 'Инжектор цэвэрлэгч' }
-            ].map((video, idx) => (
+            {videos.map((video, idx) => (
               <motion.div
                 key={video.id}
                 initial={{ opacity: 0, y: 15 }}
@@ -136,14 +120,14 @@ const Parts = () => {
                   <iframe
                     className="w-full h-full"
                     src={`https://www.youtube.com/embed/${video.id}`}
-                    title={video.title}
+                    title={t(`parts.videos.${video.titleKey}`)}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   ></iframe>
                 </div>
                 <div className="p-2 lg:p-5 border-t border-zinc-50 flex items-center justify-between">
-                  <h3 className="font-black uppercase tracking-tight text-[8px] lg:text-xs text-toyota-black truncate">{video.title}</h3>
+                  <h3 className="font-black uppercase tracking-tight text-[8px] lg:text-xs text-toyota-black truncate">{t(`parts.videos.${video.titleKey}`)}</h3>
                   <div className="w-1 h-1 lg:w-1.5 lg:h-1.5 bg-toyota-red rounded-full" />
                 </div>
               </motion.div>
@@ -196,10 +180,10 @@ const Parts = () => {
 
                     <div className="space-y-4 lg:space-y-6 text-zinc-600 font-medium leading-relaxed mb-0 lg:mb-10 text-left lg:text-justify text-sm lg:text-base">
                        <p>
-                          AISIN нь автомашины эд ангиудыг үйлдвэрлэдэг Японы дэлхийд алдартай компани бөгөөд Toyota группийн гишүүн юм. Toyota болон Lexus брэндийн найдвартай OEM нийлүүлэгч бөгөөд дэлхийн шилдэг 10 автомашины ханган нийлүүлэгчийн нэгт тооцогддог.
+                          {t('parts.aisin.para1')}
                        </p>
                        <p className="hidden md:block">
-                          Дэлхий даяар ашиглагдаж буй 5 автомашин тутмын нэг нь AISIN-ий дамжуулах анги буюу хурдны хайрцаг ашигладаг бөгөөд "Quality First" буюу "Чанар юуны өмнө" гэсэн зарчмыг баримтлан усны насос, авцуулах холбоо, тоормосны систем зэрэг 10,000 гаруй нэр төрлийн бүтээгдэхүүн үйлдвэрлэдэг.
+                          {t('parts.aisin.para2')}
                        </p>
                     </div>
 
@@ -216,11 +200,11 @@ const Parts = () => {
            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 lg:mb-12 gap-4 lg:gap-6">
               <div className="text-left lg:text-left">
                  <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter leading-none">
-                    ЭЗЭМШИГЧИЙН <span className="text-toyota-red">ХАРИУЦЛАГА</span>
+                    {t('parts.responsibilitiesTitlePlain')} <span className="text-toyota-red">{t('parts.responsibilitiesTitleRed')}</span>
                  </h2>
               </div>
               <p className="text-zinc-600 font-medium text-[11px] lg:text-xs max-w-sm leading-relaxed text-left">
-                Автомашины найдвартай ажиллагаа болон баталгаат хугацааг хүчинтэй байлгахын тулд эзэмшигч дараах шаардлагуудыг биелүүлэх үүрэгтэй.
+                {t('parts.responsibilitiesDesc')}
               </p>
            </div>
 
@@ -256,13 +240,13 @@ const Parts = () => {
           <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-6">
             <Settings className="w-10 h-10 lg:w-12 lg:h-12 animate-spin-slow" />
             <div>
-              <p className="text-[9px] lg:text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">Оригинал сэлбэг захиалах</p>
-              <h3 className="text-xl lg:text-2xl font-black uppercase tracking-tighter">Танд тусламж хэрэгтэй юу?</h3>
+              <p className="text-[9px] lg:text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">{t('parts.ctaLabel')}</p>
+              <h3 className="text-xl lg:text-2xl font-black uppercase tracking-tighter">{t('parts.ctaTitle')}</h3>
             </div>
           </div>
           <Link to="/sales" className="w-full lg:w-auto">
             <button className="w-full lg:w-auto px-10 lg:px-12 py-4 lg:py-5 bg-white text-toyota-black font-black uppercase tracking-[0.2em] text-[10px] lg:text-[11px] hover:bg-black hover:text-white transition-all shadow-xl active:scale-95">
-              Холбоо барих
+              {t('nav.contact')}
             </button>
           </Link>
         </div>

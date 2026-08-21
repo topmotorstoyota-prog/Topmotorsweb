@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, Info, CheckCircle2, ChevronDown, XCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import API_BASE_URL from '../config';
 
 const Compare = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const [selectedVariants, setSelectedVariants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -76,34 +78,34 @@ const Compare = () => {
   };
 
   const CATEGORIES = [
-    { id: 'PERFORMANCE', title: 'PERFORMANCE' },
-    { id: 'INTERIOR', title: 'INTERIOR' },
-    { id: 'EXTERIOR', title: 'EXTERIOR' },
-    { id: 'SAFETY', title: 'SAFETY' }
+    { id: 'PERFORMANCE', title: t('vehicles.detail.featureCategories.performance') },
+    { id: 'INTERIOR', title: t('vehicles.detail.featureCategories.interior') },
+    { id: 'EXTERIOR', title: t('vehicles.detail.featureCategories.exterior') },
+    { id: 'SAFETY', title: t('vehicles.detail.featureCategories.safety') }
   ];
 
   const basicSpecs = [
-    { label: 'ХӨДӨЛГҮҮР', key: 'engine_spec' },
-    { label: 'ХУРДНЫ ХАЙРЦАГ', key: 'trans_spec' },
-    { label: 'ХӨТЛӨГЧ', key: 'drive_spec' },
-    { label: 'МОРИНЫ ХҮЧ (HP)', key: 'hp_spec' },
-    { label: 'МУШГИХ ХҮЧ (NM)', key: 'torque_spec' },
-    { label: 'ТҮЛШНИЙ САВНЫ БАГТААМЖ', key: 'fuel_spec' },
-    { label: 'НЭМЭЛТ ҮЗҮҮЛЭЛТ', key: 'extra_spec' },
+    { label: t('compare.basicSpecs.engine'), key: 'engine_spec' },
+    { label: t('compare.basicSpecs.transmission'), key: 'trans_spec' },
+    { label: t('compare.basicSpecs.drive'), key: 'drive_spec' },
+    { label: t('compare.basicSpecs.horsepower'), key: 'hp_spec' },
+    { label: t('compare.basicSpecs.torque'), key: 'torque_spec' },
+    { label: t('compare.basicSpecs.fuelTank'), key: 'fuel_spec' },
+    { label: t('compare.basicSpecs.extra'), key: 'extra_spec' },
   ];
 
-  if (loading) return <div className="pt-40 text-center font-black uppercase tracking-widest text-zinc-300">Уншиж байна...</div>;
+  if (loading) return <div className="pt-40 text-center font-black uppercase tracking-widest text-zinc-300">{t('vehicles.list.loading')}</div>;
 
   return (
     <div className="pt-20 lg:pt-25 pb-20 bg-white font-sans text-black">
       <div className="container-custom px-2 md:px-6">
         <Link to="/vehicles" className="inline-flex items-center text-[10px] md:text-xs font-black uppercase tracking-widest text-zinc-500 hover:text-toyota-red transition-colors mb-6 md:mb-10">
           <ChevronLeft size={16} className="mr-1" />
-          <span>Буцах</span>
+          <span>{t('common.back')}</span>
         </Link>
 
         <h1 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-6 md:mb-10 leading-none text-black">
-          Дэлгэрэнгүй <span className="text-toyota-red">харьцуулалт</span>
+          {t('compare.titlePlain')} <span className="text-toyota-red">{t('compare.titleRed')}</span>
         </h1>
 
         {selectedVariants.length > 0 ? (
@@ -127,7 +129,7 @@ const Compare = () => {
                 {/* 2. Машины нэр, үнэ (STICKY) */}
                 <tr className="sticky top-[64px] lg:top-[80px] z-[100] bg-white">
                   <th className="p-2 md:p-8 text-left w-[20%] md:w-1/4 sticky left-0 top-0 z-[110] border-b-2 md:border-b-4 border-toyota-red bg-white shadow-[4px_0_15px_rgba(0,0,0,0.05)]">
-                    <span className="text-[10px] md:text-xl font-black uppercase tracking-tighter text-black">Харьцуулалт</span>
+                    <span className="text-[10px] md:text-xl font-black uppercase tracking-tighter text-black">{t('compare.tableHeader')}</span>
                   </th>
                   {selectedVariants.map(variant => (
                     <th key={`title-${variant.id}`} className="p-2 md:p-6 text-center border-b-2 md:border-b-4 border-zinc-100 bg-white shadow-[0_4px_15px_rgba(0,0,0,0.03)]">
@@ -221,9 +223,9 @@ const Compare = () => {
         ) : (
           <div className="py-40 text-center">
             <Info size={48} className="mx-auto text-zinc-200 mb-6" />
-            <h3 className="text-2xl font-black text-zinc-300 uppercase tracking-tighter">Харьцуулах загвар сонгоогүй байна</h3>
+            <h3 className="text-2xl font-black text-zinc-300 uppercase tracking-tighter">{t('compare.noneSelected')}</h3>
             <Link to="/vehicles">
-                <button className="mt-8 px-12 py-5 bg-toyota-red text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-black transition-all shadow-xl shadow-toyota-red/20 active:scale-95">Загвар үзэх</button>
+                <button className="mt-8 px-12 py-5 bg-toyota-red text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-black transition-all shadow-xl shadow-toyota-red/20 active:scale-95">{t('compare.viewModels')}</button>
             </Link>
           </div>
         )}

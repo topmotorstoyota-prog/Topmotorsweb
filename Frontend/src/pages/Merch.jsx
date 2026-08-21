@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Trophy, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import grLogo from '../assets/acc/GR logo.jpg';
@@ -13,6 +14,7 @@ const formatPrice = (price) => {
 };
 
 const Merch = () => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -55,15 +57,14 @@ const Merch = () => {
               transition={{ delay: 0.1 }}
               className="text-zinc-400 max-w-xl text-sm md:text-lg leading-relaxed font-medium"
             >
-              Toyota Gazoo Racing-ийн албан ёсны хувцас, хэрэглэл болон аксессуарууд.
-              Авто спорт сонирхогчдод зориулсан загварлаг, чанартай бүтээгдэхүүнүүд.
+              {t('products.merch.longDesc')}
             </motion.p>
 
             <div className="w-12 h-1 bg-toyota-red mt-10" />
         </div>
 
         {loading ? (
-          <div className="py-20 text-center font-black uppercase tracking-widest text-zinc-800">Уншиж байна...</div>
+          <div className="py-20 text-center font-black uppercase tracking-widest text-zinc-800">{t('vehicles.list.loading')}</div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
             {products.map((item, idx) => (
@@ -107,7 +108,7 @@ const Merch = () => {
         )}
 
         {products.length === 0 && !loading && (
-          <div className="py-20 text-center text-zinc-800 font-bold uppercase tracking-widest">Бүтээгдэхүүн олдсонгүй</div>
+          <div className="py-20 text-center text-zinc-800 font-bold uppercase tracking-widest">{t('products.noProducts')}</div>
         )}
       </div>
     </div>

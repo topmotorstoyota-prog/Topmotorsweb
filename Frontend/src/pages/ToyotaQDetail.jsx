@@ -15,10 +15,12 @@ import {
   Download,
   Calculator
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 
 const ToyotaQDetail = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [vehicle, setVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -44,7 +46,7 @@ const ToyotaQDetail = () => {
     return (
       <div className="pt-40 pb-20 text-center">
         <div className="inline-block w-8 h-8 border-4 border-toyota-red border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p className="font-black uppercase tracking-widest text-zinc-400">Уншиж байна...</p>
+        <p className="font-black uppercase tracking-widest text-zinc-400">{t('vehicles.list.loading')}</p>
       </div>
     );
   }
@@ -53,9 +55,9 @@ const ToyotaQDetail = () => {
     return (
       <div className="pt-40 pb-20 text-center">
         <Info size={48} className="mx-auto text-zinc-200 mb-4" />
-        <h2 className="text-2xl font-black uppercase mb-4">Автомашин олдсонгүй</h2>
+        <h2 className="text-2xl font-black uppercase mb-4">{t('toyotaQ.detail.notFound')}</h2>
         <Link to="/toyota-q">
-          <Button variant="outlineBlack">Буцах</Button>
+          <Button variant="outlineBlack">{t('common.back')}</Button>
         </Link>
       </div>
     );
@@ -83,7 +85,7 @@ const ToyotaQDetail = () => {
       {/* Breadcrumbs */}
       <div className="bg-toyota-gray-100 py-4 border-b border-zinc-200">
         <div className="container-custom flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
-          <Link to="/" className="hover:text-toyota-black transition-colors">Нүүр</Link>
+          <Link to="/" className="hover:text-toyota-black transition-colors">{t('nav.homeShort')}</Link>
           <ChevronRight size={10} />
           <Link to="/toyota-q" className="hover:text-toyota-black transition-colors">Toyota-Q</Link>
           <ChevronRight size={10} />
@@ -138,9 +140,9 @@ const ToyotaQDetail = () => {
 
               {/* Desktop Only Description - Fixed gap issue */}
               <div className="hidden lg:block mt-12">
-                <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-4 border-l-4 border-toyota-red pl-3 md:pl-4">Тайлбар</h3>
+                <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-4 border-l-4 border-toyota-red pl-3 md:pl-4">{t('toyotaQ.detail.descriptionTitle')}</h3>
                 <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-base font-medium">
-                  {vehicle.description || 'Энэхүү автомашин нь Toyota-Q баталгаат хуучин автомашины хөтөлбөрт хамрагдсан, 150 цэгийн иж бүрэн оношилгоо хийгдсэн, чанарын гэрчилгээтэй автомашин юм.'}
+                  {vehicle.description || t('toyotaQ.detail.defaultDescription')}
                 </div>
               </div>
             </div>
@@ -159,7 +161,7 @@ const ToyotaQDetail = () => {
                       className="flex items-center gap-2 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-toyota-red transition-colors w-fit mt-1"
                     >
                       <Calculator size={12} className="md:w-[14px] md:h-[14px]" />
-                      <span className="border-b border-zinc-200 pb-0.5">Лизингийн тооцоолуур</span>
+                      <span className="border-b border-zinc-200 pb-0.5">{t('toyotaQ.detail.leaseCalculator')}</span>
                     </button>
                   </div>
                 </div>
@@ -167,17 +169,17 @@ const ToyotaQDetail = () => {
                 <div className="grid grid-cols-2 gap-2 md:gap-4">
                   <div className="p-3 md:p-5 bg-toyota-gray-100 border border-zinc-100 rounded-sm">
                     <Calendar className="text-toyota-red mb-2 md:mb-3 w-4 h-4 md:w-5 md:h-5" />
-                    <span className="text-[8px] md:text-[10px] font-bold text-zinc-400 uppercase block tracking-widest leading-none mb-1">Үйлдвэрлэсэн он</span>
-                    <span className="text-xs md:text-sm font-black uppercase">{vehicle.year} он</span>
+                    <span className="text-[8px] md:text-[10px] font-bold text-zinc-400 uppercase block tracking-widest leading-none mb-1">{t('toyotaQ.detail.yearMade')}</span>
+                    <span className="text-xs md:text-sm font-black uppercase">{vehicle.year} {t('toyotaQ.yearSuffix')}</span>
                   </div>
                   <div className="p-3 md:p-5 bg-toyota-gray-100 border border-zinc-100 rounded-sm">
                     <Gauge className="text-toyota-red mb-2 md:mb-3 w-4 h-4 md:w-5 md:h-5" />
-                    <span className="text-[8px] md:text-[10px] font-bold text-zinc-400 uppercase block tracking-widest leading-none mb-1">Гүйлт</span>
-                    <span className="text-xs md:text-sm font-black uppercase">{formatNum(vehicle.mileage)} км</span>
+                    <span className="text-[8px] md:text-[10px] font-bold text-zinc-400 uppercase block tracking-widest leading-none mb-1">{t('toyotaQ.detail.mileage')}</span>
+                    <span className="text-xs md:text-sm font-black uppercase">{formatNum(vehicle.mileage)} {t('toyotaQ.kmSuffix')}</span>
                   </div>
                   <div className="p-3 md:p-5 bg-toyota-gray-100 border border-zinc-100 rounded-sm">
                     <Zap className="text-toyota-red mb-2 md:mb-3 w-4 h-4 md:w-5 md:h-5" />
-                    <span className="text-[8px] md:text-[10px] font-bold text-zinc-400 uppercase block tracking-widest leading-none mb-1">Хөдөлгүүр</span>
+                    <span className="text-[8px] md:text-[10px] font-bold text-zinc-400 uppercase block tracking-widest leading-none mb-1">{t('toyotaQ.detail.engine')}</span>
                     <span className="text-xs md:text-sm font-black uppercase">{vehicle.engine} {vehicle.engineType}</span>
                   </div>
                   {vehicle.serviceHistory ? (
@@ -187,16 +189,16 @@ const ToyotaQDetail = () => {
                     >
                       <Download className="text-white mb-2 md:mb-3 group-hover:translate-y-1 transition-transform w-4 h-4 md:w-5 md:h-5" />
                       <div>
-                        <span className="text-[8px] md:text-[10px] font-bold text-white/80 uppercase block tracking-widest leading-none mb-1">Засварын түүх</span>
-                        <span className="text-xs md:text-sm font-black uppercase">Татах</span>
+                        <span className="text-[8px] md:text-[10px] font-bold text-white/80 uppercase block tracking-widest leading-none mb-1">{t('toyotaQ.detail.serviceHistory')}</span>
+                        <span className="text-xs md:text-sm font-black uppercase">{t('toyotaQ.detail.download')}</span>
                       </div>
                     </button>
                   ) : (
                     <div className="p-3 md:p-5 bg-zinc-50 border border-zinc-100 opacity-50 cursor-not-allowed rounded-sm">
                       <Download className="text-zinc-300 mb-2 md:mb-3 w-4 h-4 md:w-5 md:h-5" />
                       <div>
-                        <span className="text-[8px] md:text-[10px] font-bold text-zinc-300 uppercase block tracking-widest leading-none mb-1">Засварын түүх</span>
-                        <span className="text-xs md:text-sm font-black uppercase text-zinc-300">Байхгүй</span>
+                        <span className="text-[8px] md:text-[10px] font-bold text-zinc-300 uppercase block tracking-widest leading-none mb-1">{t('toyotaQ.detail.serviceHistory')}</span>
+                        <span className="text-xs md:text-sm font-black uppercase text-zinc-300">{t('toyotaQ.detail.none')}</span>
                       </div>
                     </div>
                   )}
@@ -205,7 +207,7 @@ const ToyotaQDetail = () => {
                 <div className="relative">
                   <Link to="/booking?type=sales">
                     <Button variant="primary" className="w-full py-4 md:py-5 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] shadow-xl shadow-toyota-red/10">
-                      <span>Холбоо барих</span>
+                      <span>{t('nav.contact')}</span>
                     </Button>
                   </Link>
                 </div>
@@ -213,13 +215,12 @@ const ToyotaQDetail = () => {
                 <div className="p-4 md:p-6 bg-toyota-red/5 border border-toyota-red/10 rounded-sm">
                   <h4 className="font-black uppercase text-[10px] md:text-xs tracking-widest mb-3 md:mb-4 flex items-center gap-2">
                     <CheckCircle2 size={14} className="text-toyota-red md:w-4 md:h-4" />
-                    Toyota-Q Давуу тал
+                    {t('toyotaQ.detail.advantagesTitle')}
                   </h4>
                   <ul className="text-[8px] md:text-[10px] font-bold uppercase tracking-tight space-y-2 text-zinc-600">
-                    <li>• 150 цэгийн иж бүрэн оношилгоо</li>
-                    <li>• Тоёотагийн албан ёсны баталгаа</li>
-                    <li>• Сэлбэг, үйлчилгээний хөнгөлөлт</li>
-                    <li>• Түүх нь тодорхой, баталгаатай</li>
+                    {t('toyotaQ.detail.advantages', { returnObjects: true }).map((adv, i) => (
+                      <li key={i}>• {adv}</li>
+                    ))}
                   </ul>
                 </div>
               </div>

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, ChevronLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import API_BASE_URL from '../config';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const NewsDetail = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [news, setNews] = useState(null);
   const [otherNews, setOtherNews] = useState([]);
@@ -28,15 +30,15 @@ const NewsDetail = () => {
   }, [id]);
 
   if (loading) {
-    return <div className="pt-40 pb-20 text-center">Уншиж байна...</div>;
+    return <div className="pt-40 pb-20 text-center">{t('vehicles.list.loading')}</div>;
   }
 
   if (!news) {
     return (
       <div className="pt-40 pb-20 text-center">
-        <h2 className="text-2xl font-black uppercase">Мэдээ олдсонгүй</h2>
+        <h2 className="text-2xl font-black uppercase">{t('news.notFound')}</h2>
         <Link to="/news" className="mt-8 inline-block text-toyota-red font-bold uppercase tracking-widest">
-          Буцах
+          {t('common.back')}
         </Link>
       </div>
     );
@@ -50,7 +52,7 @@ const NewsDetail = () => {
           className="inline-flex items-center text-[10px] lg:text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-toyota-red transition-colors mb-6 lg:mb-10"
         >
           <ChevronLeft size={16} className="mr-1" />
-          <span>Мэдээ рүү буцах</span>
+          <span>{t('news.backToNews')}</span>
         </Link>
 
         <motion.div
@@ -84,7 +86,7 @@ const NewsDetail = () => {
           {/* More News Section */}
           {otherNews.length > 0 && (
             <div className="border-t border-zinc-100 pt-12 lg:pt-20">
-              <h2 className="text-xl lg:text-3xl font-black uppercase tracking-tight mb-8 lg:mb-12">Бусад <span className="text-toyota-red">мэдээлэл</span></h2>
+              <h2 className="text-xl lg:text-3xl font-black uppercase tracking-tight mb-8 lg:mb-12">{t('news.otherPlain')} <span className="text-toyota-red">{t('news.otherRed')}</span></h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8">
                 {otherNews.map((item) => (
                   <Link key={item.id} to={`/news/${item.id}`} className="group">

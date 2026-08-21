@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import API_BASE_URL from '../config';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const News = () => {
+  const { t } = useTranslation();
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +25,7 @@ const News = () => {
   }, []);
 
   if (loading) {
-    return <div className="pt-40 pb-20 text-center font-bold">Уншиж байна...</div>;
+    return <div className="pt-40 pb-20 text-center font-bold">{t('vehicles.list.loading')}</div>;
   }
 
   return (
@@ -31,7 +33,7 @@ const News = () => {
       <div className="container-custom px-4">
         <div className="mb-10 md:mb-16">
           <h1 className="text-3xl md:text-6xl font-black uppercase tracking-tighter mt-4 leading-none text-black">
-            Мэдээ <span className="text-toyota-red">мэдээлэл</span>
+            {t('home.news.titlePlain')} <span className="text-toyota-red">{t('home.news.titleRed')}</span>
           </h1>
         </div>
 
@@ -77,15 +79,15 @@ const News = () => {
                     to={`/news/${news.id}`}
                     className="mt-auto flex items-center text-[8px] md:text-xs font-black uppercase tracking-wider md:tracking-[0.2em] text-toyota-black group-hover:text-toyota-red transition-colors"
                   >
-                    <span className="hidden sm:inline">Дэлгэрэнгүй унших</span>
-                    <span className="sm:hidden">Дэлгэрэнгүй</span>
+                    <span className="hidden sm:inline">{t('news.readMore')}</span>
+                    <span className="sm:hidden">{t('news.more')}</span>
                     <ArrowRight size={12} className="ml-1 md:ml-2 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </motion.div>
             ))
           ) : (
-            <div className="col-span-full text-center py-20 text-zinc-400">Мэдээлэл одоогоор байхгүй байна.</div>
+            <div className="col-span-full text-center py-20 text-zinc-400">{t('news.noNews')}</div>
           )}
         </div>
       </div>

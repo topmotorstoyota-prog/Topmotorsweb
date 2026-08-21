@@ -1,34 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Calculator, X, Calendar, Disc } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import './FloatingCalculator.css';
-
-const translations = {
-  eng: {
-    title: 'Leasing Calculator',
-    vehiclePrice: 'Vehicle Price',
-    term: 'Term',
-    months: 'months',
-    downPayment: 'Down Payment',
-    monthlyRate: 'Monthly Rate',
-    monthlyPayment: 'Monthly Payment',
-    borrowAmount: 'Amount to borrow:',
-    note: '* Calculation based on standard market conditions. Actual credit decision may vary.',
-    close: 'Close Calculator'
-  },
-  mn: {
-    title: 'Лизингийн тооцоолуур',
-    vehiclePrice: 'Машины үнэ',
-    term: 'Хугацаа',
-    months: 'сар',
-    downPayment: 'Урьдчилгаа',
-    monthlyRate: 'Сарын хүү',
-    monthlyPayment: 'Сарын төлбөр',
-    borrowAmount: 'Зээлэх дүн:',
-    note: '* Зах зээлийн дундаж нөхцөлөөр тооцоолов. Бодит зээлийн шийдвэр өөр байх боломжтой.',
-    close: 'Тооцооллыг хаах'
-  }
-};
 
 export const WheelIcon = ({ className }) => (
   <svg
@@ -62,9 +36,9 @@ export const WheelIcon = ({ className }) => (
   </svg>
 );
 
-const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
+const FloatingCalculator = ({ vehiclePrice = 150000000 }) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const t = translations[language] || translations.mn;
 
   useEffect(() => {
     const handleOpen = (e) => {
@@ -136,8 +110,8 @@ const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
             </div>
           </div>
           <div className="absolute left-16 flex flex-col items-start opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pr-8">
-             <span className="text-[9px] font-black uppercase tracking-[0.2em] leading-none mb-1">Обуд дугуй</span>
-             <span className="text-sm font-black uppercase tracking-tighter leading-none">Машинд обуд, дугуй тавих</span>
+             <span className="text-[9px] font-black uppercase tracking-[0.2em] leading-none mb-1">{t('calculator.tryOnLabel1')}</span>
+             <span className="text-sm font-black uppercase tracking-tighter leading-none">{t('calculator.tryOnLabel2')}</span>
           </div>
         </a>
       </motion.div>
@@ -158,8 +132,8 @@ const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
             </div>
           </div>
           <div className="absolute left-16 flex flex-col items-start opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pr-8">
-             <span className="text-[9px] font-black uppercase tracking-[0.2em] leading-none mb-1">Лизингийн</span>
-             <span className="text-sm font-black uppercase tracking-tighter leading-none">Тооцоолуур</span>
+             <span className="text-[9px] font-black uppercase tracking-[0.2em] leading-none mb-1">{t('calculator.buttonLabel1')}</span>
+             <span className="text-sm font-black uppercase tracking-tighter leading-none">{t('calculator.buttonLabel2')}</span>
           </div>
         </button>
       </motion.div>
@@ -185,7 +159,7 @@ const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
               <div className="calc-header">
                 <div className="calc-header-title">
                   <Calculator size={20} color="#eb0a1e" />
-                  <h3>{t.title}</h3>
+                  <h3>{t('calculator.title')}</h3>
                 </div>
                 <button onClick={() => setIsOpen(false)} className="calc-close-btn">
                   <X size={18} />
@@ -195,7 +169,7 @@ const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
               <div className="calc-content">
                 <div className="calc-field-group">
                   <div className="calc-price-header">
-                    <label className="calc-field-label">{t.vehiclePrice}</label>
+                    <label className="calc-field-label">{t('calculator.vehiclePrice')}</label>
                     <div className="calc-price-input-container">
                       <input
                         type="text"
@@ -219,7 +193,7 @@ const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
 
                 <div className="calc-field-group">
                   <div className="calc-price-header">
-                    <label className="calc-field-label"><Calendar size={10} /> {t.term}</label>
+                    <label className="calc-field-label"><Calendar size={10} /> {t('calculator.term')}</label>
                     <div className="calc-price-input-container">
                       <input
                         type="text"
@@ -232,7 +206,7 @@ const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
                         className="calc-price-input"
                         style={{ width: '3rem' }}
                       />
-                      <span className="calc-currency" style={{ fontSize: '0.9rem' }}>{t.months}</span>
+                      <span className="calc-currency" style={{ fontSize: '0.9rem' }}>{t('calculator.months')}</span>
                     </div>
                   </div>
                   <input
@@ -244,7 +218,7 @@ const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
 
                 <div className="calc-field-group">
                   <div className="calc-price-header">
-                    <label className="calc-field-label">{t.downPayment}</label>
+                    <label className="calc-field-label">{t('calculator.downPayment')}</label>
                     <div className="flex flex-col items-end">
                       <div className="calc-price-input-container">
                         <input
@@ -278,7 +252,7 @@ const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
 
                 <div className="calc-field-group">
                   <div className="calc-price-header">
-                    <label className="calc-field-label">{t.monthlyRate}</label>
+                    <label className="calc-field-label">{t('calculator.monthlyRate')}</label>
                     <div className="calc-price-input-container">
                       <input
                         type="text"
@@ -303,23 +277,23 @@ const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
                 </div>
 
                 <div className="calc-result-card">
-                   <span className="calc-result-label">{t.monthlyPayment}</span>
+                   <span className="calc-result-label">{t('calculator.monthlyPayment')}</span>
                    <h4 className="calc-result-value">{monthlyPayment.toLocaleString()}<span>₮</span></h4>
 
                    <div className="calc-result-details">
                      <div className="calc-result-item">
-                       <span className="calc-result-item-label">{t.borrowAmount}</span>
+                       <span className="calc-result-item-label">{t('calculator.borrowAmount')}</span>
                        <span className="calc-result-item-value">{(price * (1 - downPaymentPercent/100)).toLocaleString()}<span>₮</span></span>
                      </div>
                      <div className="calc-result-item">
-                       <span className="calc-result-item-label">{t.downPayment} ({Math.round(downPaymentPercent)}%)</span>
+                       <span className="calc-result-item-label">{t('calculator.downPayment')} ({Math.round(downPaymentPercent)}%)</span>
                        <span className="calc-result-item-value">{(price * (downPaymentPercent/100)).toLocaleString()}<span>₮</span></span>
                      </div>
                    </div>
                 </div>
 
                 <div className="calc-note">
-                  {t.note}
+                  {t('calculator.note')}
                 </div>
               </div>
 
@@ -328,7 +302,7 @@ const FloatingCalculator = ({ vehiclePrice = 150000000, language = 'mn' }) => {
                    onClick={() => setIsOpen(false)}
                    className="calc-close-cta"
                 >
-                  {t.close}
+                  {t('calculator.close')}
                 </button>
               </div>
             </motion.div>

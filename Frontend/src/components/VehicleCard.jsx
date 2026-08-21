@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const VehicleCard = ({ id, name, series, price, image, specs, isFixedPrice, link, isToyotaQ }) => {
+  const { t } = useTranslation();
   const detailLink = link || `/vehicles/${id}`;
 
   const formatPrice = (p) => {
@@ -37,13 +39,13 @@ const VehicleCard = ({ id, name, series, price, image, specs, isFixedPrice, link
             <div className="grid grid-cols-2 gap-2 md:gap-4">
                {specs[0] && (
                  <div className="flex flex-col gap-0">
-                   <span className="text-[7px] md:text-[8px] font-black text-zinc-400 uppercase tracking-widest">Он</span>
+                   <span className="text-[7px] md:text-[8px] font-black text-zinc-400 uppercase tracking-widest">{t('vehicleCard.year')}</span>
                    <span className="text-[9px] md:text-[11px] font-bold text-toyota-black uppercase">{specs[0]}</span>
                  </div>
                )}
                {specs[1] && (
                  <div className="flex flex-col gap-0 border-l border-zinc-100 pl-2 md:pl-4">
-                   <span className="text-[7px] md:text-[8px] font-black text-zinc-400 uppercase tracking-widest">Гүйлт</span>
+                   <span className="text-[7px] md:text-[8px] font-black text-zinc-400 uppercase tracking-widest">{t('toyotaQ.detail.mileage')}</span>
                    <span className="text-[9px] md:text-[11px] font-bold text-toyota-black uppercase">{specs[1]}</span>
                  </div>
                )}
@@ -53,8 +55,8 @@ const VehicleCard = ({ id, name, series, price, image, specs, isFixedPrice, link
 
         <div className="mt-auto flex items-center justify-between pt-2 md:pt-4 border-t border-zinc-100">
           <span className="flex items-center text-[8px] md:text-[10px] font-black uppercase tracking-wider md:tracking-[0.2em] group-hover:text-toyota-red transition-colors">
-            <span className="hidden sm:inline">Дэлгэрэнгүй үзэх</span>
-            <span className="sm:hidden">Дэлгэрэнгүй</span>
+            <span className="hidden sm:inline">{t('products.viewDetails')}</span>
+            <span className="sm:hidden">{t('news.more')}</span>
             <ChevronRight size={12} className="ml-0.5 md:ml-1 group-hover:translate-x-1 transition-transform" />
           </span>
         </div>

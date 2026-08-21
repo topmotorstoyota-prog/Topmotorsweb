@@ -18,6 +18,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Button from '../components/Button';
 
 import cafeImg from '../assets/service/00.jpg';
@@ -27,69 +28,30 @@ import zogsoolImg from '../assets/service/zogsol.jpg';
 import serviceHeroImg from '../assets/service/service.jpg';
 
 const Service = () => {
+  const { t } = useTranslation();
   const servicesRef = useRef(null);
 
   const scrollToServices = () => {
     servicesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const advantages = [
-    "Toyota болон Lexus брэндийн бүх загварт нээлттэй үйлчилгээ",
-    "Үйлдвэрлэгчийн стандартын дагуу засвар үйлчилгээ",
-    "Оригинал сэлбэг хэрэгсэл, аксессуарын нийлүүлэлт",
-    "Мэргэшсэн инженер, техникийн баг",
-    "Ил тод үнийн бодлого",
-    "Засварын явцыг хянах боломж",
-    "Тав тухтай хүлээлгийн танхим",
-    "70+ автомашины зогсоол",
-    "La Parisienne кофе шоп болон хүүхдийн тоглоомын булан",
-    "Даваа-Ням гарагт тогтмол үйлчилгээ"
-  ];
+  const advantages = t('service.advantages', { returnObjects: true });
 
+  // id нь Booking хуудсын service категоритой (болон backend рүү илгээгддэг утгатай) яг таарах ёстой тул монгол хэвээр байлгав
   const serviceCategories = [
-    {
-      title: "Тогтмол засвар үйлчилгээ",
-      desc: "Автомашины найдвартай ажиллагааг хангахын тулд үйлдвэрлэгчийн зөвлөсөн хугацаанд тос, шингэн болон хэрэглээний эд ангиудыг солих үйлчилгээ.",
-      icon: Clock,
-      items: ["Улирлын тос солих", "Бүх төрлийн шингэн солих", "Хуваарьт болон урсгал засвар үйлчилгээ"]
-    },
-    {
-      title: "Оношилгоо",
-      desc: "Орчин үеийн компьютер тоног төхөөрөмж ашиглан автомашины бүх системд нарийвчилсан оношилгоо хийнэ.",
-      icon: Search,
-      items: ["Компьютер оношилгоо", "Хөдөлгүүрийн оношилгоо", "Хүч дамжуулах системийн оношилгоо", "Цахилгааны оношилгоо", "Явах эд ангийн оношилгоо"]
-    },
-    {
-      title: "Хөдөлгүүр ба агрегатын засвар",
-      desc: "Мэргэшсэн инженерүүд хөдөлгүүр болон хүч дамжуулах системийн гэмтлийг үйлдвэрлэгчийн стандартын дагуу засварлана.",
-      icon: Settings,
-      items: ["Агрегат засвар", "Хөдөлгүүрийн их засвар", "Хүч дамжуулагчийн их засвар"]
-    },
-    {
-      title: "Дугуй ба явах эд ангийн үйлчилгээ",
-      desc: "Жолоодлогын тогтвортой байдал, аюулгүй ажиллагааг хангах мэргэжлийн үйлчилгээ.",
-      icon: Disc,
-      items: ["Тэнхлэг тохиргоо", "Дугуй тэнцвэржүүлэх", "Дугуй солих", "Дугуй хадгалах үйлчилгээ", "Гэрэл тохиргоо"]
-    },
-    {
-      title: "Автомашины арчилгаа, хамгаалалт",
-      desc: "Таны автомашины өнгө үзэмж, үнэ цэнийг урт хугацаанд хадгалахад чиглэсэн үйлчилгээ болон кузов засварын цогц үйлчилгээ.",
-      icon: Shield,
-      items: ["Автомат болон гар угаалга", "Хамгаалалтын хуулга (бүтэн болон хэсэгчилсэн)", "Гадна өнгөлгөө, арчилгаа", "Кузов ба будаг засвар"]
-    },
-    {
-      title: "Оригинал сэлбэг ба аксессуар",
-      desc: "Автомашины аюулгүй байдал, найдвартай ажиллагааг хангахын тулд үйлдвэрлэгчийн баталгаат оригинал сэлбэг, аксессуарыг санал болгож байна.",
-      icon: Layers,
-      items: ["Оригинал сэлбэгийн худалдаа, зөвлөгөө", "Аксессуар суурилуулалт", "Захиалгат сэлбэг нийлүүлэлт"]
-    }
+    { id: "Тогтмол засвар үйлчилгээ", title: t('booking.services.regular.title'), desc: t('service.categories.regular.desc'), icon: Clock, items: t('service.categories.regular.items', { returnObjects: true }) },
+    { id: "Оношилгоо", title: t('booking.services.diagnostics.title'), desc: t('service.categories.diagnostics.desc'), icon: Search, items: t('service.categories.diagnostics.items', { returnObjects: true }) },
+    { id: "Хөдөлгүүр ба агрегатын засвар", title: t('booking.services.engine.title'), desc: t('service.categories.engine.desc'), icon: Settings, items: t('service.categories.engine.items', { returnObjects: true }) },
+    { id: "Дугуй ба явах эд ангийн үйлчилгээ", title: t('booking.services.wheels.title'), desc: t('service.categories.wheels.desc'), icon: Disc, items: t('service.categories.wheels.items', { returnObjects: true }) },
+    { id: "Автомашины арчилгаа, хамгаалалт", title: t('booking.services.care.title'), desc: t('service.categories.care.desc'), icon: Shield, items: t('service.categories.care.items', { returnObjects: true }) },
+    { id: "Оригинал сэлбэг ба аксессуар", title: t('booking.services.parts.title'), desc: t('service.categories.parts.desc'), icon: Layers, items: t('service.categories.parts.items', { returnObjects: true }) }
   ];
 
   const facilityFeatures = [
-    { title: "70 гаруй зогсоол", image: zogsoolImg },
-    { title: "Тохилог ариун цэврийн өрөө", image: cafeImg },
-    { title: "Хүүхдийн тоглоомын булан", image: togloomImg },
-    { title: "Тав тухтай хүлээлгийн танхим", image: tanhimImg }
+    { title: t('service.facility.parking'), image: zogsoolImg },
+    { title: t('service.facility.restroom'), image: cafeImg },
+    { title: t('service.facility.playArea'), image: togloomImg },
+    { title: t('service.facility.lounge'), image: tanhimImg }
   ];
 
   return (
@@ -106,21 +68,21 @@ const Service = () => {
               className="text-center lg:text-left"
             >
                 <h1 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-toyota-black mb-4 md:mb-6 leading-tight">
-                Засвар Үйлчилгээ
+                {t('service.heroTitle')}
               </h1>
-        
+
               <div className="space-y-4 md:space-y-6 text-zinc-600 leading-relaxed text-sm md:text-base font-medium text-justify mb-8 md:mb-10">
                 <p>
-                  Тоёота автомашин бүр инженерчлэлийн өндөр стандарт, бат бөх чанар, найдвартай ажиллагаагаараа дэлхийд танигдсан. Энэхүү чанарыг ашиглалтын бүхий л хугацаанд нь хадгалах хамгийн зөв сонголт бол үйлдвэрлэгчийн стандартын дагуу мэргэжлийн засвар үйлчилгээ авах юм.
+                  {t('service.heroPara1')}
                 </p>
                 <p className="hidden md:block">
-                  Тоёота Топ Моторс нь Toyota Motor Corporation-ийн албан ёсны дилерийн хувьд Toyota болон Lexus брэндийн бүх загварын автомашинд олон улсын стандартын дагуу засвар үйлчилгээ үзүүлж байна. Манай төв нь орчин үеийн оношилгоо, засварын тоног төхөөрөмжөөр бүрэн тоноглогдсон бөгөөд нэгэн зэрэг 20 хүртэл автомашинд үйлчилгээ үзүүлэх хүчин чадалтай.
+                  {t('service.heroPara2')}
                 </p>
               </div>
 
               <Link to="/booking?type=service">
                 <Button variant="primary" size="lg" className="px-10 md:px-12 uppercase tracking-widest font-black text-[10px] md:text-[11px] h-12 md:h-14 shadow-xl shadow-toyota-red/20 w-full sm:w-auto">
-                  Цаг захиалах
+                  {t('service.bookBtn')}
                 </Button>
               </Link>
             </motion.div>
@@ -151,7 +113,7 @@ const Service = () => {
               transition={{ repeat: Infinity, duration: 2 }}
               className="flex flex-col items-center gap-1 md:gap-2 group cursor-pointer"
             >
-              <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-zinc-400 group-hover:text-toyota-red transition-colors">Үйлчилгээ үзэх</span>
+              <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-zinc-400 group-hover:text-toyota-red transition-colors">{t('service.viewServices')}</span>
               <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-zinc-200 flex items-center justify-center group-hover:border-toyota-red group-hover:bg-toyota-red group-hover:text-white transition-all duration-300">
                 <ChevronDown size={16} md:size={20} />
               </div>
@@ -164,7 +126,7 @@ const Service = () => {
       <section className="py-10 md:py-16 bg-toyota-gray-100">
         <div className="container-custom px-4 md:px-6 lg:px-8">
           <div className="mb-8 md:mb-12">
-            <h2 className="text-xl md:text-4xl font-black uppercase tracking-tighter text-center">Бидний <span className="text-toyota-red">давуу тал</span></h2>
+            <h2 className="text-xl md:text-4xl font-black uppercase tracking-tighter text-center">{t('service.advantagesTitlePlain')} <span className="text-toyota-red">{t('service.advantagesTitleRed')}</span></h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-2 gap-x-4 md:gap-x-12 gap-y-3 md:gap-y-6 max-w-5xl mx-auto">
             {advantages.map((adv, i) => (
@@ -183,7 +145,7 @@ const Service = () => {
       <section className="py-10 md:py-16 bg-white">
         <div className="container-custom px-4 md:px-6 lg:px-8">
           <div className="text-center mb-6 md:mb-10">
-            <h2 className="text-xl md:text-4xl font-black uppercase tracking-tighter">Тав тухтай <span className="text-toyota-red">орчин</span></h2>
+            <h2 className="text-xl md:text-4xl font-black uppercase tracking-tighter">{t('service.facilityTitlePlain')} <span className="text-toyota-red">{t('service.facilityTitleRed')}</span></h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             {facilityFeatures.map((f, i) => (
@@ -208,7 +170,7 @@ const Service = () => {
 
         <div className="container-custom px-4 md:px-6 lg:px-8 relative z-10">
            <div className="text-center mb-8 md:mb-16">
-              <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tighter">Манай <span className="text-toyota-red">үйлчилгээ</span></h2>
+              <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tighter">{t('service.ourServicesTitlePlain')} <span className="text-toyota-red">{t('service.ourServicesTitleRed')}</span></h2>
            </div>
 
            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-6">
@@ -251,9 +213,9 @@ const Service = () => {
                                ))}
                             </div>
 
-                            <Link to={`/booking?type=service&serviceType=${encodeURIComponent(cat.title)}`} className="mt-auto md:mt-8">
+                            <Link to={`/booking?type=service&serviceType=${encodeURIComponent(cat.id)}`} className="mt-auto md:mt-8">
                                 <Button variant="primary" size="sm" className="w-full text-[7px] md:text-[9px] h-8 md:h-11 tracking-widest md:tracking-[0.2em] font-black uppercase shadow-lg shadow-toyota-red/20">
-                                   Цаг авах
+                                   {t('service.getAppointment')}
                                 </Button>
                             </Link>
                         </div>
@@ -262,7 +224,7 @@ const Service = () => {
                     {/* Interactive indicator for hover (Desktop only) */}
                     <div className="hidden md:flex mt-4 items-center gap-2 text-toyota-red text-[10px] font-black uppercase tracking-[0.2em] group-hover:opacity-0 transition-opacity duration-300">
                         <div className="w-2 h-2 bg-toyota-red animate-pulse rounded-full" />
-                        <span>Дэлгэрэнгүй</span>
+                        <span>{t('service.viewDetails')}</span>
                     </div>
 
                     {/* Bottom Progress Line */}
@@ -279,7 +241,7 @@ const Service = () => {
           <div className="text-center mb-16">
            
             <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-toyota-black">
-              КУЗОВ <span className="text-toyota-red">ЗАСВАР</span>
+              {t('service.bodyRepairPlain')} <span className="text-toyota-red">{t('service.bodyRepairRed')}</span>
             </h2>
         
           </div>
@@ -289,7 +251,7 @@ const Service = () => {
               <iframe
                 className="w-full h-full"
                 src="https://www.youtube.com/embed/tkIp8nVUeEI"
-                title="Кузов засвар"
+                title={t('service.bodyRepairRed')}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -305,13 +267,13 @@ const Service = () => {
           <div className="flex items-center gap-6">
             <Phone size={40} strokeWidth={1} />
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">Засварын лавлах утас</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">{t('service.contactPhoneLabel')}</p>
               <p className="text-3xl font-black tracking-tight">77778090</p>
             </div>
           </div>
           <Link to="/booking?type=service">
             <button className="px-12 py-5 bg-white text-toyota-black font-black uppercase tracking-[0.2em] text-[11px] hover:bg-black hover:text-white transition-all shadow-xl active:scale-95">
-              Одоо цаг авах
+              {t('service.bookNowBtn')}
             </button>
           </Link>
         </div>

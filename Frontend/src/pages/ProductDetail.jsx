@@ -15,10 +15,12 @@ import {
   MapPin,
   Layers
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 
 const ProductDetail = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,7 +48,7 @@ const ProductDetail = () => {
     return (
       <div className="pt-40 pb-20 text-center font-sans bg-black min-h-screen">
         <div className="inline-block w-8 h-8 border-4 border-toyota-red border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p className="font-black uppercase tracking-widest text-zinc-500">Уншиж байна...</p>
+        <p className="font-black uppercase tracking-widest text-zinc-500">{t('vehicles.list.loading')}</p>
       </div>
     );
   }
@@ -55,16 +57,16 @@ const ProductDetail = () => {
     return (
       <div className="pt-40 pb-20 text-center font-sans bg-black min-h-screen">
         <Info size={48} className="mx-auto text-zinc-700 mb-4" />
-        <h2 className="text-2xl font-black uppercase mb-4 text-zinc-500">Бүтээгдэхүүн олдсонгүй</h2>
+        <h2 className="text-2xl font-black uppercase mb-4 text-zinc-500">{t('products.noProducts')}</h2>
         <Link to="/products">
-          <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black">Буцах</Button>
+          <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black">{t('common.back')}</Button>
         </Link>
       </div>
     );
   }
 
   const formatPrice = (price) => {
-    if (!price) return 'Тодорхойгүй';
+    if (!price) return t('vehicles.detail.priceUnknown');
     const cleanNum = String(price).replace(/[^0-9]/g, '');
     return new Intl.NumberFormat('en-US').format(Number(cleanNum) || 0);
   };
@@ -83,9 +85,9 @@ const ProductDetail = () => {
                        product.category === 'Обуд' ? '/wheels' :
                        product.category === 'GR Merch' ? '/merch' : '/products';
 
-  const categoryName = (product.category === 'Дугуй' || product.category === 'GR Tyres') ? 'Дугуй' :
-                       product.category === 'Обуд' ? 'Обуд' :
-                       product.category === 'GR Merch' ? 'GR Merch' : 'Бүтээгдэхүүн';
+  const categoryName = (product.category === 'Дугуй' || product.category === 'GR Tyres') ? t('products.tires.title') :
+                       product.category === 'Обуд' ? t('products.wheels.title') :
+                       product.category === 'GR Merch' ? 'GR Merch' : t('nav.products');
 
   const allImages = [product.image, ...getImages()].filter(Boolean);
 
@@ -100,7 +102,7 @@ const ProductDetail = () => {
     <div className="pt-24 lg:pt-[120px] pb-20 bg-black font-sans min-h-screen">
       <div className="bg-zinc-900 py-3 lg:py-4 border-b border-zinc-800">
         <div className="container-custom flex items-center space-x-2 text-[9px] lg:text-[10px] font-bold uppercase tracking-widest text-zinc-500 overflow-x-auto no-scrollbar whitespace-nowrap px-4 lg:px-8">
-          <Link to="/" className="hover:text-white transition-colors">Нүүр</Link>
+          <Link to="/" className="hover:text-white transition-colors">{t('nav.homeShort')}</Link>
           <ChevronRight size={10} className="shrink-0" />
           <Link to={categoryPath} className="hover:text-white transition-colors">{categoryName}</Link>
           <ChevronRight size={10} className="shrink-0" />
@@ -150,7 +152,7 @@ const ProductDetail = () => {
                 <h1 className="text-2xl lg:text-5xl font-black uppercase tracking-tighter mb-4 lg:mb-6 text-white">{product.name}</h1>
 
                 <div className="mb-6 lg:mb-8 bg-zinc-900 p-6 lg:p-8 border-l-4 border-toyota-red shadow-sm">
-                  <p className="text-[10px] font-black uppercase text-toyota-red mb-1 lg:mb-2">Үнэ</p>
+                  <p className="text-[10px] font-black uppercase text-toyota-red mb-1 lg:mb-2">{t('productDetail.priceLabel')}</p>
                   <p className="text-3xl lg:text-4xl font-black text-white">₮{formatPrice(product.price)}</p>
                 </div>
 
@@ -158,8 +160,8 @@ const ProductDetail = () => {
                   <div className="mb-6 lg:mb-8">
                     <p className="text-[10px] font-black uppercase text-zinc-500 mb-3 tracking-widest flex items-center gap-2">
                       <Layers size={12}/>
-                      {product.category === 'Дугуй' ? 'Боломжит хэмжээнүүд' :
-                       product.category === 'Обуд' ? 'Радиус (R)' : 'Хэмжээ (Size)'}
+                      {product.category === 'Дугуй' ? t('productDetail.availableSizes') :
+                       product.category === 'Обуд' ? t('productDetail.radius') : t('productDetail.sizeLabel')}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {sizes.map((s, idx) => (
@@ -173,12 +175,12 @@ const ProductDetail = () => {
                   <div className={`px-3 py-1.5 text-[9px] lg:text-[10px] font-black uppercase tracking-widest inline-block rounded-sm ${product.stock === 'Дууссан' ? 'bg-red-900/30 text-red-400' : 'bg-green-900/30 text-green-400'}`}>{product.stock || 'Бэлэн байгаа'}</div>
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 bg-zinc-900 flex items-center justify-center rounded-sm shrink-0 text-toyota-red"><ShieldCheck size={20}/></div>
-                    <p className="text-[11px] lg:text-xs text-zinc-400 leading-relaxed font-medium">Тоёота-ийн албан ёсны баталгаат сэлбэг, оригинал бүтээгдэхүүн.</p>
+                    <p className="text-[11px] lg:text-xs text-zinc-400 leading-relaxed font-medium">{t('productDetail.warrantyNote')}</p>
                   </div>
                 </div>
 
                 <div className="hidden lg:grid grid-cols-2 gap-4 mt-4">
-                  <a href={`tel:${contactPhone}`}><Button variant="outline" className="w-full py-4 text-[10px] font-red uppercase tracking-widest border-white text-white hover:bg-white hover:text-black">Холбоо барих</Button></a>
+                  <a href={`tel:${contactPhone}`}><Button variant="outline" className="w-full py-4 text-[10px] font-red uppercase tracking-widest border-white text-white hover:bg-white hover:text-black">{t('nav.contact')}</Button></a>
                 </div>
               </div>
             </div>
@@ -186,8 +188,8 @@ const ProductDetail = () => {
 
           <div className="mt-12 lg:mt-20 pt-8 lg:pt-16 border-t border-zinc-800 mb-20 lg:mb-0">
             <div className="max-w-3xl">
-              <h3 className="text-lg lg:text-xl font-black uppercase tracking-tight mb-4 lg:mb-6 flex items-center gap-3 text-white"><Tag size={20} className="text-toyota-red"/> Дэлгэрэнгүй тайлбар</h3>
-              <div className="text-zinc-300 lg:text-zinc-400 leading-relaxed text-sm lg:text-base whitespace-pre-wrap font-medium text-left lg:text-justify">{product.description || 'Мэдээлэл оруулаагүй байна.'}</div>
+              <h3 className="text-lg lg:text-xl font-black uppercase tracking-tight mb-4 lg:mb-6 flex items-center gap-3 text-white"><Tag size={20} className="text-toyota-red"/> {t('productDetail.detailedDesc')}</h3>
+              <div className="text-zinc-300 lg:text-zinc-400 leading-relaxed text-sm lg:text-base whitespace-pre-wrap font-medium text-left lg:text-justify">{product.description || t('productDetail.noDescription')}</div>
             </div>
           </div>
         </div>
@@ -198,7 +200,7 @@ const ProductDetail = () => {
         <a href={`tel:+976${contactPhone}`} className="flex-1">
           <Button variant="primary" className="w-full py-4 text-[11px] font-black uppercase tracking-widest">
             <Phone size={16} className="mr-2" />
-            Холбоо барих
+            {t('nav.contact')}
           </Button>
         </a>
       </div>

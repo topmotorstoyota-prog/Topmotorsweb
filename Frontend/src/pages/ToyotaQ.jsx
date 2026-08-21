@@ -16,12 +16,14 @@ import {
 } from 'lucide-react';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import VehicleCard from '../components/VehicleCard';
 import API_BASE_URL from '../config';
 import toyotaQHero from '../assets/toyota-q/q.png';
 import inspection150 from '../assets/toyota-q/150.jpg';
 
 const ToyotaQ = () => {
+  const { t } = useTranslation();
   const [qVehicles, setQVehicles] = useState([]);
   const [filters, setFilters] = useState({
     name: '',
@@ -53,11 +55,8 @@ const ToyotaQ = () => {
             rawPrice: clean(v.price),
             rawMileage: clean(v.mileage),
             price: formatNum(v.price),
-            specs: [
-              v.year ? `${v.year} он` : null,
-              v.mileage ? `${formatNum(v.mileage)} км` : null,
-              v.engine ? `${v.engine} ${v.engineType || ''}`.trim() : null
-            ].filter(Boolean)
+            formattedMileage: formatNum(v.mileage),
+            engineText: v.engine ? `${v.engine} ${v.engineType || ''}`.trim() : null
           };
         });
         setQVehicles(formatted);
@@ -127,10 +126,10 @@ const ToyotaQ = () => {
               TOYOTA- <span className="text-toyota-red">Q</span>
             </h1>
             <p className="text-sm md:text-xl font-bold uppercase tracking-tight mb-4 md:mb-6 leading-tight">
-                Баталгаат, чанарын гэрчилгээтэй
+                {t('toyotaQ.heroSubtitle')}
             </p>
             <p className="text-xs md:text-base text-zinc-400 font-medium mb-12 md:mb-24 leading-relaxed max-w-md">
-              Албан ёсны дилерээс худалдан авсан дугаартай автомашины ашиглалтын нөхцөл байдлыг сайжруулан дахин борлуулах үйлчилгээ.
+              {t('toyotaQ.heroDesc')}
             </p>
             <div className="flex flex-col sm:flex-row justify-start gap-3">
                 <Button
@@ -139,7 +138,7 @@ const ToyotaQ = () => {
                   className="group px-8 text-[10px] md:text-xs"
                   onClick={scrollToVehicles}
                 >
-                    <span>Автомашин үзэх </span>
+                    <span>{t('toyotaQ.viewVehicles')} </span>
                     <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
                 </Button>
                 <Link to="/contact">
@@ -148,7 +147,7 @@ const ToyotaQ = () => {
                       size="lg"
                       className="px-8 backdrop-blur-sm text-[10px] md:text-xs"
                     >
-                      Автомашин борлуулах
+                      {t('toyotaQ.sellVehicle')}
                     </Button>
                 </Link>
             </div>
@@ -171,19 +170,19 @@ const ToyotaQ = () => {
         <div className="container-custom px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
             <div>
-                <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-4 md:mb-8">Toyota-Q гэж юу вэ?</h2>
+                <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-4 md:mb-8">{t('toyotaQ.whatIsTitle')}</h2>
                 <div className="space-y-4 md:space-y-6 text-zinc-600 leading-relaxed text-sm md:text-base">
                     <p>
-                        Toyota-Q гэдэг нь Toyota брэндийн албан ёсны дилер компаниудаас борлуулагдсан 7 жил, 100,000 км доторх насжилттай автомашинуудыг Тоёотагийн мэргэжлийн баг бүрэн үзлэг, оношилгоо, үнэлгээ хийж, шаардлагатай засвар үйлчилгээнд хамруулан "Чанарын гэрчилгээ"-гээр баталгаажуулан, Баталгаат хугацаатайгаар дахин борлуулж буй үйлчилгээ юм.
+                        {t('toyotaQ.whatIsDesc')}
                     </p>
                 </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-4">
                 {[
-                    { icon: RefreshCcw, title: "Trade-in", desc: "Шинэ автомашины урьдчилгаанд тооцуулах" },
-                    { icon: Search, title: "Худалдан авах", desc: "Баталгаатай хуучин автомашин авах" },
-                    { icon: Award, title: "Зуучлуулах", desc: "Албан ёсны дилерээр дамжуулан зарах" },
-                    { icon: FileCheck, title: "150 цэг", desc: "Иж бүрэн оношилгоо, үнэлгээ" }
+                    { icon: RefreshCcw, title: "Trade-in", desc: t('toyotaQ.cards.tradeIn') },
+                    { icon: Search, title: t('toyotaQ.cards.buyTitle'), desc: t('toyotaQ.cards.buyDesc') },
+                    { icon: Award, title: t('toyotaQ.cards.consignTitle'), desc: t('toyotaQ.cards.consignDesc') },
+                    { icon: FileCheck, title: t('toyotaQ.cards.points150Title'), desc: t('toyotaQ.cards.points150Desc') }
                 ].map((item, i) => (
                     <div key={i} className="p-4 md:p-8 bg-toyota-gray-100 border border-zinc-200 hover:border-toyota-red transition-colors text-center md:text-left">
                         <item.icon className="text-toyota-red mb-3 md:mb-4 mx-auto md:mx-0" size={24} md:size={32} />
@@ -201,9 +200,9 @@ const ToyotaQ = () => {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-16">
             <div>
-              <span className="text-toyota-red font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">Одоо худалдаалагдаж буй</span>
+              <span className="text-toyota-red font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">{t('toyotaQ.currentlyForSale')}</span>
               <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tight mt-1 md:mt-2">
-                Toyota-Q <span className="text-toyota-red">Автомашинууд</span>
+                Toyota-Q <span className="text-toyota-red">{t('toyotaQ.vehiclesTitleRed')}</span>
               </h2>
             </div>
           </div>
@@ -213,26 +212,26 @@ const ToyotaQ = () => {
             <aside className="w-full lg:w-80 lg:sticky lg:top-28 bg-white p-4 md:p-7 border border-zinc-200 shadow-sm z-10 shrink-0">
                 <div className="flex items-center gap-2 mb-4 md:mb-8 pb-2 md:pb-4 border-b border-zinc-100">
                     <Search size={16} className="text-toyota-red md:w-[18px] md:h-[18px]" />
-                    <h3 className="font-black uppercase tracking-tight text-[11px] md:text-sm">Шүүлтүүр</h3>
+                    <h3 className="font-black uppercase tracking-tight text-[11px] md:text-sm">{t('toyotaQ.filters.title')}</h3>
                 </div>
 
                 <div className="space-y-4 md:space-y-7">
                     {/* Нэрээр хайх */}
                     <div className="space-y-1.5 md:space-y-2.5">
-                        <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400">Нэрээр хайх</label>
+                        <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400">{t('toyotaQ.filters.byName')}</label>
                         <input
                             type="text"
                             name="name"
                             value={filters.name}
                             onChange={handleFilterChange}
-                            placeholder="Модель хайх..."
+                            placeholder={t('toyotaQ.filters.searchModel')}
                             className="w-full bg-zinc-50 border border-zinc-200 py-2 md:py-3 px-3 md:px-4 text-[10px] md:text-xs focus:outline-none focus:border-toyota-red transition-colors placeholder:text-zinc-300"
                         />
                     </div>
 
                     {/* Оноор хайх */}
                     <div className="space-y-1.5 md:space-y-2.5">
-                        <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400">Оноор хайх</label>
+                        <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400">{t('toyotaQ.filters.byYear')}</label>
                         <div className="grid grid-cols-2 gap-2 md:gap-3">
                             <div className="relative">
                                 <input
@@ -240,7 +239,7 @@ const ToyotaQ = () => {
                                     name="minYear"
                                     value={filters.minYear}
                                     onChange={handleFilterChange}
-                                    placeholder="Доод"
+                                    placeholder={t('toyotaQ.filters.min')}
                                     className="w-full bg-zinc-50 border border-zinc-200 py-2 md:py-3 px-2 md:px-3 text-[10px] md:text-[11px] focus:outline-none focus:border-toyota-red transition-colors placeholder:text-zinc-300"
                                 />
                             </div>
@@ -250,7 +249,7 @@ const ToyotaQ = () => {
                                     name="maxYear"
                                     value={filters.maxYear}
                                     onChange={handleFilterChange}
-                                    placeholder="Дээд"
+                                    placeholder={t('toyotaQ.filters.max')}
                                     className="w-full bg-zinc-50 border border-zinc-200 py-2 md:py-3 px-2 md:px-3 text-[10px] md:text-[11px] focus:outline-none focus:border-toyota-red transition-colors placeholder:text-zinc-300"
                                 />
                             </div>
@@ -259,14 +258,14 @@ const ToyotaQ = () => {
 
                     {/* Гүйлт */}
                     <div className="space-y-1.5 md:space-y-2.5">
-                        <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400">Гүйлт (км)</label>
+                        <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400">{t('toyotaQ.filters.byMileage')}</label>
                         <div className="grid grid-cols-2 gap-2 md:gap-3">
                             <input
                                 type="text"
                                 name="minMileage"
                                 value={filters.minMileage}
                                 onChange={handleFilterChange}
-                                placeholder="Доод"
+                                placeholder={t('toyotaQ.filters.min')}
                                 className="w-full bg-zinc-50 border border-zinc-200 py-2 md:py-3 px-2 md:px-3 text-[10px] md:text-[11px] focus:outline-none focus:border-toyota-red transition-colors placeholder:text-zinc-300"
                             />
                             <input
@@ -274,7 +273,7 @@ const ToyotaQ = () => {
                                 name="maxMileage"
                                 value={filters.maxMileage}
                                 onChange={handleFilterChange}
-                                placeholder="Дээд"
+                                placeholder={t('toyotaQ.filters.max')}
                                 className="w-full bg-zinc-50 border border-zinc-200 py-2 md:py-3 px-2 md:px-3 text-[10px] md:text-[11px] focus:outline-none focus:border-toyota-red transition-colors placeholder:text-zinc-300"
                             />
                         </div>
@@ -282,14 +281,14 @@ const ToyotaQ = () => {
 
                     {/* Үнэ */}
                     <div className="space-y-1.5 md:space-y-2.5">
-                        <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400">Үнэ (₮)</label>
+                        <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400">{t('toyotaQ.filters.byPrice')}</label>
                         <div className="grid grid-cols-2 gap-2 md:gap-3">
                             <input
                                 type="text"
                                 name="minPrice"
                                 value={filters.minPrice}
                                 onChange={handleFilterChange}
-                                placeholder="Доод"
+                                placeholder={t('toyotaQ.filters.min')}
                                 className="w-full bg-zinc-50 border border-zinc-200 py-2 md:py-3 px-2 md:px-3 text-[10px] md:text-[11px] focus:outline-none focus:border-toyota-red transition-colors placeholder:text-zinc-300"
                             />
                             <input
@@ -297,7 +296,7 @@ const ToyotaQ = () => {
                                 name="maxPrice"
                                 value={filters.maxPrice}
                                 onChange={handleFilterChange}
-                                placeholder="Дээд"
+                                placeholder={t('toyotaQ.filters.max')}
                                 className="w-full bg-zinc-50 border border-zinc-200 py-2 md:py-3 px-2 md:px-3 text-[10px] md:text-[11px] focus:outline-none focus:border-toyota-red transition-colors placeholder:text-zinc-300"
                             />
                         </div>
@@ -307,7 +306,7 @@ const ToyotaQ = () => {
                         onClick={() => setFilters({ name: '', minYear: '', maxYear: '', minMileage: '', maxMileage: '', minPrice: '', maxPrice: '' })}
                         className="w-full pt-2 md:pt-4 py-1 md:py-2 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-toyota-red transition-colors"
                     >
-                        Шүүлтүүр арилгах
+                        {t('toyotaQ.filters.clear')}
                     </button>
                 </div>
             </aside>
@@ -323,13 +322,23 @@ const ToyotaQ = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
                             >
-                                <VehicleCard {...vehicle} isFixedPrice={true} link={`/toyota-q/${vehicle.id}`} isToyotaQ={true} />
+                                <VehicleCard
+                                  {...vehicle}
+                                  specs={[
+                                    vehicle.year ? `${vehicle.year} ${t('toyotaQ.yearSuffix')}`.trim() : null,
+                                    vehicle.mileage ? `${vehicle.formattedMileage} ${t('toyotaQ.kmSuffix')}`.trim() : null,
+                                    vehicle.engineText
+                                  ].filter(Boolean)}
+                                  isFixedPrice={true}
+                                  link={`/toyota-q/${vehicle.id}`}
+                                  isToyotaQ={true}
+                                />
                             </motion.div>
                         ))}
                     </div>
                 ) : (
                     <div className="py-20 text-center bg-white border border-dashed border-zinc-200 w-full">
-                        <p className="text-zinc-400 uppercase font-bold text-xs tracking-widest">Илэрц олдсонгүй</p>
+                        <p className="text-zinc-400 uppercase font-bold text-xs tracking-widest">{t('toyotaQ.filters.noResults')}</p>
                     </div>
                 )}
             </div>
@@ -345,21 +354,16 @@ const ToyotaQ = () => {
                     <img src={inspection150} alt="150 Points Inspection" className="w-full h-40 md:h-auto object-cover shadow-lg md:shadow-2xl" />
                     <div className="absolute -top-4 md:-top-10 -right-4 md:-right-10 bg-toyota-red p-4 md:p-12 text-white">
                         <span className="text-2xl md:text-6xl font-black block leading-none">150</span>
-                        <span className="text-[7px] md:text-xs font-bold uppercase tracking-widest">Цэгийн оношилгоо</span>
+                        <span className="text-[7px] md:text-xs font-bold uppercase tracking-widest">{t('toyotaQ.inspection.badge')}</span>
                     </div>
                 </div>
                 <div className="w-full lg:w-1/2">
-                    <h2 className="text-xl md:text-4xl font-black uppercase tracking-tight mb-3 md:mb-8 text-center md:text-left">Чанарын гэрчилгээ</h2>
+                    <h2 className="text-xl md:text-4xl font-black uppercase tracking-tight mb-3 md:mb-8 text-center md:text-left">{t('toyotaQ.inspection.title')}</h2>
                     <p className="text-zinc-600 mb-6 md:mb-8 leading-relaxed text-[10px] md:text-base text-justify font-medium">
-                        Тоёотагийн Мэргэшсэн үнэлгээчин 150 цэгийн үзлэг үнэлгээ хийж, механик инженерүүд явах эд анги, хөдөлгүүр хүртэл бүх эд ангийг оношилж чанарыг баталгаажуулна.
+                        {t('toyotaQ.inspection.desc')}
                     </p>
                     <ul className="grid grid-cols-2 lg:grid-cols-1 gap-3 md:gap-4">
-                        {[
-                            "Мэргэжлийн оношилгоо",
-                            "Бүтэн хими цэвэрлэгээ",
-                            "Тоёотагийн баталгаа",
-                            "Чанарын гэрчилгээ"
-                        ].map((li, i) => (
+                        {t('toyotaQ.inspection.items', { returnObjects: true }).map((li, i) => (
                             <li key={i} className="flex items-center gap-2 md:gap-3 text-[8px] md:text-sm font-bold uppercase tracking-tight">
                                 <CheckCircle2 size={12} className="text-toyota-red shrink-0 md:w-4 md:h-4" />
                                 {li}
@@ -376,17 +380,10 @@ const ToyotaQ = () => {
         <div className="container-custom px-4">
             <h2 className="text-xl md:text-3xl font-black uppercase tracking-tight mb-8 md:mb-12 flex items-center gap-3">
                 <AlertCircle className="text-toyota-red w-5 h-5 md:w-8 md:h-8" />
-                Баталгаат засварт хамаарахгүй зүйлс
+                {t('toyotaQ.exclusions.title')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                {[
-                    "Үйлдвэрлэлийн дараах буруу тоноглол, өөрчилсөн эд анги",
-                    "Гадна арьс дээрх чулуу болон нарийн ширхгээс үүссэн гэмтэл",
-                    "Механик гэмтэл (мөргөлдсөн, усанд орсон, хөлдөөсөн)",
-                    "Хуваарьт засвар үйлчилгээг хугацаанд нь хийлгээгүй",
-                    "Зориулалтын бус, чанаргүй тос, шингэн хийсэн",
-                    "Буруу ашиглалтаас үүдсэн хүчин зүйлс"
-                ].map((item, i) => (
+                {t('toyotaQ.exclusions.items', { returnObjects: true }).map((item, i) => (
                     <div key={i} className="flex items-start gap-3 p-3 md:p-4 border border-zinc-800 hover:border-zinc-700 transition-colors">
                         <span className="text-toyota-red font-black text-xs md:text-base">/</span>
                         <p className="text-[10px] md:text-sm text-zinc-400 font-medium">{item}</p>
@@ -400,11 +397,11 @@ const ToyotaQ = () => {
       <section className="py-10 md:py-16 bg-white">
           <div className="container-custom px-4 text-center">
               <div className="max-w-2xl mx-auto border-2 border-toyota-black p-8 md:p-14">
-                  <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-4 md:mb-6 leading-tight">Toyota-Q үйлчилгээ авах</h2>
-                  <p className="text-zinc-500 text-[10px] md:text-base mb-8 md:mb-10 font-medium px-4">Та өөрийн автомашиныг үнэлүүлэх эсвэл Toyota-Q баталгаатай автомашин худалдан авах бол бидэнтэй холбогдоно уу.</p>
+                  <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-4 md:mb-6 leading-tight">{t('toyotaQ.finalCta.title')}</h2>
+                  <p className="text-zinc-500 text-[10px] md:text-base mb-8 md:mb-10 font-medium px-4">{t('toyotaQ.finalCta.desc')}</p>
                   <div className="flex justify-center">
                       <Link to="/contact" className="w-full sm:w-auto">
-                        <Button variant="primary" size="lg" className="w-full sm:px-12 py-3.5 md:py-4 text-[10px] md:text-xs font-black uppercase tracking-widest">Холбоо барих</Button>
+                        <Button variant="primary" size="lg" className="w-full sm:px-12 py-3.5 md:py-4 text-[10px] md:text-xs font-black uppercase tracking-widest">{t('nav.contact')}</Button>
                       </Link>
                   </div>
               </div>

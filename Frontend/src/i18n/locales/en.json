@@ -228,5 +228,313 @@
       "galleryEmpty": "Gallery is empty",
       "compareDesc": "Compare the {{name}} {{series}} side by side with other Toyota models and find the trim that best fits your needs."
     }
+  },
+  "service": {
+    "heroTitle": "Service & Maintenance",
+    "heroPara1": "Every Toyota is renowned worldwide for its high engineering standards, durability, and reliability. The best way to preserve that quality throughout its lifetime is professional maintenance carried out to the manufacturer's standards.",
+    "heroPara2": "As the official dealer of Toyota Motor Corporation, Toyota Top Motors provides service for all Toyota and Lexus models to international standards. Our center is fully equipped with modern diagnostic and repair equipment, with the capacity to service up to 20 vehicles at once.",
+    "bookBtn": "Book an Appointment",
+    "viewServices": "View Services",
+    "advantagesTitlePlain": "Our",
+    "advantagesTitleRed": "Advantages",
+    "advantages": [
+      "Service open to all Toyota and Lexus models",
+      "Repair carried out to manufacturer standards",
+      "Supply of genuine parts and accessories",
+      "Skilled engineers and technical team",
+      "Transparent pricing policy",
+      "Ability to track repair progress",
+      "Comfortable waiting lounge",
+      "70+ vehicle parking spaces",
+      "La Parisienne coffee shop and a kids' play area",
+      "Regular service Monday through Sunday"
+    ],
+    "facilityTitlePlain": "A Comfortable",
+    "facilityTitleRed": "Environment",
+    "facility": {
+      "parking": "70+ Parking Spaces",
+      "restroom": "Comfortable Restrooms",
+      "playArea": "Kids' Play Area",
+      "lounge": "Comfortable Waiting Lounge"
+    },
+    "ourServicesTitlePlain": "Our",
+    "ourServicesTitleRed": "Services",
+    "categories": {
+      "regular": { "desc": "Oil, fluid, and consumable parts replacement at the manufacturer-recommended interval to keep your vehicle running reliably.", "items": ["Seasonal oil change", "All fluid replacement", "Scheduled and routine maintenance"] },
+      "diagnostics": { "desc": "Detailed diagnostics for all vehicle systems using modern computer equipment.", "items": ["Computer diagnostics", "Engine diagnostics", "Drivetrain diagnostics", "Electrical diagnostics", "Suspension diagnostics"] },
+      "engine": { "desc": "Skilled engineers repair engine and drivetrain faults to manufacturer standards.", "items": ["Assembly repair", "Major engine overhaul", "Major drivetrain overhaul"] },
+      "wheels": { "desc": "Professional service to ensure driving stability and safety.", "items": ["Wheel alignment", "Wheel balancing", "Tire replacement", "Tire storage service", "Lighting adjustment"] },
+      "care": { "desc": "Services aimed at preserving your vehicle's appearance and value over time, plus comprehensive body repair.", "items": ["Automatic and hand wash", "Protective film (full or partial)", "Exterior detailing and care", "Body and paint repair"] },
+      "parts": { "desc": "We offer manufacturer-warrantied genuine parts and accessories to ensure your vehicle's safety and reliability.", "items": ["Genuine parts sales & advice", "Accessory installation", "Special-order parts supply"] }
+    },
+    "getAppointment": "Get Appointment",
+    "viewDetails": "View Details",
+    "bodyRepairPlain": "BODY",
+    "bodyRepairRed": "REPAIR",
+    "contactPhoneLabel": "Service Hotline",
+    "bookNowBtn": "Book Now"
+  },
+  "parts": {
+    "heroTitleLine1": "Why Choose",
+    "heroTitleLine2": "Genuine Parts?",
+    "heroPara1": "Counterfeit parts may look identical to genuine ones, but the materials used in their manufacture can't match genuine parts under demanding driving and weather conditions — creating a risk to your vehicle's core components down the line.",
+    "heroPara2": "Genuine parts sold by an official dealer are manufactured specifically for Toyota models, fully ensuring your vehicle's safety, giving you a 100% satisfaction guarantee, extending your vehicle's service life, and saving on future core-component repair costs.",
+    "heroQuote": "Genuine, warrantied Toyota parts help protect your vehicle and extend its service life.",
+    "tipsTitlePlain": "PARTS",
+    "tipsTitleRed": "TIPS",
+    "videos": {
+      "brakePad1": "Brake Pads",
+      "brakePad2": "Brake Pads 1",
+      "airFilter": "Air Filter",
+      "sparkPlug": "Spark Plug",
+      "saveMoney": "Save Money",
+      "safety": "Safety",
+      "enginePower": "Engine Power",
+      "oilFilter": "Oil Filter",
+      "injectorCleaner": "Injector Cleaner"
+    },
+    "aisin": {
+      "para1": "AISIN is a world-renowned Japanese auto parts manufacturer and a member of the Toyota Group. It is a trusted OEM supplier for the Toyota and Lexus brands and ranks among the world's top 10 automotive suppliers.",
+      "para2": "One in five vehicles used worldwide runs on an AISIN transmission, and under a \"Quality First\" principle, AISIN manufactures more than 10,000 product types including water pumps, clutches, and brake systems."
+    },
+    "responsibilitiesTitlePlain": "OWNER",
+    "responsibilitiesTitleRed": "RESPONSIBILITIES",
+    "responsibilitiesDesc": "To keep your vehicle running reliably and your warranty valid, owners are responsible for the following.",
+    "responsibilities": {
+      "usage": { "title": "Use As Intended", "desc": "Use, repair, store, and transport the vehicle according to the owner's manual and its intended purpose." },
+      "dealer": { "title": "Service at an Official Dealer", "desc": "Having all maintenance performed only at an official dealer protects your warranty." },
+      "regular": { "title": "Regular Maintenance", "desc": "Strictly follow the schedule, frequency, and procedures set by the manufacturer for maintenance." },
+      "issues": { "title": "Address Issues Promptly", "desc": "If a fault occurs, contact an official dealer immediately for advice and follow their guidance." },
+      "records": { "title": "Keep Records", "desc": "Keep receipts, work orders, and other documents proving that maintenance was performed on schedule." }
+    },
+    "ctaLabel": "Order Genuine Parts",
+    "ctaTitle": "Need Some Help?"
+  },
+  "sales": {
+    "sendRequest": "Send Order Request",
+    "teamTitlePlain": "Our",
+    "teamTitleRed": "Team",
+    "teamDesc": "Get in touch directly with our expert consultants",
+    "noStaff": "No staff information available yet."
+  },
+  "finance": {
+    "calcTitle": "Payment Calculator",
+    "priceLabel": "Vehicle Price (₮)",
+    "downPaymentLabel": "Down Payment (%)",
+    "termLabel": "Loan Term (Months)",
+    "monthsUnit": "months",
+    "termOptions": {
+      "y1": "12 months (1 year)",
+      "y2": "24 months (2 years)",
+      "y3": "36 months (3 years)",
+      "y4": "48 months (4 years)",
+      "y5": "60 months (5 years)"
+    },
+    "monthlyPaymentLabel": "Monthly Payment",
+    "disclaimer": "* This calculation is an estimate only and may vary depending on bank interest rates and other conditions.",
+    "documentsTitle": "Required Documents",
+    "personalTitle": "Individual",
+    "personalDocs": ["National ID card", "Social insurance statement", "Bank statement (last 6 months)", "Other proof of income documents"],
+    "orgTitle": "Organization",
+    "orgDocs": ["Business registration certificate", "Financial statements", "Bank statement", "Board resolution"],
+    "tipTitle": "Tip",
+    "tipDesc": "Get in touch with our sales consultants for the latest interest rate information from banks and NBFIs."
+  },
+  "toyotaQ": {
+    "yearSuffix": "",
+    "kmSuffix": "km",
+    "heroSubtitle": "Warrantied, Quality-Certified",
+    "heroDesc": "A resale service that reconditions vehicles purchased with a plate from an official dealer.",
+    "viewVehicles": "View Vehicles",
+    "sellVehicle": "Sell Your Vehicle",
+    "whatIsTitle": "What is Toyota-Q?",
+    "whatIsDesc": "Toyota-Q is a service in which vehicles sold by official Toyota dealers, aged within 7 years or 100,000 km, undergo a full inspection, diagnostics, and appraisal by Toyota's professional team, receive any necessary repairs, are certified with a \"Quality Certificate,\" and are resold with a warranty.",
+    "cards": {
+      "tradeIn": "Apply toward a new vehicle down payment",
+      "buyTitle": "Buy",
+      "buyDesc": "Get a warrantied used vehicle",
+      "consignTitle": "Consign",
+      "consignDesc": "Sell through an official dealer",
+      "points150Title": "150 Points",
+      "points150Desc": "Comprehensive diagnostics and appraisal"
+    },
+    "currentlyForSale": "Currently for Sale",
+    "vehiclesTitleRed": "Vehicles",
+    "filters": {
+      "title": "Filters",
+      "byName": "Search by Name",
+      "searchModel": "Search model...",
+      "byYear": "Search by Year",
+      "byMileage": "Mileage (km)",
+      "byPrice": "Price (₮)",
+      "min": "Min",
+      "max": "Max",
+      "clear": "Clear Filters",
+      "noResults": "No results found"
+    },
+    "inspection": {
+      "badge": "Point Inspection",
+      "title": "Quality Certificate",
+      "desc": "Toyota's certified appraisers perform a 150-point inspection, and mechanical engineers diagnose everything from the suspension to the engine to guarantee quality.",
+      "items": ["Professional Diagnostics", "Full Chemical Cleaning", "Toyota Warranty", "Quality Certificate"]
+    },
+    "exclusions": {
+      "title": "Not Covered by Warranty Repair",
+      "items": [
+        "Improper aftermarket modifications or altered parts",
+        "Surface damage from stone chips or fine scratches",
+        "Mechanical damage (collision, flood, freeze damage)",
+        "Scheduled maintenance not performed on time",
+        "Use of unsuitable or low-quality oil/fluids",
+        "Issues caused by improper use"
+      ]
+    },
+    "finalCta": {
+      "title": "Get Toyota-Q Service",
+      "desc": "Contact us to have your vehicle appraised, or to purchase a Toyota-Q certified vehicle."
+    },
+    "detail": {
+      "notFound": "Vehicle Not Found",
+      "descriptionTitle": "Description",
+      "defaultDescription": "This vehicle is part of the Toyota-Q certified pre-owned program, has undergone a full 150-point inspection, and comes with a quality certificate.",
+      "leaseCalculator": "Lease Calculator",
+      "yearMade": "Year Made",
+      "mileage": "Mileage",
+      "engine": "Engine",
+      "serviceHistory": "Service History",
+      "download": "Download",
+      "none": "None",
+      "advantagesTitle": "Toyota-Q Advantages",
+      "advantages": ["Full 150-point inspection", "Official Toyota warranty", "Parts & service discounts", "Clear, verified history"]
+    }
+  },
+  "faq": {
+    "helpLabel": "Help",
+    "titlePlain": "Frequently Asked",
+    "titleRed": "Questions",
+    "categories": {
+      "sales": {
+        "title": "Purchasing & Vehicles",
+        "questions": [
+          { "q": "Can I pre-order a vehicle?", "a": "Yes. If the color or trim you're interested in isn't currently in stock, you can sign a pre-order agreement. Sales contact numbers: 8888-9041, 8888-9042, 8888-9043, 8888-9045" },
+          { "q": "Can I take a vehicle for a test drive?", "a": "You're welcome to visit our showroom and take one of our test-drive-ready models for a spin." },
+          { "q": "What are your hours and locations?", "a": "Branch 1: Ulaanbaatar, Bayangol district, 6th khoroo, 10th khoroolol, east side of Emart. Phone: 7777-8090. Hours: 09:00-18:00\n\nBranch 2: Umnugovi province, Tsogttsetsii sum, Ugoomor IV bag. Phone: 7777-8090. Hours: 09:00-18:00" }
+        ]
+      },
+      "service": {
+        "title": "Service & Maintenance",
+        "questions": [
+          { "q": "How do I book a service appointment?", "a": "Call 7777-8090 to book a service appointment." },
+          { "q": "How long does a service take?", "a": "It depends on the type of service, diagnostic results, and parts availability. Your service advisor will give you an estimated timeframe in advance." },
+          { "q": "Can I get a repair quote in advance?", "a": "Yes. After the initial inspection and diagnostics, we'll present the work to be done, parts needed, and total cost. If additional work is required, we'll proceed only after getting your approval." }
+        ]
+      },
+      "parts": {
+        "title": "Parts",
+        "questions": [
+          { "q": "How do I order genuine parts?", "a": "Provide your vehicle's VIN and the part details needed, and we'll check pricing and availability for you." },
+          { "q": "Can I order a part that's out of stock?", "a": "Yes. You can pre-order, and our parts staff will let you know the expected delivery timeframe." },
+          { "q": "What are the advantages of genuine parts?", "a": "Using parts of unclear origin can negatively affect your vehicle's other components and performance, make repairs ineffective, and wear out faster — so you should install genuine, warrantied parts supplied by the official manufacturer." }
+        ]
+      },
+      "finance": {
+        "title": "Financing & Leasing",
+        "questions": [
+          { "q": "Do you offer loan terms?", "a": "Yes. You can choose from auto loan products offered by our partner banks and financial institutions." },
+          { "q": "Do you issue VAT receipts?", "a": "Yes, we issue VAT receipts." },
+          { "q": "When is the VAT refund paid?", "a": "After registering your purchase's e-receipt in the e-receipt app, the refund is paid starting the 20th of the quarter following the month it was verified." }
+        ]
+      },
+      "warranty": {
+        "title": "Warranty",
+        "questions": [
+          { "q": "What warranty comes with a new vehicle?", "a": "Toyota provides free repair for any defect arising under normal use — except items listed under 'Not Covered by Warranty Repair' — for 3 years or 100,000 km, whichever comes first." },
+          { "q": "What comes included with a new vehicle?", "a": "New vehicles come with 6 complimentary oil service packages and 3 engine air filter replacements." }
+        ]
+      },
+      "toyotaq": {
+        "title": "Toyota Q (Used Cars)",
+        "questions": [
+          { "q": "What are the requirements for Toyota-Q?", "a": "Vehicles manufactured within the last 7 years, driven under 100,000 km, and purchased from an official dealer are eligible." }
+        ]
+      }
+    }
+  },
+  "compare": {
+    "titlePlain": "Detailed",
+    "titleRed": "Comparison",
+    "tableHeader": "Comparison",
+    "noneSelected": "No models selected for comparison",
+    "viewModels": "View Models",
+    "basicSpecs": {
+      "engine": "ENGINE",
+      "transmission": "TRANSMISSION",
+      "drive": "DRIVE",
+      "horsepower": "HORSEPOWER (HP)",
+      "torque": "TORQUE (NM)",
+      "fuelTank": "FUEL TANK CAPACITY",
+      "extra": "ADDITIONAL SPEC"
+    }
+  },
+  "products": {
+    "viewDetails": "View Details",
+    "noProducts": "No products found",
+    "tires": {
+      "title": "TIRES",
+      "desc": "High-quality tires from the renowned Japanese Yokohama brand, suited to every road condition.",
+      "longDesc": "High-quality tires from the renowned Japanese Yokohama brand, suited to every road condition. A perfect blend of safety, comfort, and durability."
+    },
+    "wheels": {
+      "title": "WHEELS",
+      "desc": "Lightweight alloy wheels from BRAID, the world's top brand in off-road racing.",
+      "longDesc": "Lightweight alloy wheels from BRAID, the world's top brand in off-road racing. Durable in any harsh condition, light yet strong."
+    },
+    "merch": {
+      "desc": "Official Toyota Gazoo Racing apparel, gear, and accessories.",
+      "longDesc": "Official Toyota Gazoo Racing apparel, gear, and accessories. Stylish, high-quality products for motorsport enthusiasts."
+    }
+  },
+  "productDetail": {
+    "priceLabel": "Price",
+    "availableSizes": "Available Sizes",
+    "radius": "Radius (R)",
+    "sizeLabel": "Size",
+    "warrantyNote": "Genuine Toyota warrantied part.",
+    "detailedDesc": "Detailed Description",
+    "noDescription": "No description provided."
+  },
+  "news": {
+    "readMore": "Read More",
+    "more": "More",
+    "noNews": "No news available yet.",
+    "notFound": "News Not Found",
+    "backToNews": "Back to News",
+    "otherPlain": "Other",
+    "otherRed": "News"
+  },
+  "compareModal": {
+    "titlePlain": "Compare",
+    "titleRed": "Models",
+    "selectedCount": "{{count}} / 3 trims selected",
+    "hpShort": "HP"
+  },
+  "vehicleCard": {
+    "year": "Year"
+  },
+  "calculator": {
+    "tryOnLabel1": "Wheels & Tires",
+    "tryOnLabel2": "Try Wheels & Tires On Your Car",
+    "buttonLabel1": "Leasing",
+    "buttonLabel2": "Calculator",
+    "title": "Leasing Calculator",
+    "vehiclePrice": "Vehicle Price",
+    "term": "Term",
+    "months": "months",
+    "downPayment": "Down Payment",
+    "monthlyRate": "Monthly Rate",
+    "monthlyPayment": "Monthly Payment",
+    "borrowAmount": "Amount to borrow:",
+    "note": "* Calculation based on standard market conditions. Actual credit decision may vary.",
+    "close": "Close Calculator"
   }
 }

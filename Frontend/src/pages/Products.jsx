@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import yokohamaGallery from '../assets/acc/yokohama gallery.png';
 import yokohamaLogo from '../assets/acc/yokohama logo.png';
 import braidGallery from '../assets/acc/Braid Gallery.jpg';
@@ -10,22 +11,23 @@ import grGallery from '../assets/acc/GR Gallery.webp';
 import grLogo from '../assets/acc/GR logo.jpg';
 
 const AccordionGallery = () => {
+  const { t } = useTranslation();
   const [expandedIndex, setExpandedIndex] = useState(null);
   const navigate = useNavigate();
 
   const items = [
     {
-      title: 'ДУГУЙ',
+      title: t('products.tires.title'),
       subtitle: 'YOKOHAMA',
-      desc: 'Японы алдарт Yokohama брэндийн бүх төрлийн замын нөхцөлд тохирсон өндөр чанартай дугуйнууд.',
+      desc: t('products.tires.desc'),
       img: yokohamaGallery,
       logo: yokohamaLogo,
       path: '/tires'
     },
     {
-      title: 'ОБУД',
+      title: t('products.wheels.title'),
       subtitle: 'BRAID',
-      desc: 'Бартаат замын уралдааны дэлхийн шилдэг BRAID брэндийн хөнгөн цагаан хайлшин обуднууд.',
+      desc: t('products.wheels.desc'),
       img: braidGallery,
       logo: braidLogo,
       path: '/wheels'
@@ -33,7 +35,7 @@ const AccordionGallery = () => {
     {
       title: 'GR MERCH',
       subtitle: 'GAZOO RACING',
-      desc: 'Toyota Gazoo Racing-ийн албан ёсны хувцас, хэрэглэл болон аксессуарууд.',
+      desc: t('products.merch.desc'),
       img: grGallery,
       logo: grLogo,
       path: '/merch'
@@ -94,7 +96,7 @@ const AccordionGallery = () => {
                     onClick={(e) => { e.stopPropagation(); navigate(item.path); }}
                     className="bg-toyota-red text-white font-black uppercase text-[10px] md:text-[12px] tracking-[0.2em] px-8 py-3.5 md:px-10 md:py-4 flex items-center gap-3 shadow-2xl mb-6 md:mb-10 hover:bg-white hover:text-toyota-red transition-colors duration-300"
                   >
-                     <span>Дэлгэрэнгүй үзэх</span>
+                     <span>{t('products.viewDetails')}</span>
                      <ChevronRight size={16} />
                   </motion.button>
                 )}
@@ -119,7 +121,7 @@ const AccordionGallery = () => {
                 </div>
                 {/* Mobile Only label */}
                 <div className="md:hidden mt-3 opacity-100">
-                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white bg-toyota-red/80 px-3 py-1 rounded-sm shadow-lg">Дэлгэрэнгүй үзэх</span>
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white bg-toyota-red/80 px-3 py-1 rounded-sm shadow-lg">{t('products.viewDetails')}</span>
                 </div>
              </motion.div>
           </div>

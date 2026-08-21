@@ -2,8 +2,10 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelectVehicle, onRemoveVehicle }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   if (!isOpen) return null;
 
@@ -63,9 +65,9 @@ const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelect
           {/* Header */}
           <div className="p-4 md:p-8 border-b border-zinc-100 flex justify-between items-center bg-white z-10">
             <div>
-              <h2 className="text-xl md:text-3xl font-black uppercase tracking-tighter">Харьцуулах <span className="text-toyota-red">Загварууд</span></h2>
+              <h2 className="text-xl md:text-3xl font-black uppercase tracking-tighter">{t('compareModal.titlePlain')} <span className="text-toyota-red">{t('compareModal.titleRed')}</span></h2>
               <p className="text-[8px] md:text-[10px] text-zinc-400 font-black uppercase tracking-[0.2em]">
-                {selectedVehicles.length} / 3 хувилбар сонгогдсон
+                {t('compareModal.selectedCount', { count: selectedVehicles.length })}
               </p>
             </div>
             <button onClick={onClose} className="p-2 md:p-3 hover:bg-zinc-100 transition-colors border border-zinc-100 rounded-sm">
@@ -108,11 +110,11 @@ const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelect
 
                         <div className="space-y-1.5 md:space-y-4 mb-1">
                           <div className="flex flex-col border-b border-zinc-50 pb-1 md:pb-2">
-                            <span className="text-[6px] md:text-[9px] text-zinc-400 uppercase font-black tracking-widest">Хөдөлгүүр</span>
+                            <span className="text-[6px] md:text-[9px] text-zinc-400 uppercase font-black tracking-widest">{t('vehicles.detail.quickFeatures.engine')}</span>
                             <span className="text-[8px] md:text-[11px] font-bold uppercase text-toyota-black truncate">{variant.engine_spec || '-'}</span>
                           </div>
                           <div className="flex flex-col border-b border-zinc-50 pb-1 md:pb-2">
-                            <span className="text-[6px] md:text-[9px] text-zinc-400 uppercase font-black tracking-widest">М.хүч</span>
+                            <span className="text-[6px] md:text-[9px] text-zinc-400 uppercase font-black tracking-widest">{t('compareModal.hpShort')}</span>
                             <span className="text-[8px] md:text-[11px] font-bold uppercase text-toyota-black">{variant.hp_spec || '-'}</span>
                           </div>
                         </div>
@@ -124,7 +126,7 @@ const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelect
                         </div>
 
                         <div className="w-full px-1 md:px-6">
-                            <p className="text-[6px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400 text-center mb-2">Сонгох</p>
+                            <p className="text-[6px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400 text-center mb-2">{t('common.select')}</p>
                             <div className="relative">
                                 <select
                                   className="w-full bg-white border border-zinc-300 px-1 py-2 text-[7px] md:text-[11px] font-black uppercase tracking-tighter focus:outline-none focus:border-toyota-red appearance-none cursor-pointer pr-4"
@@ -165,7 +167,7 @@ const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelect
               onClick={handleDetailedCompare}
               className="w-full md:w-auto px-10 md:px-12 py-3.5 md:py-5 bg-toyota-black text-white font-black uppercase tracking-widest hover:bg-zinc-800 transition-all disabled:bg-zinc-200 disabled:text-zinc-400 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-[9px] md:text-xs shadow-xl active:scale-95"
             >
-              <span>Дэлгэрэнгүй харьцуулалт</span>
+              <span>{t('compare.titlePlain')} {t('compare.titleRed')}</span>
               <ArrowRight size={16} />
             </button>
           </div>

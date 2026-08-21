@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MessageSquare, User, PhoneCall, ChevronRight, FileText, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import reqImage from '../assets/sales/req.png';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const Sales = () => {
+  const { t } = useTranslation();
   const [salesStaff, setSalesStaff] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,7 +52,7 @@ const Sales = () => {
                   className="w-full sm:w-auto"
                 >
                   <Button variant="primary" size="lg" className="px-10 h-12 md:h-14 uppercase font-black tracking-widest text-[9px] md:text-[10px] shadow-xl shadow-toyota-red/20 group w-full sm:w-auto">
-                     <span>Захиалгын хүсэлт илгээх</span>
+                     <span>{t('sales.sendRequest')}</span>
                      <ChevronRight className="ml-2 md:ml-3 group-hover:translate-x-1 transition-transform" size={14} md:size={16} />
                   </Button>
                 </Link>
@@ -64,8 +66,8 @@ const Sales = () => {
         <div className="container-custom px-4">
           <div className="flex flex-col md:flex-row justify-between md:items-end mb-10 md:mb-16 gap-4">
             <div>
-              <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter">Манай <span className="text-toyota-red">баг хамт олон</span></h2>
-              <p className="text-zinc-500 mt-1 md:mt-2 font-medium text-xs md:text-base">Мэргэшсэн зөвлөхүүдтэй шууд холбогдох боломжтой</p>
+              <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter">{t('sales.teamTitlePlain')} <span className="text-toyota-red">{t('sales.teamTitleRed')}</span></h2>
+              <p className="text-zinc-500 mt-1 md:mt-2 font-medium text-xs md:text-base">{t('sales.teamDesc')}</p>
             </div>
             <div className="flex items-center gap-3 text-[8px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400 bg-zinc-50 px-4 py-2.5 border border-zinc-100">
               <PhoneCall size={12} md:size={14} className="text-toyota-red" />
@@ -74,7 +76,7 @@ const Sales = () => {
           </div>
 
           {loading ? (
-            <div className="py-20 text-center font-black uppercase tracking-widest text-zinc-300">Уншиж байна...</div>
+            <div className="py-20 text-center font-black uppercase tracking-widest text-zinc-300">{t('vehicles.list.loading')}</div>
           ) : (
             <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-5">
               {salesStaff.map((staff, i) => (
@@ -115,7 +117,7 @@ const Sales = () => {
                 </motion.div>
               ))}
               {salesStaff.length === 0 && (
-                <div className="col-span-full py-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Ажилчдын мэдээлэл одоогоор алга байна.</div>
+                <div className="col-span-full py-20 text-center text-zinc-400 font-bold uppercase tracking-widest">{t('sales.noStaff')}</div>
               )}
             </div>
           )}
