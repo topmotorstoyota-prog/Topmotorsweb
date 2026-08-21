@@ -5,6 +5,7 @@ import {
   ChevronRight, Shield, Wrench, Fuel, Users, Settings, Zap, CheckCircle2, SlidersHorizontal, Calendar, ArrowRight, ImageIcon, RotateCcw, Gauge, Droplets, Info, ChevronDown, Calculator, Rocket, RefreshCcw
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 import Button from '../components/Button';
 import ComparisonModal from '../components/ComparisonModal';
 import API_BASE_URL from '../config';
@@ -13,6 +14,7 @@ const MIN_360_IMAGES = 16;
 
 const VehicleDetail = () => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const { id } = useParams();
   const navigate = useNavigate();
   const [vehicleModel, setVehicleModel] = useState(null);
@@ -74,10 +76,10 @@ const VehicleDetail = () => {
             const formattedVariant = {
               ...firstVariant,
               id: variantId,
-              modelName: current.name,
+              modelName: loc(current.name, current.nameEn),
               modelId: current.id,
               category: current.category,
-              fullName: `${current.name} - ${firstVariant.series} (${firstVariant.engineType})`,
+              fullName: `${loc(current.name, current.nameEn)} - ${firstVariant.series} (${firstVariant.engineType})`,
               displayImage: last360 || firstVariant.image || current.image,
               features: firstVariant.features || []
             };
@@ -126,10 +128,10 @@ const VehicleDetail = () => {
       const formattedVariant = {
         ...variant,
         id: variantId,
-        modelName: vehicleModel.name,
+        modelName: loc(vehicleModel.name, vehicleModel.nameEn),
         modelId: vehicleModel.id,
         category: vehicleModel.category,
-        fullName: `${vehicleModel.name} - ${variant.series} (${variant.engineType})`,
+        fullName: `${loc(vehicleModel.name, vehicleModel.nameEn)} - ${variant.series} (${variant.engineType})`,
         displayImage: last360 || variant.image || vehicleModel.image,
         features: variant.features || []
       };
@@ -234,10 +236,10 @@ const VehicleDetail = () => {
   const galleryImages = selectedVariant?.images?.length > 0 ? selectedVariant.images : (vehicleModel.images || []);
 
   const quickFeatures = selectedVariant ? [
-    { icon: Zap, label: t('vehicles.detail.quickFeatures.engine'), value: selectedVariant.engine_spec || 'N/A' },
-    { icon: Settings, label: t('vehicles.detail.quickFeatures.transmission'), value: selectedVariant.trans_spec || 'N/A' },
-    { icon: Rocket, label: t('vehicles.detail.quickFeatures.horsepower'), value: selectedVariant.hp_spec || 'N/A' },
-    { icon: RefreshCcw, label: t('vehicles.detail.quickFeatures.torque'), value: selectedVariant.torque_spec || 'N/A' }
+    { icon: Zap, label: t('vehicles.detail.quickFeatures.engine'), value: loc(selectedVariant.engine_spec, selectedVariant.engine_spec_en) || 'N/A' },
+    { icon: Settings, label: t('vehicles.detail.quickFeatures.transmission'), value: loc(selectedVariant.trans_spec, selectedVariant.trans_spec_en) || 'N/A' },
+    { icon: Rocket, label: t('vehicles.detail.quickFeatures.horsepower'), value: loc(selectedVariant.hp_spec, selectedVariant.hp_spec_en) || 'N/A' },
+    { icon: RefreshCcw, label: t('vehicles.detail.quickFeatures.torque'), value: loc(selectedVariant.torque_spec, selectedVariant.torque_spec_en) || 'N/A' }
   ] : [];
 
   // Үзүүлэлтүүдийг ангиллаар нь нэгтгэх функц
@@ -277,14 +279,14 @@ const VehicleDetail = () => {
           <ChevronRight size={10} className="shrink-0" />
           <Link to="/vehicles" className="hover:text-toyota-black transition-colors">{t('nav.vehiclesShort')}</Link>
           <ChevronRight size={10} className="shrink-0" />
-          <span className="text-toyota-black truncate">{vehicleModel.name}</span>
+          <span className="text-toyota-black truncate">{loc(vehicleModel.name, vehicleModel.nameEn)}</span>
         </div>
       </div>
 
       <section className="py-4 lg:py-16 overflow-hidden">
         <div className="max-w-[95rem] mx-auto px-4 lg:px-8 w-full">
           <div className="flex flex-col gap-2 md:gap-4 mb-6 md:mb-12 items-center text-center">
-              <h1 className="text-2xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-toyota-black leading-none mb-2 md:mb-4 w-full">{vehicleModel.name}</h1>
+              <h1 className="text-2xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-toyota-black leading-none mb-2 md:mb-4 w-full">{loc(vehicleModel.name, vehicleModel.nameEn)}</h1>
 
               {/* New Capsule Variant Selector */}
               <div className="inline-flex p-1 bg-zinc-100/50 rounded-full border border-zinc-200 backdrop-blur-sm shadow-inner">
@@ -476,7 +478,7 @@ const VehicleDetail = () => {
                     {selectedVariant?.series} {selectedEngine} {t('vehicles.detail.variantSuffix')}
                   </p>
                   <p className="text-zinc-600 leading-relaxed text-[11px] md:text-base whitespace-pre-wrap font-medium text-justify">
-                    {selectedVariant?.description || vehicleModel.description}
+                    {loc(selectedVariant?.description, selectedVariant?.descriptionEn) || loc(vehicleModel.description, vehicleModel.descriptionEn)}
                   </p>
                 </div>
               </div>
@@ -546,7 +548,7 @@ const VehicleDetail = () => {
                 <div className="max-w-2xl">
                     <h3 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-6 leading-[1.1]">{t('vehicles.list.ctaTitleLine1')} <br/><span className="text-toyota-red">{t('vehicles.list.ctaTitleLine2')}</span></h3>
                     <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                      {t('vehicles.detail.compareDesc', { name: vehicleModel.name, series: selectedVariant?.series || '' })}
+                      {t('vehicles.detail.compareDesc', { name: loc(vehicleModel.name, vehicleModel.nameEn), series: selectedVariant?.series || '' })}
                     </p>
                 </div>
                 <button onClick={() => setIsCompareOpen(true)} className="w-full md:w-auto px-10 md:px-12 py-4 md:py-5 bg-toyota-red text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:text-black transition-all shadow-xl shadow-toyota-red/20 active:scale-95 flex items-center justify-center gap-4 shrink-0">

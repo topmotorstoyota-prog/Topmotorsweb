@@ -3,11 +3,13 @@ import { motion } from 'framer-motion';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 import API_BASE_URL from '../config';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const News = () => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -51,7 +53,7 @@ const News = () => {
                   <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100">
                     <img
                       src={news.image || placeholderImage}
-                      alt={news.title}
+                      alt={loc(news.title, news.titleEn)}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   </div>
@@ -67,12 +69,12 @@ const News = () => {
 
                   <Link to={`/news/${news.id}`}>
                     <h3 className="text-[11px] md:text-xl font-black uppercase tracking-tight mb-2 md:mb-4 group-hover:text-toyota-red transition-colors leading-tight line-clamp-2 h-7 md:h-auto">
-                      {news.title}
+                      {loc(news.title, news.titleEn)}
                     </h3>
                   </Link>
 
                   <p className="hidden md:block text-zinc-500 text-sm mb-8 line-clamp-3 leading-relaxed">
-                    {news.excerpt}
+                    {loc(news.excerpt, news.excerptEn)}
                   </p>
 
                   <Link

@@ -16,11 +16,13 @@ import {
   Layers
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 
 const ProductDetail = () => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -106,7 +108,7 @@ const ProductDetail = () => {
           <ChevronRight size={10} className="shrink-0" />
           <Link to={categoryPath} className="hover:text-white transition-colors">{categoryName}</Link>
           <ChevronRight size={10} className="shrink-0" />
-          <span className="text-white truncate">{product.name}</span>
+          <span className="text-white truncate">{loc(product.name, product.nameEn)}</span>
         </div>
       </div>
 
@@ -149,7 +151,7 @@ const ProductDetail = () => {
             <div className="lg:col-span-5">
               <div className="lg:sticky lg:top-32">
                 <span className="text-toyota-red font-black text-[9px] lg:text-[11px] uppercase tracking-[0.4em] mb-2 lg:mb-4 block">{product.category}</span>
-                <h1 className="text-2xl lg:text-5xl font-black uppercase tracking-tighter mb-4 lg:mb-6 text-white">{product.name}</h1>
+                <h1 className="text-2xl lg:text-5xl font-black uppercase tracking-tighter mb-4 lg:mb-6 text-white">{loc(product.name, product.nameEn)}</h1>
 
                 <div className="mb-6 lg:mb-8 bg-zinc-900 p-6 lg:p-8 border-l-4 border-toyota-red shadow-sm">
                   <p className="text-[10px] font-black uppercase text-toyota-red mb-1 lg:mb-2">{t('productDetail.priceLabel')}</p>
@@ -189,7 +191,7 @@ const ProductDetail = () => {
           <div className="mt-12 lg:mt-20 pt-8 lg:pt-16 border-t border-zinc-800 mb-20 lg:mb-0">
             <div className="max-w-3xl">
               <h3 className="text-lg lg:text-xl font-black uppercase tracking-tight mb-4 lg:mb-6 flex items-center gap-3 text-white"><Tag size={20} className="text-toyota-red"/> {t('productDetail.detailedDesc')}</h3>
-              <div className="text-zinc-300 lg:text-zinc-400 leading-relaxed text-sm lg:text-base whitespace-pre-wrap font-medium text-left lg:text-justify">{product.description || t('productDetail.noDescription')}</div>
+              <div className="text-zinc-300 lg:text-zinc-400 leading-relaxed text-sm lg:text-base whitespace-pre-wrap font-medium text-left lg:text-justify">{loc(product.description, product.descriptionEn) || t('productDetail.noDescription')}</div>
             </div>
           </div>
         </div>

@@ -17,6 +17,7 @@ import {
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 import VehicleCard from '../components/VehicleCard';
 import API_BASE_URL from '../config';
 import toyotaQHero from '../assets/toyota-q/q.png';
@@ -24,6 +25,7 @@ import inspection150 from '../assets/toyota-q/150.jpg';
 
 const ToyotaQ = () => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const [qVehicles, setQVehicles] = useState([]);
   const [filters, setFilters] = useState({
     name: '',
@@ -78,7 +80,7 @@ const ToyotaQ = () => {
   };
 
   const filteredVehicles = qVehicles.filter(vehicle => {
-    const nameMatch = !filters.name || vehicle.name?.toLowerCase().includes(filters.name.toLowerCase());
+    const nameMatch = !filters.name || loc(vehicle.name, vehicle.nameEn)?.toLowerCase().includes(filters.name.toLowerCase());
 
     const year = parseInt(vehicle.year) || 0;
     const yearMatch = (!filters.minYear || year >= parseInt(filters.minYear)) &&
@@ -324,6 +326,7 @@ const ToyotaQ = () => {
                             >
                                 <VehicleCard
                                   {...vehicle}
+                                  name={loc(vehicle.name, vehicle.nameEn)}
                                   specs={[
                                     vehicle.year ? `${vehicle.year} ${t('toyotaQ.yearSuffix')}`.trim() : null,
                                     vehicle.mileage ? `${vehicle.formattedMileage} ${t('toyotaQ.kmSuffix')}`.trim() : null,

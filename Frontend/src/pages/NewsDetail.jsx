@@ -3,11 +3,13 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, ChevronLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 import API_BASE_URL from '../config';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const NewsDetail = () => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const { id } = useParams();
   const [news, setNews] = useState(null);
   const [otherNews, setOtherNews] = useState([]);
@@ -66,13 +68,13 @@ const NewsDetail = () => {
           </div>
 
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-[1.1] mb-8 lg:mb-12">
-            {news.title}
+            {loc(news.title, news.titleEn)}
           </h1>
 
           <div className="w-full bg-zinc-100 mb-8 lg:mb-12 rounded-sm overflow-hidden shadow-sm aspect-video lg:aspect-auto">
             <img
               src={news.image || placeholderImage}
-              alt={news.title}
+              alt={loc(news.title, news.titleEn)}
               className="w-full h-full lg:h-auto object-cover lg:object-contain"
             />
           </div>
@@ -80,7 +82,7 @@ const NewsDetail = () => {
           <div
             className="text-zinc-700 lg:text-zinc-600 text-base lg:text-lg leading-relaxed whitespace-pre-wrap font-medium mb-12 lg:mb-20 px-1 lg:px-0"
           >
-            {news.content}
+            {loc(news.content, news.contentEn)}
           </div>
 
           {/* More News Section */}
@@ -93,12 +95,12 @@ const NewsDetail = () => {
                     <div className="aspect-[4/3] lg:aspect-video overflow-hidden mb-3 lg:mb-4 bg-zinc-100 rounded-sm">
                       <img
                         src={item.image || placeholderImage}
-                        alt={item.title}
+                        alt={loc(item.title, item.titleEn)}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     </div>
                     <h4 className="font-bold text-[10px] lg:text-sm uppercase tracking-tight group-hover:text-toyota-red transition-colors line-clamp-2 leading-tight">
-                      {item.title}
+                      {loc(item.title, item.titleEn)}
                     </h4>
                   </Link>
                 ))}

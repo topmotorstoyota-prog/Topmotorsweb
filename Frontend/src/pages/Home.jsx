@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Cog, Award, MapPin, Zap, ChevronDown, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 import Button from '../components/Button';
 import VehicleCard from '../components/VehicleCard';
 import API_BASE_URL from '../config';
@@ -15,6 +16,7 @@ import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const Home = () => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const slides = [
     { id: 1, image: background1, title: t('home.hero.slide1.title'), titleRed: t('home.hero.slide1.titleRed'), desc: t('home.hero.slide1.desc') },
     { id: 2, image: background2, title: t('home.hero.slide2.title'), titleRed: t('home.hero.slide2.titleRed'), desc: t('home.hero.slide2.desc') },
@@ -74,13 +76,15 @@ const Home = () => {
           return {
             id: v.id,
             name: v.name,
+            nameEn: v.nameEn,
             price: minPrice,
             image: v.image,
-            specs: [
-                firstVariant.engine_spec,
-                firstVariant.trans_spec,
-                firstVariant.drive_spec
-            ].filter(Boolean)
+            engine_spec: firstVariant.engine_spec,
+            engine_spec_en: firstVariant.engine_spec_en,
+            trans_spec: firstVariant.trans_spec,
+            trans_spec_en: firstVariant.trans_spec_en,
+            drive_spec: firstVariant.drive_spec,
+            drive_spec_en: firstVariant.drive_spec_en
           };
         });
         setFeaturedVehicles(featured);
@@ -167,7 +171,15 @@ const Home = () => {
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {featuredVehicles.map((vehicle, index) => (
               <div key={vehicle.id}>
-                <VehicleCard {...vehicle} />
+                <VehicleCard
+                  {...vehicle}
+                  name={loc(vehicle.name, vehicle.nameEn)}
+                  specs={[
+                    loc(vehicle.engine_spec, vehicle.engine_spec_en),
+                    loc(vehicle.trans_spec, vehicle.trans_spec_en),
+                    loc(vehicle.drive_spec, vehicle.drive_spec_en)
+                  ].filter(Boolean)}
+                />
               </div>
             ))}
           </div>
@@ -204,10 +216,10 @@ const Home = () => {
               <motion.div key={news.id} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="group">
                 <Link to={`/news/${news.id}`}>
                   <div className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden mb-2 md:mb-6 bg-zinc-100">
-                    <img src={news.image || placeholderImage} alt={news.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <img src={news.image || placeholderImage} alt={loc(news.title, news.titleEn)} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   </div>
                   <span className="text-zinc-400 text-[6px] md:text-xs font-medium uppercase tracking-widest">{news.date}</span>
-                  <h3 className="text-[9px] md:text-xl font-bold mt-1 group-hover:text-toyota-red transition-colors line-clamp-2 uppercase tracking-tight leading-tight h-7 md:h-auto">{news.title}</h3>
+                  <h3 className="text-[9px] md:text-xl font-bold mt-1 group-hover:text-toyota-red transition-colors line-clamp-2 uppercase tracking-tight leading-tight h-7 md:h-auto">{loc(news.title, news.titleEn)}</h3>
                 </Link>
               </motion.div>
             ))}

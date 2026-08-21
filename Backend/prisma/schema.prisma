@@ -28,15 +28,17 @@ model User {
 model Vehicle {
   id          String   @id
   name        String
+  nameEn      String?  // Англи нэр
   category    String
   isFeatured  Boolean  @default(false)
   image       String   // Үндсэн зураг
   images      String?  // Цомгийн зургууд (Gallery) - JSON string
   images360   String?  // 360 эргэлттэй зургууд (16 ширхэг) - JSON string
   description String
+  descriptionEn String? // Англи тайлбар
   price       String?
   colors      String?  // Өнгөнүүд (нэр, код, зураг) - JSON string
-  variants    String?  // Хувилбарууд (мотор, тоноглол, үнэ, зураг, үзүүлэлт) - JSON string
+  variants    String?  // Хувилбарууд (мотор, тоноглол, үнэ, зураг, үзүүлэлт) - JSON string (спек талбар бүр *_en хос талтай)
   features    String?  // Үзүүлэлтүүд (Interior, Exterior, Safety...) - JSON string
   updatedAt   DateTime @updatedAt
 }
@@ -44,8 +46,11 @@ model Vehicle {
 model News {
   id        Int      @id @default(autoincrement())
   title     String
+  titleEn   String?
   content   String
+  contentEn String?
   excerpt   String?
+  excerptEn String?
   image     String?
   date      String?
 }
@@ -54,12 +59,14 @@ model News {
 model Product {
   id          Int      @id @default(autoincrement())
   name        String
+  nameEn      String?
   category    String
   price       String?
   size        String?  // Хэмжээ (жишээ нь: 265/65R17)
   image       String?
   images      String?  // Цомгийн зургууд - JSON string
   description String?
+  descriptionEn String?
   stock       String?  @default("Бэлэн байгаа")
   quantity    Int      @default(0)
 }
@@ -67,6 +74,7 @@ model Product {
 model ToyotaQ {
   id          Int      @id @default(autoincrement())
   name        String
+  nameEn      String?
   price       String?
   image       String?
   images      String?
@@ -75,6 +83,7 @@ model ToyotaQ {
   engine      String?
   engineType  String?
   description String?
+  descriptionEn String?
   serviceHistory String? // Засварын түүх PDF URL
   updatedAt   DateTime @updatedAt
 }

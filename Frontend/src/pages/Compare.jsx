@@ -3,10 +3,12 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, Info, CheckCircle2, ChevronDown, XCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 import API_BASE_URL from '../config';
 
 const Compare = () => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const [searchParams] = useSearchParams();
   const [selectedVariants, setSelectedVariants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,6 +56,7 @@ const Compare = () => {
                 ...variant,
                 id,
                 modelName: model.name,
+                modelNameEn: model.nameEn,
                 modelImage: model.image,
                 displayImage: last360 || variant.image || model.image,
                 features: Object.values(mergedFeatures)
@@ -120,7 +123,7 @@ const Compare = () => {
                   {selectedVariants.map(variant => (
                     <th key={`img-${variant.id}`} className="p-2 md:p-6 text-center border-b border-zinc-100 min-w-[80px] md:min-w-[300px] bg-white">
                       <div className="h-16 md:h-32 flex items-center justify-center">
-                        <img src={variant.displayImage} alt={variant.modelName} className="h-full object-contain mix-blend-multiply" />
+                        <img src={variant.displayImage} alt={loc(variant.modelName, variant.modelNameEn)} className="h-full object-contain mix-blend-multiply" />
                       </div>
                     </th>
                   ))}
@@ -134,7 +137,7 @@ const Compare = () => {
                   {selectedVariants.map(variant => (
                     <th key={`title-${variant.id}`} className="p-2 md:p-6 text-center border-b-2 md:border-b-4 border-zinc-100 bg-white shadow-[0_4px_15px_rgba(0,0,0,0.03)]">
                       <div className="flex flex-col items-center">
-                        <h3 className="text-[9px] md:text-base font-black uppercase tracking-tight leading-none mb-0.5 md:mb-1 text-black line-clamp-1">{variant.modelName}</h3>
+                        <h3 className="text-[9px] md:text-base font-black uppercase tracking-tight leading-none mb-0.5 md:mb-1 text-black line-clamp-1">{loc(variant.modelName, variant.modelNameEn)}</h3>
                         <p className="text-[7px] md:text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-1 md:mb-2 line-clamp-1">{variant.series}</p>
                         <p className="text-toyota-red font-black text-[9px] md:text-lg leading-none">₮{formatPrice(variant.price)}</p>
                       </div>
@@ -182,7 +185,7 @@ const Compare = () => {
                               if (cat.id === 'PERFORMANCE') {
                                 return (
                                   <td key={`${variant.id}-${key}`} className="p-2 md:p-5 text-center border-b border-zinc-200 min-w-[80px] md:min-w-[300px]">
-                                    <span className="text-[8px] md:text-[11px] font-black uppercase text-black">{variant[key] || '-'}</span>
+                                    <span className="text-[8px] md:text-[11px] font-black uppercase text-black">{loc(variant[key], variant[`${key}_en`]) || '-'}</span>
                                   </td>
                                 );
                               } else {

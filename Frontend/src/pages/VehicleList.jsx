@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, SlidersHorizontal, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 import VehicleCard from '../components/VehicleCard';
 import ComparisonModal from '../components/ComparisonModal';
 import API_BASE_URL from '../config';
@@ -20,6 +21,7 @@ const categories = [
 
 const VehicleList = () => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const [activeCategory, setActiveCategory] = useState('Бүх загварууд');
   const [searchQuery, setSearchQuery] = useState('');
   const [isCompareOpen, setIsCompareOpen] = useState(false);
@@ -47,7 +49,7 @@ const VehicleList = () => {
 
   const filteredVehicles = vehicles.filter(v => {
     const matchesCategory = activeCategory === 'Бүх загварууд' ? true : v.category === activeCategory; // v.category нь өгөгдлийн сангийн монгол утгатай таарна
-    const matchesSearch = v.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = loc(v.name, v.nameEn).toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -167,9 +169,9 @@ const VehicleList = () => {
 
                 const firstVariant = variants[0] || {};
                 const specs = [
-                  firstVariant.engine_spec,
-                  firstVariant.trans_spec,
-                  firstVariant.drive_spec
+                  loc(firstVariant.engine_spec, firstVariant.engine_spec_en),
+                  loc(firstVariant.trans_spec, firstVariant.trans_spec_en),
+                  loc(firstVariant.drive_spec, firstVariant.drive_spec_en)
                 ].filter(Boolean);
 
                 return (
@@ -182,7 +184,7 @@ const VehicleList = () => {
                   >
                     <VehicleCard
                         id={vehicle.id}
-                        name={vehicle.name}
+                        name={loc(vehicle.name, vehicle.nameEn)}
                         price={minPrice}
                         image={vehicle.image}
                         specs={specs}

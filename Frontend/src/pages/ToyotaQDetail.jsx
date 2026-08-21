@@ -16,11 +16,13 @@ import {
   Calculator
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 
 const ToyotaQDetail = () => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const { id } = useParams();
   const [vehicle, setVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -89,7 +91,7 @@ const ToyotaQDetail = () => {
           <ChevronRight size={10} />
           <Link to="/toyota-q" className="hover:text-toyota-black transition-colors">Toyota-Q</Link>
           <ChevronRight size={10} />
-          <span className="text-toyota-black">{vehicle.name}</span>
+          <span className="text-toyota-black">{loc(vehicle.name, vehicle.nameEn)}</span>
         </div>
       </div>
 
@@ -142,7 +144,7 @@ const ToyotaQDetail = () => {
               <div className="hidden lg:block mt-12">
                 <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-4 border-l-4 border-toyota-red pl-3 md:pl-4">{t('toyotaQ.detail.descriptionTitle')}</h3>
                 <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-base font-medium">
-                  {vehicle.description || t('toyotaQ.detail.defaultDescription')}
+                  {loc(vehicle.description, vehicle.descriptionEn) || t('toyotaQ.detail.defaultDescription')}
                 </div>
               </div>
             </div>
@@ -151,7 +153,7 @@ const ToyotaQDetail = () => {
             <div className="lg:col-span-4 order-2">
               <div className="space-y-6 md:space-y-8">
                 <div>
-                  <h1 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-2 leading-tight">{vehicle.name}</h1>
+                  <h1 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-2 leading-tight">{loc(vehicle.name, vehicle.nameEn)}</h1>
                   <div className="flex flex-col gap-1">
                     <div className="flex items-baseline gap-1">
                       <span className="text-2xl md:text-3xl font-black text-toyota-red">₮{formatNum(vehicle.price)}</span>
@@ -230,7 +232,7 @@ const ToyotaQDetail = () => {
             <div className="lg:hidden lg:col-span-8 order-3 mt-4">
               <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-4 border-l-4 border-toyota-red pl-3 md:pl-4">Тайлбар</h3>
               <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-base font-medium">
-                {vehicle.description || 'Энэхүү автомашин нь Toyota-Q баталгаат хуучин автомашины хөтөлбөрт хамрагдсан, 150 цэгийн иж бүрэн оношилгоо хийгдсэн, чанарын гэрчилгээтэй автомашин юм.'}
+                {loc(vehicle.description, vehicle.descriptionEn) || t('toyotaQ.detail.defaultDescription')}
               </div>
             </div>
           </div>

@@ -3,9 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 
 const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelectVehicle, onRemoveVehicle }) => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const navigate = useNavigate();
   if (!isOpen) return null;
 
@@ -17,14 +19,15 @@ const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelect
       const variantColors = typeof variant.colors === 'string' ? JSON.parse(variant.colors || '[]') : (variant.colors || []);
       const colorWith360 = variantColors.find(c => c.images360 && c.images360.length > 0);
       const last360 = colorWith360?.images360[colorWith360.images360.length - 1];
+      const localizedModelName = loc(model.name, model.nameEn);
 
       return {
         ...variant,
         id: variantId,
-        modelName: model.name,
+        modelName: localizedModelName,
         modelId: model.id,
         category: model.category,
-        fullName: `${model.name} - ${variant.series} (${variant.engineType})`,
+        fullName: `${localizedModelName} - ${variant.series} (${variant.engineType})`,
         displayImage: last360 || variant.image || model.image,
         modelFeatures: model.features || [] // Model-ийн үзүүлэлтүүдийг авна
       };
@@ -111,11 +114,11 @@ const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelect
                         <div className="space-y-1.5 md:space-y-4 mb-1">
                           <div className="flex flex-col border-b border-zinc-50 pb-1 md:pb-2">
                             <span className="text-[6px] md:text-[9px] text-zinc-400 uppercase font-black tracking-widest">{t('vehicles.detail.quickFeatures.engine')}</span>
-                            <span className="text-[8px] md:text-[11px] font-bold uppercase text-toyota-black truncate">{variant.engine_spec || '-'}</span>
+                            <span className="text-[8px] md:text-[11px] font-bold uppercase text-toyota-black truncate">{loc(variant.engine_spec, variant.engine_spec_en) || '-'}</span>
                           </div>
                           <div className="flex flex-col border-b border-zinc-50 pb-1 md:pb-2">
                             <span className="text-[6px] md:text-[9px] text-zinc-400 uppercase font-black tracking-widest">{t('compareModal.hpShort')}</span>
-                            <span className="text-[8px] md:text-[11px] font-bold uppercase text-toyota-black">{variant.hp_spec || '-'}</span>
+                            <span className="text-[8px] md:text-[11px] font-bold uppercase text-toyota-black">{loc(variant.hp_spec, variant.hp_spec_en) || '-'}</span>
                           </div>
                         </div>
                       </>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Trophy, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocale } from '../hooks/useLocale';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import grLogo from '../assets/acc/GR logo.jpg';
@@ -15,6 +16,7 @@ const formatPrice = (price) => {
 
 const Merch = () => {
   const { t } = useTranslation();
+  const { loc } = useLocale();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -80,7 +82,7 @@ const Merch = () => {
                   <div className="aspect-square bg-white overflow-hidden relative mb-4 md:mb-6 rounded-none transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.15)] border border-transparent group-hover:border-toyota-red/30">
                     <img
                       src={item.image || placeholderImage}
-                      alt={item.name}
+                      alt={loc(item.name, item.nameEn)}
                       className="w-full h-full object-contain p-4 md:p-8 group-hover:scale-110 transition-transform duration-700 mix-blend-multiply"
                     />
 
@@ -95,7 +97,7 @@ const Merch = () => {
                   </div>
 
                   <div className="mt-4 space-y-2">
-                    <h4 className="font-medium uppercase text-[10px] md:text-xs tracking-[0.15em] text-zinc-400 group-hover:text-white transition-colors line-clamp-1">{item.name}</h4>
+                    <h4 className="font-medium uppercase text-[10px] md:text-xs tracking-[0.15em] text-zinc-400 group-hover:text-white transition-colors line-clamp-1">{loc(item.name, item.nameEn)}</h4>
                     <div className="flex items-center gap-1.5">
                       <span className="text-white font-black text-lg md:text-2xl tracking-tighter">{formatPrice(item.price)}</span>
                       <span className="text-white font-black text-base md:text-xl">₮</span>

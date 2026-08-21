@@ -630,10 +630,12 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
     const body = {
       id: formData.id,
       name: formData.name,
+      nameEn: formData.nameEn || null,
       category: formData.category,
       isFeatured: formData.isFeatured || false,
       image: formData.image,
       description: formData.description,
+      descriptionEn: formData.descriptionEn || null,
       price: formData.price,
       images: JSON.stringify(formData.images || []),
       images360: JSON.stringify(formData.images360 || []),
@@ -671,6 +673,9 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
             <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">ID (Жишээ: lc300)</label><input value={formData.id} onChange={e => setFormData({ ...formData, id: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm" required disabled={!!initialData} /></div>
             <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Нэр</label><input value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm" required /></div>
           </div>
+          <div className="grid grid-cols-1 gap-6">
+            <div><label className="block text-[10px] font-black uppercase text-toyota-red mb-2">Нэр (Англи)</label><input value={formData.nameEn || ''} onChange={e => setFormData({ ...formData, nameEn: e.target.value })} placeholder="Land Cruiser 300 (хоосон бол монгол нэрийг ашиглана)" className="w-full p-4 bg-zinc-50 border rounded-sm" /></div>
+          </div>
           <div className="grid grid-cols-2 gap-6">
             <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Ангилал</label><select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm"><option value="SUV">SUV</option><option value="Седан">Седан</option><option value="Пикап">Пикап</option><option value="VAN">VAN</option><option value="MPV">MPV</option></select></div>
             <div className="flex flex-col">
@@ -699,6 +704,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
             </div>
           </div>
           <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Тайлбар</label><textarea value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm h-32" /></div>
+          <div><label className="block text-[10px] font-black uppercase text-toyota-red mb-2">Тайлбар (Англи)</label><textarea value={formData.descriptionEn || ''} onChange={e => setFormData({ ...formData, descriptionEn: e.target.value })} placeholder="English description (хоосон бол монгол тайлбарыг ашиглана)" className="w-full p-4 bg-zinc-50 border rounded-sm h-32" /></div>
         </div>
       )}
 
@@ -856,12 +862,52 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                     </div>
 
                     <div>
+                       <p className="text-[8px] font-black uppercase text-toyota-red mb-3 tracking-widest">Дээрх үзүүлэлтүүдийн англи хувилбар (хоосон бол монгол утгыг ашиглана)</p>
+                       <div className="grid grid-cols-4 gap-4">
+                          {[
+                            { key: 'engine_spec_en', label: 'Engine (EN)' },
+                            { key: 'seats_spec_en', label: 'Seats (EN)' },
+                            { key: 'trans_spec_en', label: 'Trans (EN)' },
+                            { key: 'drive_spec_en', label: 'Drive (EN)' },
+                            { key: 'hp_spec_en', label: 'HP (EN)' },
+                            { key: 'torque_spec_en', label: 'Torque (EN)' },
+                            { key: 'fuel_spec_en', label: 'Fuel Tank Capacity (EN)' },
+                            { key: 'extra_spec_en', label: 'Additional Spec (EN)' }
+                          ].map(spec => (
+                            <div key={spec.key}>
+                               <label className="block text-[8px] font-black uppercase text-zinc-400 mb-1">{spec.label}</label>
+                               <input
+                                 placeholder={spec.label}
+                                 value={v[spec.key] || ''}
+                                 onChange={e => {
+                                   let nv = [...formData.variants];
+                                   nv[vIdx][spec.key] = e.target.value;
+                                   setFormData({ ...formData, variants: nv });
+                                 }}
+                                 className="w-full p-2 border rounded-sm text-[10px] font-bold"
+                               />
+                            </div>
+                          ))}
+                       </div>
+                    </div>
+
+                    <div>
                        <label className="block text-[9px] font-black uppercase text-zinc-400 mb-2">Хувилбарын тайлбар</label>
                        <textarea
                           value={v.description || ''}
                           onChange={e => { let nv = [...formData.variants]; nv[vIdx].description = e.target.value; setFormData({ ...formData, variants: nv }); }}
                           className="w-full p-4 bg-zinc-50 border rounded-sm h-32 text-xs"
                           placeholder="Энэ хувилбарын онцлог, давуу талуудыг энд бичнэ үү..."
+                       />
+                    </div>
+
+                    <div>
+                       <label className="block text-[9px] font-black uppercase text-toyota-red mb-2">Хувилбарын тайлбар (Англи)</label>
+                       <textarea
+                          value={v.descriptionEn || ''}
+                          onChange={e => { let nv = [...formData.variants]; nv[vIdx].descriptionEn = e.target.value; setFormData({ ...formData, variants: nv }); }}
+                          className="w-full p-4 bg-zinc-50 border rounded-sm h-32 text-xs"
+                          placeholder="English description of this variant... (хоосон бол монгол тайлбарыг ашиглана)"
                        />
                     </div>
 
@@ -1220,11 +1266,14 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
         </div>
         <div className="space-y-4">
           <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Мэдээний гарчиг</label><input name="title" value={formData.title || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold text-lg" required /></div>
+          <div><label className="block text-[10px] font-black uppercase text-toyota-red mb-2">Гарчиг (Англи)</label><input name="titleEn" value={formData.titleEn || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" placeholder="English title (хоосон бол монгол гарчгийг ашиглана)" /></div>
           <div className="grid grid-cols-2 gap-4">
             <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Огноо</label><input name="date" type="date" value={formData.date || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" /></div>
             <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Товч агуулга</label><input name="excerpt" value={formData.excerpt || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm" placeholder="Жагсаалтад харагдах текст..." /></div>
           </div>
+          <div><label className="block text-[10px] font-black uppercase text-toyota-red mb-2">Товч агуулга (Англи)</label><input name="excerptEn" value={formData.excerptEn || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm" placeholder="English excerpt..." /></div>
           <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Үндсэн мэдээлэл</label><textarea name="content" value={formData.content || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-64 resize-none font-medium leading-relaxed" required /></div>
+          <div><label className="block text-[10px] font-black uppercase text-toyota-red mb-2">Үндсэн мэдээлэл (Англи)</label><textarea name="contentEn" value={formData.contentEn || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-64 resize-none font-medium leading-relaxed" placeholder="English content... (хоосон бол монгол агуулгыг ашиглана)" /></div>
         </div>
         <button type="submit" className="w-full bg-black text-white py-5 rounded-sm font-black uppercase tracking-[0.4em] text-xs hover:bg-toyota-red transition-all">Мэдээ хадгалах</button>
       </form>
@@ -1299,6 +1348,13 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
       <div className="space-y-4">
         <label className="block text-[10px] font-black uppercase text-zinc-400">Нэр</label>
         <input name="name" value={formData.name || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" required />
+
+        {type !== 'staff' && (
+          <>
+            <label className="block text-[10px] font-black uppercase text-toyota-red">Нэр (Англи)</label>
+            <input name="nameEn" value={formData.nameEn || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" placeholder="English name (хоосон бол монгол нэрийг ашиглана)" />
+          </>
+        )}
 
         <div className="grid grid-cols-2 gap-4">
             {type !== 'toyota-q' && type !== 'users' && type !== 'staff' && (
@@ -1388,6 +1444,12 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
         )}
 
         <textarea name="description" placeholder="Тайлбар..." value={formData.description || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-32 resize-none font-medium" />
+        {type !== 'staff' && (
+          <>
+            <label className="block text-[10px] font-black uppercase text-toyota-red">Тайлбар (Англи)</label>
+            <textarea name="descriptionEn" placeholder="English description... (хоосон бол монгол тайлбарыг ашиглана)" value={formData.descriptionEn || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-32 resize-none font-medium" />
+          </>
+        )}
       </div>
       <button type="submit" disabled={submitting} className="w-full bg-black text-white py-5 rounded-sm font-black uppercase tracking-[0.4em] text-xs hover:bg-toyota-red transition-all disabled:opacity-50 disabled:cursor-not-allowed">{submitting ? 'Хадгалж байна...' : 'Хадгалах'}</button>
     </form>
