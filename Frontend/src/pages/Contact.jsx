@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Youtube, Send, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 
 const Contact = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -35,11 +37,11 @@ const Contact = () => {
         setIsSuccess(true);
         setFormData({ name: '', phone: '', subject: 'Ерөнхий асуулт', message: '' });
       } else {
-        alert('Алдаа гарлаа.');
+        alert(t('contact.errors.generic'));
       }
     } catch (err) {
       console.error(err);
-      alert('Сервертэй холбогдоход алдаа гарлаа.');
+      alert(t('contact.errors.server'));
     }
     setIsSubmitting(false);
   };
@@ -56,7 +58,7 @@ const Contact = () => {
             <div className="lg:col-span-5">
               <div className="space-y-8 md:space-y-12">
                 <div>
-                  <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-6 md:mb-8">Манай салбарууд</h3>
+                  <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-6 md:mb-8">{t('contact.branchesTitle')}</h3>
                   <div className="space-y-6 md:space-y-10">
                     {/* Branch 1 */}
                     <div className="group">
@@ -64,10 +66,10 @@ const Contact = () => {
                         <div className="w-8 h-8 md:w-10 md:h-10 bg-toyota-gray-100 flex items-center justify-center group-hover:bg-toyota-red transition-colors">
                           <MapPin size={16} md:size={18} className="text-toyota-red group-hover:text-white" />
                         </div>
-                        <h4 className="font-bold uppercase tracking-tight text-base md:text-lg">Салбар 1 (УБ)</h4>
+                        <h4 className="font-bold uppercase tracking-tight text-base md:text-lg">{t('footer.branch1Name')}</h4>
                       </div>
                       <div className="pl-11 md:pl-13 space-y-1 md:space-y-2 text-zinc-600">
-                        <p className="text-xs md:text-sm leading-relaxed">Баянгол дүүрэг, 10-р хороолол, Имарт зүүн талд</p>
+                        <p className="text-xs md:text-sm leading-relaxed">{t('contact.branch1AddressDetailed')}</p>
                         <a href="tel:77778090" className="flex items-center gap-2 text-toyota-red font-bold text-xs md:text-sm hover:underline">
                           <Phone size={14} />
                           <span>7777 8090</span>
@@ -81,10 +83,10 @@ const Contact = () => {
                         <div className="w-8 h-8 md:w-10 md:h-10 bg-toyota-gray-100 flex items-center justify-center group-hover:bg-toyota-red transition-colors">
                           <MapPin size={16} md:size={18} className="text-toyota-red group-hover:text-white" />
                         </div>
-                        <h4 className="font-bold uppercase tracking-tight text-base md:text-lg">Салбар 2 (ӨМГ)</h4>
+                        <h4 className="font-bold uppercase tracking-tight text-base md:text-lg">{t('footer.branch2Name')}</h4>
                       </div>
                       <div className="pl-11 md:pl-13 space-y-1 md:space-y-2 text-zinc-600">
-                        <p className="text-xs md:text-sm leading-relaxed">Цогтцэций сум, Өгөөмөр IV баг</p>
+                        <p className="text-xs md:text-sm leading-relaxed">{t('footer.branch2Address')}</p>
                         <a href="tel:77778090" className="flex items-center gap-2 text-toyota-red font-bold text-xs md:text-sm hover:underline">
                           <Phone size={14} />
                           <span>7777 8090</span>
@@ -97,7 +99,7 @@ const Contact = () => {
                         <div className="w-8 h-8 md:w-10 md:h-10 bg-toyota-gray-100 flex items-center justify-center">
                           <Mail size={16} md:size={18} className="text-toyota-red" />
                         </div>
-                        <h4 className="font-bold uppercase tracking-tight text-base md:text-lg">И-мэйл</h4>
+                        <h4 className="font-bold uppercase tracking-tight text-base md:text-lg">{t('footer.emailLabel')}</h4>
                       </div>
                       <div className="pl-11 md:pl-13">
                         <p className="font-black text-toyota-red text-lg md:text-xl">info@topmotors.mn</p>
@@ -107,7 +109,7 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-toyota-black mb-4 md:mb-8">Биднийг дагах</h3>
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-toyota-black mb-4 md:mb-8">{t('contact.followUs')}</h3>
                   <div className="flex space-x-3 md:space-x-4">
                     {[
                       { Icon: Facebook, url: 'https://www.facebook.com/ToyotaTopMotors/' },
@@ -141,17 +143,17 @@ const Contact = () => {
                     <div className="w-16 h-16 md:w-20 md:h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                       <CheckCircle2 size={32} md:size={40} className="text-white" />
                     </div>
-                    <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-2 md:mb-4">Илгээгдлээ</h3>
-                    <p className="text-zinc-500 text-xs md:text-sm mb-6 md:mb-8">Хүсэлтийг хүлээн авлаа, удахгүй холбогдоно.</p>
-                    <Button variant="outlineBlack" size="sm" onClick={() => setIsSuccess(false)}>Буцах</Button>
+                    <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-2 md:mb-4">{t('contact.form.sentTitle')}</h3>
+                    <p className="text-zinc-500 text-xs md:text-sm mb-6 md:mb-8">{t('contact.form.sentDesc')}</p>
+                    <Button variant="outlineBlack" size="sm" onClick={() => setIsSuccess(false)}>{t('common.back')}</Button>
                   </motion.div>
                 ) : (
                   <>
-                    <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-6 md:mb-8 text-center md:text-left">Зурвас илгээх</h3>
+                    <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-6 md:mb-8 text-center md:text-left">{t('contact.form.title')}</h3>
                     <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                         <div>
-                          <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">Нэр</label>
+                          <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('contact.form.nameLabel')}</label>
                           <input
                             type="text"
                             name="name"
@@ -162,7 +164,7 @@ const Contact = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">Утас</label>
+                          <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('contact.form.phoneLabel')}</label>
                           <input
                             type="tel"
                             name="phone"
@@ -174,7 +176,8 @@ const Contact = () => {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">Гарчиг</label>
+                        <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('contact.form.subjectLabel')}</label>
+                        {/* Утга нь backend рүү шууд илгээгддэг тул монгол хэлээр байлгав */}
                         <select
                           name="subject"
                           value={formData.subject}
@@ -188,7 +191,7 @@ const Contact = () => {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">Зурвас</label>
+                        <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('contact.form.messageLabel')}</label>
                         <textarea
                           name="message"
                           required
@@ -199,7 +202,7 @@ const Contact = () => {
                         ></textarea>
                       </div>
                       <Button variant="primary" size="lg" className="w-full group h-12 md:h-14 text-[10px] md:text-xs" disabled={isSubmitting}>
-                        <span>{isSubmitting ? 'Илгээж байна...' : 'Илгээх'}</span>
+                        <span>{isSubmitting ? t('common.submitting') : t('contact.form.sendBtn')}</span>
                         <Send className="ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={16} md:size={18} />
                       </Button>
                     </form>
@@ -218,7 +221,7 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {/* UB Branch Map */}
             <div className="space-y-3">
-              <h4 className="text-[10px] md:text-sm font-bold uppercase tracking-widest text-toyota-red">Салбар 1 (УБ)</h4>
+              <h4 className="text-[10px] md:text-sm font-bold uppercase tracking-widest text-toyota-red">{t('footer.branch1Name')}</h4>
               <div className="w-full h-[250px] md:h-[450px] border border-zinc-100 shadow-sm overflow-hidden rounded-sm">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1016.8488239335089!2d106.87393315982861!3d47.91451716545323!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d9693bcb9c58ff5%3A0xa4b3a75a4bd2d6ba!2sTop%20Motors%2C%20Toyota%20Center!5e1!3m2!1sen!2smn!4v1781055776840!5m2!1sen!2smn"
@@ -235,7 +238,7 @@ const Contact = () => {
 
             {/* South Gobi Branch Map */}
             <div className="space-y-3">
-              <h4 className="text-[10px] md:text-sm font-bold uppercase tracking-widest text-toyota-red">Салбар 2 (ӨМГ)</h4>
+              <h4 className="text-[10px] md:text-sm font-bold uppercase tracking-widest text-toyota-red">{t('footer.branch2Name')}</h4>
               <div className="w-full h-[250px] md:h-[450px] border border-zinc-100 shadow-sm overflow-hidden rounded-sm">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99243.95189523026!2d105.40934199726561!3d43.71882979999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x362091000a3f9b2d%3A0xd9dfaa71ee26e66a!2sTop%20Motors%20-%20Tsogttsetsii%20branch!5e1!3m2!1sen!2smn!4v1781077157846!5m2!1sen!2smn"

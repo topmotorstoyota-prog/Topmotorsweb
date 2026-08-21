@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronRight, Shield, Wrench, Fuel, Users, Settings, Zap, CheckCircle2, SlidersHorizontal, Calendar, ArrowRight, ImageIcon, RotateCcw, Gauge, Droplets, Info, ChevronDown, Calculator, Rocket, RefreshCcw
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../components/Button';
 import ComparisonModal from '../components/ComparisonModal';
 import API_BASE_URL from '../config';
@@ -11,6 +12,7 @@ import API_BASE_URL from '../config';
 const MIN_360_IMAGES = 16;
 
 const VehicleDetail = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const [vehicleModel, setVehicleModel] = useState(null);
@@ -213,11 +215,11 @@ const VehicleDetail = () => {
     };
   }, [selectedVariant?.interior360]);
 
-  if (loading) return <div className="pt-40 text-center font-black uppercase tracking-widest text-zinc-300 font-sans">Уншиж байна...</div>;
-  if (!vehicleModel) return <div className="pt-40 pb-20 text-center font-sans"><h2 className="text-2xl font-black uppercase mb-4 text-zinc-400">Машин олдсонгүй</h2><Link to="/vehicles"><Button variant="outlineBlack">Загварууд руу буцах</Button></Link></div>;
+  if (loading) return <div className="pt-40 text-center font-black uppercase tracking-widest text-zinc-300 font-sans">{t('vehicles.list.loading')}</div>;
+  if (!vehicleModel) return <div className="pt-40 pb-20 text-center font-sans"><h2 className="text-2xl font-black uppercase mb-4 text-zinc-400">{t('vehicles.detail.notFound')}</h2><Link to="/vehicles"><Button variant="outlineBlack">{t('vehicles.detail.backToVehicles')}</Button></Link></div>;
 
   const formatPrice = (price) => {
-    if (!price) return 'Тодорхойгүй';
+    if (!price) return t('vehicles.detail.priceUnknown');
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
@@ -232,10 +234,10 @@ const VehicleDetail = () => {
   const galleryImages = selectedVariant?.images?.length > 0 ? selectedVariant.images : (vehicleModel.images || []);
 
   const quickFeatures = selectedVariant ? [
-    { icon: Zap, label: 'Хөдөлгүүр', value: selectedVariant.engine_spec || 'N/A' },
-    { icon: Settings, label: 'Хурдны хайрцаг', value: selectedVariant.trans_spec || 'N/A' },
-    { icon: Rocket, label: 'Морины хүч', value: selectedVariant.hp_spec || 'N/A' },
-    { icon: RefreshCcw, label: 'Мушгих хүч', value: selectedVariant.torque_spec || 'N/A' }
+    { icon: Zap, label: t('vehicles.detail.quickFeatures.engine'), value: selectedVariant.engine_spec || 'N/A' },
+    { icon: Settings, label: t('vehicles.detail.quickFeatures.transmission'), value: selectedVariant.trans_spec || 'N/A' },
+    { icon: Rocket, label: t('vehicles.detail.quickFeatures.horsepower'), value: selectedVariant.hp_spec || 'N/A' },
+    { icon: RefreshCcw, label: t('vehicles.detail.quickFeatures.torque'), value: selectedVariant.torque_spec || 'N/A' }
   ] : [];
 
   // Үзүүлэлтүүдийг ангиллаар нь нэгтгэх функц
@@ -244,12 +246,12 @@ const VehicleDetail = () => {
     const merged = {};
 
     const categoryTranslations = {
-      'INTERIOR': 'ДОТОР САЛОН',
-      'EXTERIOR': 'ГАДНА ТАЛ',
-      'SAFETY': 'АЮУЛГҮЙ БАЙДАЛ',
-      'PERFORMANCE': 'ХҮЧИН ЧАДАЛ',
-      'DIMENSIONS': 'ХЭМЖЭЭ',
-      'WHEELS': 'ДУГУЙ БА ОБУД'
+      'INTERIOR': t('vehicles.detail.featureCategories.interior'),
+      'EXTERIOR': t('vehicles.detail.featureCategories.exterior'),
+      'SAFETY': t('vehicles.detail.featureCategories.safety'),
+      'PERFORMANCE': t('vehicles.detail.featureCategories.performance'),
+      'DIMENSIONS': t('vehicles.detail.featureCategories.dimensions'),
+      'WHEELS': t('vehicles.detail.featureCategories.wheels')
     };
 
     rawFeatures.forEach(feat => {
@@ -271,9 +273,9 @@ const VehicleDetail = () => {
     <div className="pt-20 lg:pt-28 pb-10 bg-white font-sans">
       <div className="bg-toyota-gray-100 py-2 md:py-4 border-b border-zinc-200">
         <div className="container-custom flex items-center space-x-2 text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 overflow-x-auto no-scrollbar whitespace-nowrap px-4 lg:px-8">
-          <Link to="/" className="hover:text-toyota-black transition-colors">Нүүр</Link>
+          <Link to="/" className="hover:text-toyota-black transition-colors">{t('nav.homeShort')}</Link>
           <ChevronRight size={10} className="shrink-0" />
-          <Link to="/vehicles" className="hover:text-toyota-black transition-colors">Загварууд</Link>
+          <Link to="/vehicles" className="hover:text-toyota-black transition-colors">{t('nav.vehiclesShort')}</Link>
           <ChevronRight size={10} className="shrink-0" />
           <span className="text-toyota-black truncate">{vehicleModel.name}</span>
         </div>
@@ -304,7 +306,7 @@ const VehicleDetail = () => {
             <div className="lg:col-span-3 order-3 lg:order-1 mt-6 lg:mt-0">
                 <div className="mb-6 md:mb-10">
                   <div className="flex flex-col items-center lg:items-start mb-4 md:mb-8">
-                    <h3 className="text-[9px] md:text-lg font-black uppercase tracking-[0.2em] text-toyota-black">Үндсэн үзүүлэлт</h3>
+                    <h3 className="text-[9px] md:text-lg font-black uppercase tracking-[0.2em] text-toyota-black">{t('vehicles.detail.basicSpecs')}</h3>
                     <div className="w-6 md:w-12 h-[2px] bg-toyota-red mt-1.5 md:mt-2" />
                   </div>
                   <div className="grid grid-cols-2 md:flex md:flex-col gap-1.5 md:gap-3">
@@ -365,17 +367,17 @@ const VehicleDetail = () => {
                    {has360 ? (
                      <>
                         <RotateCcw size={10} className="text-zinc-400 animate-pulse" />
-                        <p className="text-[7px] md:text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">360° харах</p>
+                        <p className="text-[7px] md:text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">{t('vehicles.detail.view360')}</p>
                      </>
                    ) : (
-                     <p className="text-[7px] md:text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">{selectedColor?.name || 'Үндсэн'}</p>
+                     <p className="text-[7px] md:text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">{selectedColor?.name || t('vehicles.detail.defaultColor')}</p>
                    )}
                 </div>
               </div>
 
                     {selectedVariant.colors?.length > 0 && (
                       <div className="mb-8 md:mb-10 flex flex-col items-center">
-                        <p className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-3 md:mb-4">Өнгө сонгох</p>
+                        <p className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-3 md:mb-4">{t('vehicles.detail.chooseColor')}</p>
                         <div className="flex flex-wrap justify-center gap-2 md:gap-3">
                           {selectedVariant.colors.map((color, i) => (
                             <button key={i} onClick={() => { setSelectedColor(color); setRotationIndex(0); }} className={`w-7 h-7 md:w-10 md:h-10 rounded-full border-2 transition-all flex items-center justify-center p-0.5 ${selectedColor?.name === color.name ? 'border-toyota-red scale-110 shadow-lg' : 'border-transparent'}`} title={color.name}>
@@ -401,7 +403,7 @@ const VehicleDetail = () => {
             {/* Right Column: Price, Calculator, Engines, Order Button - Moved up on mobile */}
             <div className="lg:col-span-3 order-2 lg:order-3">
                 <div className="mb-6 md:mb-8 text-center md:text-left">
-                  <span className="text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] text-zinc-400 block mb-2 md:mb-3 border-l-2 border-toyota-red pl-2 md:pl-3 w-fit mx-auto md:mx-0">Нийт үнэ</span>
+                  <span className="text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] text-zinc-400 block mb-2 md:mb-3 border-l-2 border-toyota-red pl-2 md:pl-3 w-fit mx-auto md:mx-0">{t('vehicles.detail.totalPrice')}</span>
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={selectedVariant?.price}
@@ -422,13 +424,13 @@ const VehicleDetail = () => {
                     className="flex items-center justify-center md:justify-start gap-2 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-toyota-black/60 hover:text-toyota-red transition-all w-full md:w-fit group mt-1"
                   >
                     <Calculator size={14} className="group-hover:rotate-12 transition-transform" />
-                    <span className="border-b border-zinc-200 group-hover:border-toyota-red pb-0.5">Тооцоолуур</span>
+                    <span className="border-b border-zinc-200 group-hover:border-toyota-red pb-0.5">{t('vehicles.detail.calculator')}</span>
                   </button>
                 </div>
 
                 {selectedVariant && (
                   <div className="mb-8 md:mb-10 px-2">
-                    <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-3 md:mb-4 text-center md:text-left">Хөдөлгүүр</p>
+                    <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-3 md:mb-4 text-center md:text-left">{t('vehicles.detail.quickFeatures.engine')}</p>
                     <div className="flex flex-col gap-1.5 md:gap-2" key={selectedVariant.series}>
                       <AnimatePresence>
                         {vehicleModel.variants.filter(v => v.series === selectedVariant.series).map(v => v.engineType).filter((v, i, a) => a.indexOf(v) === i).map((engine) => (
@@ -451,7 +453,7 @@ const VehicleDetail = () => {
                 <div className="hidden lg:block">
                   <Link to="/booking?type=sales">
                     <Button variant="primary" className="w-full py-5 uppercase font-black tracking-[0.2em] text-[10px] md:text-xs shadow-xl shadow-toyota-red/10 hover:shadow-toyota-red/20 transition-all active:scale-[0.98]">
-                      Захиалга өгөх
+                      {t('nav.orderButton')}
                     </Button>
                   </Link>
                 </div>
@@ -468,10 +470,10 @@ const VehicleDetail = () => {
               className="mt-10 md:mt-24 pt-8 border-t border-zinc-100"
             >
               <div className="max-w-7xl mx-auto">
-                <h3 className="text-xl md:text-3xl font-black uppercase tracking-tighter mb-6 md:mb-8 text-toyota-black text-center">Загварын <span className="text-toyota-red">тухай</span></h3>
+                <h3 className="text-xl md:text-3xl font-black uppercase tracking-tighter mb-6 md:mb-8 text-toyota-black text-center">{t('vehicles.detail.aboutTitlePlain')} <span className="text-toyota-red">{t('vehicles.detail.aboutTitleRed')}</span></h3>
                 <div className="bg-[#F9F9F9] p-6 md:p-12 rounded-sm border-l-4 border-toyota-red shadow-sm">
                   <p className="text-zinc-500 leading-relaxed text-[10px] md:text-sm whitespace-pre-wrap font-bold uppercase tracking-widest mb-4 md:mb-6 italic">
-                    {selectedVariant?.series} {selectedEngine} хувилбар
+                    {selectedVariant?.series} {selectedEngine} {t('vehicles.detail.variantSuffix')}
                   </p>
                   <p className="text-zinc-600 leading-relaxed text-[11px] md:text-base whitespace-pre-wrap font-medium text-justify">
                     {selectedVariant?.description || vehicleModel.description}
@@ -491,7 +493,7 @@ const VehicleDetail = () => {
            <div className="container-custom px-4 mb-8 md:mb-12">
               <div className="flex flex-col items-center text-center">
                   <span className="text-toyota-red font-black text-[9px] md:text-xs uppercase tracking-[0.4em] mb-3 md:mb-4 block leading-none">Interior</span>
-                  <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tighter mb-3 md:mb-4 text-white leading-none">Салон <span className="text-toyota-red text-shadow-glow">360°</span></h2>
+                  <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tighter mb-3 md:mb-4 text-white leading-none">{t('vehicles.detail.salon')} <span className="text-toyota-red text-shadow-glow">360°</span></h2>
                   <div className="w-12 md:w-20 h-1 bg-toyota-red mt-3 md:mt-6" />
               </div>
            </div>
@@ -504,7 +506,7 @@ const VehicleDetail = () => {
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-black/60 px-5 py-2 rounded-full backdrop-blur-md border border-white/10 pointer-events-none">
                   <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/90 flex items-center justify-center gap-2">
                     <RotateCcw size={10} className="animate-spin shrink-0" />
-                    Эргүүлж үзнэ үү
+                    {t('vehicles.detail.dragToRotate')}
                   </span>
                 </div>
              </div>
@@ -516,7 +518,7 @@ const VehicleDetail = () => {
       <section className="py-12 md:py-24 bg-[#f8f9fa] overflow-hidden border-t border-zinc-100">
         <div className="container-custom px-4">
             <div className="flex flex-col items-center text-center mb-8 md:mb-16">
-                <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tighter mb-3 md:mb-4 text-toyota-black leading-none">Зургийн <span className="text-toyota-red">Цомог</span></h2>
+                <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tighter mb-3 md:mb-4 text-toyota-black leading-none">{t('vehicles.detail.galleryTitlePlain')} <span className="text-toyota-red">{t('vehicles.detail.galleryTitleRed')}</span></h2>
                 <div className="w-12 md:w-20 h-1 bg-toyota-red mt-3 md:mt-6" />
             </div>
             {galleryImages.length > 0 ? (
@@ -530,7 +532,7 @@ const VehicleDetail = () => {
             ) : (
               <div className="text-center py-12 md:py-20 bg-white border-2 border-dashed border-zinc-100 rounded-sm">
                 <ImageIcon size={32} className="mx-auto text-zinc-200 mb-2 md:mb-4" />
-                <p className="font-black uppercase tracking-widest text-zinc-300 text-[8px] md:text-[10px]">Цомог хоосон байна</p>
+                <p className="font-black uppercase tracking-widest text-zinc-300 text-[8px] md:text-[10px]">{t('vehicles.detail.galleryEmpty')}</p>
               </div>
             )}
         </div>
@@ -542,14 +544,14 @@ const VehicleDetail = () => {
         <div className="container-custom relative z-10 px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 text-center md:text-left">
                 <div className="max-w-2xl">
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-6 leading-[1.1]">Шийдвэр гаргаж <br/><span className="text-toyota-red">чадахгүй байна уу?</span></h3>
+                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter mb-6 leading-[1.1]">{t('vehicles.list.ctaTitleLine1')} <br/><span className="text-toyota-red">{t('vehicles.list.ctaTitleLine2')}</span></h3>
                     <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                      {vehicleModel.name} {selectedVariant?.series} загварыг бусад Тоёотагийн загваруудтай зэрэгцүүлэн харж, өөрийн хэрэгцээнд хамгийн сайн нийцэх хувилбарыг олоорой.
+                      {t('vehicles.detail.compareDesc', { name: vehicleModel.name, series: selectedVariant?.series || '' })}
                     </p>
                 </div>
                 <button onClick={() => setIsCompareOpen(true)} className="w-full md:w-auto px-10 md:px-12 py-4 md:py-5 bg-toyota-red text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:text-black transition-all shadow-xl shadow-toyota-red/20 active:scale-95 flex items-center justify-center gap-4 shrink-0">
                     <SlidersHorizontal size={18} />
-                    <span>Автомашины загваруудыг харьцуулах</span>
+                    <span>{t('vehicles.list.compareBtn')}</span>
                 </button>
             </div>
         </div>
@@ -562,7 +564,7 @@ const VehicleDetail = () => {
         <button
           onClick={() => setIsCompareOpen(true)}
           className="p-3.5 bg-zinc-100 text-zinc-900 rounded-sm"
-          title="Автомашины загваруудыг харьцуулах"
+          title={t('vehicles.list.compareBtn')}
         >
           <SlidersHorizontal size={18} />
         </button>
@@ -571,11 +573,11 @@ const VehicleDetail = () => {
           className="flex-1 py-3.5 bg-zinc-900 text-white font-black uppercase tracking-widest text-[9px] flex items-center justify-center gap-2 rounded-sm"
         >
           <Calculator size={14} />
-          Calculator
+          {t('vehicles.detail.calculator')}
         </button>
         <Link to="/booking?type=new_car_order" className="flex-[1.2]">
           <Button variant="primary" className="w-full py-3.5 text-[9px] font-black uppercase tracking-widest rounded-sm">
-            Захиалга өгөх
+            {t('nav.orderButton')}
           </Button>
         </Link>
       </div>

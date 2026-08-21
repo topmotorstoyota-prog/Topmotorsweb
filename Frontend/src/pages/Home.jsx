@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Cog, Award, MapPin, Zap, ChevronDown, Calendar } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../components/Button';
 import VehicleCard from '../components/VehicleCard';
 import API_BASE_URL from '../config';
@@ -12,31 +13,13 @@ import serviceImage from '../assets/home/service.jpg';
 import chiglelImage from '../assets/home/top.png';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
-const slides = [
-  {
-    id: 1,
-    image: background1,
-    title: 'ДОМОГТ',
-    titleRed: 'ГҮЙЦЭТГЭЛ',
-    desc: 'Монголын ямар ч хүнд нөхцөлд зориулагдсан цоо шинэ Land Cruiser 300-ийн хосгүй хүч чадал, тансаг байдлыг мэдэр. '
-  },
-  {
-    id: 2,
-    image: background2,
-    title: 'ХЯЗГААРГҮЙ',
-    titleRed: 'АЯЛАЛ',
-    desc: 'Хязгааргүй аялалд тань зориулав. Цоо шинэ Land Cruiser Prado 250 - Домогт туулах чадвар, орчин үеийн загвар. '
-  },
-  {
-    id: 3,
-    image: background3,
-    title: 'УХААЛАГ',
-    titleRed: 'СОНГОЛТ',
-    desc: 'Toyota RAV4 - Амьдралын тань хором бүрийг эрч хүчээр дүүргэх ухаалаг, хүчирхэг SUV. Ямар ч замын нөхцөлд таны найдвартай хамтрагч.'
-  }
-];
-
 const Home = () => {
+  const { t } = useTranslation();
+  const slides = [
+    { id: 1, image: background1, title: t('home.hero.slide1.title'), titleRed: t('home.hero.slide1.titleRed'), desc: t('home.hero.slide1.desc') },
+    { id: 2, image: background2, title: t('home.hero.slide2.title'), titleRed: t('home.hero.slide2.titleRed'), desc: t('home.hero.slide2.desc') },
+    { id: 3, image: background3, title: t('home.hero.slide3.title'), titleRed: t('home.hero.slide3.titleRed'), desc: t('home.hero.slide3.desc') }
+  ];
   const [currentSlide, setCurrentSlide] = useState(0);
   const [latestNews, setLatestNews] = useState([]);
   const [featuredVehicles, setFeaturedVehicles] = useState([]);
@@ -152,12 +135,12 @@ const Home = () => {
                 <div className="flex flex-row gap-2 md:gap-4">
                   <Link to="/vehicles" className="flex-1 sm:flex-none">
                     <Button variant="white" size="lg" className="group px-4 md:px-10 h-11 md:h-14 text-[9px] md:text-xs w-full">
-                      <span>Шоурүүм үзэх</span>
+                      <span>{t('home.hero.showroomBtn')}</span>
                       <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform hidden sm:inline" size={14} />
                     </Button>
                   </Link>
                   <Link to="/booking?type=test_drive" className="flex-1 sm:flex-none">
-                    <Button variant="outline" size="lg" className="px-4 md:px-10 h-11 md:h-14 backdrop-blur-sm text-[9px] md:text-xs w-full">Тест драйв</Button>
+                    <Button variant="outline" size="lg" className="px-4 md:px-10 h-11 md:h-14 backdrop-blur-sm text-[9px] md:text-xs w-full">{t('home.hero.testDriveBtn')}</Button>
                   </Link>
                 </div>
               </motion.div>
@@ -176,9 +159,9 @@ const Home = () => {
       <section id="featured-vehicles" className="pt-12 pb-0 md:pt-24 md:pb-0 bg-white">
         <div className="container-custom px-4 md:px-0">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-16">
-            <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tight">Онцлох <span className="text-toyota-red">загварууд</span></h2>
+            <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tight">{t('home.featured.titlePlain')} <span className="text-toyota-red">{t('home.featured.titleRed')}</span></h2>
             <Link to="/vehicles" className="group flex items-center text-[10px] md:text-sm font-bold uppercase tracking-widest mt-3 md:mt-0 text-toyota-black">
-              Бүх загварыг үзэх <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform text-toyota-red" size={14} />
+              {t('home.featured.viewAll')} <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform text-toyota-red" size={14} />
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
@@ -209,10 +192,10 @@ const Home = () => {
         <div className="container-custom px-4 md:px-0">
           <div className="flex flex-col md:flex-row justify-between md:items-end mb-8 md:mb-16 gap-3">
             <div>
-              <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tight mt-2">Мэдээ <span className="text-toyota-red">мэдээлэл</span></h2>
+              <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tight mt-2">{t('home.news.titlePlain')} <span className="text-toyota-red">{t('home.news.titleRed')}</span></h2>
             </div>
             <Link to="/news" className="group flex items-center text-[10px] md:text-sm font-bold uppercase tracking-widest text-toyota-black">
-              Бүх мэдээг үзэх <ArrowRight className="ml-2 group-hover:translate-x-1 text-toyota-red transition-transform" size={14} />
+              {t('home.news.viewAll')} <ArrowRight className="ml-2 group-hover:translate-x-1 text-toyota-red transition-transform" size={14} />
             </Link>
           </div>
 
@@ -237,18 +220,18 @@ const Home = () => {
         <div className="absolute top-0 right-0 opacity-10 translate-x-1/4 -translate-y-1/4 pointer-events-none"><span className="text-[100px] md:text-[200px] font-black tracking-tighter leading-none">TOYOTA</span></div>
         <div className="container-custom relative z-10 px-4 md:px-0">
           <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
-            <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tight mb-3 md:mb-6">Мэргэжлийн тусламж</h2>
-            <p className="text-zinc-400 text-xs md:text-base px-2">Тоёота автомашинаа мэргэжлийн оношилгооны тусламжтайгаар үргэлж шинэ мэт байлгаарай.</p>
+            <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tight mb-3 md:mb-6">{t('home.service.title')}</h2>
+            <p className="text-zinc-400 text-xs md:text-base px-2">{t('home.service.desc')}</p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
-            {["Тогтмол сервис", "Тормосны систем", "Оношилгоо", "Тэнхлэг тохиргоо", "Кузов ба будаг", "Агааржуулагч", "Хайбрид үзлэг", "Аксессуар"].map((service, i) => (
+            {t('home.service.items', { returnObjects: true }).map((service, i) => (
               <div key={i} className="group border border-zinc-800 p-4 md:p-8 hover:bg-white hover:text-toyota-black transition-all duration-300">
                 <h4 className="font-bold uppercase tracking-widest text-[9px] md:text-sm mb-2 md:mb-4">{service}</h4>
                 <div className="w-6 h-[2px] bg-toyota-red group-hover:w-12 transition-all" />
               </div>
             ))}
           </div>
-          <div className="mt-10 md:mt-16 text-center"><Link to="/booking"><Button variant="white" size="lg" className="px-10 md:px-12 w-full sm:w-auto text-[10px]">Одоо цаг захиалах</Button></Link></div>
+          <div className="mt-10 md:mt-16 text-center"><Link to="/booking"><Button variant="white" size="lg" className="px-10 md:px-12 w-full sm:w-auto text-[10px]">{t('home.service.bookNow')}</Button></Link></div>
         </div>
       </section>
 
@@ -268,14 +251,14 @@ const Home = () => {
           <div className="lg:w-[40%] flex items-center justify-center p-6 md:p-12 lg:p-20 bg-zinc-50">
             <div className="text-center lg:text-left max-w-md lg:max-w-lg">
               <h3 className="text-xl lg:text-4xl font-black uppercase tracking-tight mb-3 lg:mb-8 leading-tight text-toyota-black">
-                Манай Шоурүүмд <br className="hidden lg:block" /> зочлоорой
+                {t('home.visit.titleLine1')} <br className="hidden lg:block" /> {t('home.visit.titleLine2')}
               </h3>
               <p className="text-zinc-600 mb-4 lg:mb-10 leading-relaxed text-[11px] lg:text-lg px-2 lg:px-0">
-                Та манай шоурүүмд хүрэлцэн ирж, Тоёотагийн хамгийн сүүлийн үеийн загваруудтай танилцаж, туршилтын жолоодлого хийх боломжтой.
+                {t('home.visit.desc')}
               </p>
               <a href="https://www.google.com/maps/dir/?api=1&destination=47.914517,106.873933" target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto px-4 lg:px-0">
                 <Button variant="outlineBlack" className="px-8 lg:px-14 w-full py-3.5 lg:py-5 text-[10px] lg:text-sm font-black uppercase tracking-widest">
-                  Чиглэл авах
+                  {t('home.visit.directionsBtn')}
                 </Button>
               </a>
             </div>

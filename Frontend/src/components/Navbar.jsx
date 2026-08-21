@@ -3,10 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, User, ChevronDown, Home as HomeIcon, Car, Info, MapPin, Calculator } from 'lucide-react';
 import { clsx } from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { WheelIcon } from './FloatingCalculator';
+import LanguageToggle from './LanguageToggle';
 import logo from '../assets/home/logo-1.png';
 
 const Navbar = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -37,27 +40,27 @@ const Navbar = () => {
 
   const navLinks = [
     {
-      name: 'Бидний тухай',
+      name: t('nav.about'),
       dropdown: [
-        { name: 'Танилцуулга', path: '/about' },
-        { name: 'Борлуулалтын ажилчид', path: '/sales' },
-        { name: 'Ажлын байр', path: 'https://careers.mcs.mn/jobs/company:15/pg:2', isExternal: true },
-        { name: 'Холбоо барих', path: '/contact' },
-             { name: 'Мэдээ мэдээлэл', path: '/news' },
+        { name: t('nav.aboutIntro'), path: '/about' },
+        { name: t('nav.salesStaff'), path: '/sales' },
+        { name: t('nav.careers'), path: 'https://careers.mcs.mn/jobs/company:15/pg:2', isExternal: true },
+        { name: t('nav.contact'), path: '/contact' },
+             { name: t('nav.news'), path: '/news' },
       ]
     },
-    { name: 'Шинэ Автомашин', path: '/vehicles' },
-    { name: 'Toyota Q', path: '/toyota-q' },
-    { name: 'FAQ', path: '/faq' },
+    { name: t('nav.newVehicles'), path: '/vehicles' },
+    { name: t('nav.toyotaQ'), path: '/toyota-q' },
+    { name: t('nav.faq'), path: '/faq' },
     {
-      name: 'Үйлчилгээ',
+      name: t('nav.services'),
       dropdown: [
-        { name: 'Засвар үйлчилгээ', path: '/service' },
-        { name: 'Сэлбэг', path: '/parts' },
-        { name: 'Бүтээгдэхүүн', path: '/products' },
+        { name: t('nav.serviceMaintenance'), path: '/service' },
+        { name: t('nav.parts'), path: '/parts' },
+        { name: t('nav.products'), path: '/products' },
       ]
     },
-    
+
   ];
 
   // Background and text color logic
@@ -176,12 +179,15 @@ const Navbar = () => {
               : "bg-toyota-red text-white hover:bg-white hover:text-toyota-black"
           )}>
             <Phone size={14} strokeWidth={3} />
-            <span>Захиалга өгөх</span>
+            <span>{t('nav.orderButton')}</span>
           </Link>
+          <LanguageToggle isWhiteNav={isWhiteNav} isBlackNav={isBlackNav} />
         </div>
 
         {/* Mobile Action Icons */}
         <div className="lg:hidden flex items-center space-x-2">
+          <LanguageToggle isWhiteNav={isWhiteNav} isBlackNav={isBlackNav} />
+
           {/* Mobile Visualizer Link */}
           <a
             href="https://topmotors.kt.mn/try"
@@ -239,7 +245,7 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                   >
                     <HomeIcon size={28} className="text-toyota-red" />
-                    <span>Нүүр хуудас</span>
+                    <span>{t('nav.home')}</span>
                   </Link>
                 </motion.div>
 
@@ -305,7 +311,7 @@ const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                 >
                   <Phone size={16} />
-                  <span>Захиалга өгөх</span>
+                  <span>{t('nav.orderButton')}</span>
                 </Link>
 
               </motion.div>
@@ -327,21 +333,21 @@ const Navbar = () => {
           location.pathname === '/' ? "text-toyota-red" : (isBlackNav ? "text-zinc-500" : "text-zinc-400")
         )}>
           <HomeIcon size={20} />
-          <span className="text-[9px] font-black uppercase tracking-widest">Нүүр</span>
+          <span className="text-[9px] font-black uppercase tracking-widest">{t('nav.homeShort')}</span>
         </Link>
         <Link to="/vehicles" className={clsx(
           "flex flex-col items-center gap-1",
           location.pathname === '/vehicles' ? "text-toyota-red" : (isBlackNav ? "text-zinc-500" : "text-zinc-400")
         )}>
           <Car size={20} />
-          <span className="text-[9px] font-black uppercase tracking-widest">Загварууд</span>
+          <span className="text-[9px] font-black uppercase tracking-widest">{t('nav.vehiclesShort')}</span>
         </Link>
         <Link to="/contact" className={clsx(
           "flex flex-col items-center gap-1",
           location.pathname === '/contact' ? "text-toyota-red" : (isBlackNav ? "text-zinc-500" : "text-zinc-400")
         )}>
           <MapPin size={20} />
-          <span className="text-[9px] font-black uppercase tracking-widest">Байршил</span>
+          <span className="text-[9px] font-black uppercase tracking-widest">{t('nav.locationShort')}</span>
         </Link>
         <button
           onClick={() => setIsOpen(true)}
@@ -351,7 +357,7 @@ const Navbar = () => {
           )}
         >
           <Menu size={20} />
-          <span className="text-[9px] font-black uppercase tracking-widest">Цэс</span>
+          <span className="text-[9px] font-black uppercase tracking-widest">{t('nav.menu')}</span>
         </button>
         </div>
       )}

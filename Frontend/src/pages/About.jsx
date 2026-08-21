@@ -14,80 +14,30 @@ import {
   Settings,
   Shield
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import aboutImage from '../assets/common/about.jpg';
 
 const About = () => {
+  const { t } = useTranslation();
   const stats = [
-    {
-      label: "Салбар",
-      value: "2",
-      icon: MapPin,
-      desc: "Улаанбаатар болон Өмнөговь аймагт байрлах албан ёсны салбарууд."
-    },
-    {
-      label: "Ажилтан",
-      value: "150+",
-      icon: Users,
-      desc: "Тоёотагийн олон улсын стандартаар мэргэшсэн чадварлаг хамт олон."
-    },
-    {
-      label: "Жил",
-      value: "5",
-      icon: Calendar,
-      desc: "2021 оноос хойш Монголын зах зээлд тогтвортой үйл ажиллагаа."
-    },
-    {
-      label: "Үйлчилгээний төрөл",
-      value: "3+",
-      icon: Wrench,
-      desc: "Борлуулалт, засвар, сэлбэг."
-    },
+    { label: t('about.stats.branches.label'), value: "2", icon: MapPin, desc: t('about.stats.branches.desc') },
+    { label: t('about.stats.staff.label'), value: "150+", icon: Users, desc: t('about.stats.staff.desc') },
+    { label: t('about.stats.years.label'), value: "5", icon: Calendar, desc: t('about.stats.years.desc') },
+    { label: t('about.stats.serviceTypes.label'), value: "3+", icon: Wrench, desc: t('about.stats.serviceTypes.desc') },
   ];
 
   const services = [
-    {
-      title: "Автомашин",
-      desc: "ТОЁОТА-ийн албан ёсны дилерээс автомашины худалдаа. Олон төрлийн загвар, өнгө, комплектацийн сонголт.",
-      icon: Car
-    },
-    {
-      title: "Баталгаат засвар",
-      desc: "Үйлдвэрлэгчийн баталгаат үйлчилгээ, оношилгоо, энгийн болон төлөвлөгөөт засвар үйлчилгээ.",
-      icon: Settings
-    },
-    {
-      title: "Оригинал сэлбэг",
-      desc: "ТОЁОТА-ийн оригинал сэлбэг хэрэгслийн нийлүүлэлт. Чанар баталгаат, хурдан шуурхай.",
-      icon: ShieldCheck
-    },
-    {
-      title: "Засвар үйлчилгээ",
-      desc: "Мэргэжлийн оношилгоо, засварын үйлчилгээ.",
-      icon: Award
-    }
+    { title: t('about.services.vehicles.title'), desc: t('about.services.vehicles.desc'), icon: Car },
+    { title: t('about.services.warranty.title'), desc: t('about.services.warranty.desc'), icon: Settings },
+    { title: t('about.services.parts.title'), desc: t('about.services.parts.desc'), icon: ShieldCheck },
+    { title: t('about.services.maintenance.title'), desc: t('about.services.maintenance.desc'), icon: Award }
   ];
 
   const values = [
-    {
-      title: "Алсын хараа",
-      desc: "Mobility Lifestyle Partner",
-      icon: Compass
-    },
-    {
-      title: "Эрхэм зорилго",
-      desc: "Together To The Top - Top service, Top spare parts, Top sales, Top company",
-      icon: Target
-    },
-    {
-      title: "Байгууллагын уриа",
-      desc: "TOYOTA IS TOP MOTORS",
-      icon: Award
-    },
-    {
-      title: "Үнэт зүйлс",
-      desc: "MASTERY, TEAM SPIRIT, LEADERSHIP, MCS SPIRIT, CREATIVITY, INTEGRITY, SUSTAINABLE DEVELOPMENT",
-      icon: Shield
-    }
+    { title: t('about.values.vision.title'), desc: "Mobility Lifestyle Partner", icon: Compass },
+    { title: t('about.values.mission.title'), desc: "Together To The Top - Top service, Top spare parts, Top sales, Top company", icon: Target },
+    { title: t('about.values.slogan.title'), desc: "TOYOTA IS TOP MOTORS", icon: Award },
+    { title: t('about.values.principles.title'), desc: "MASTERY, TEAM SPIRIT, LEADERSHIP, MCS SPIRIT, CREATIVITY, INTEGRITY, SUSTAINABLE DEVELOPMENT", icon: Shield }
   ];
 
   return (
@@ -111,7 +61,7 @@ const About = () => {
               <div className="max-w-lg relative mx-auto lg:mx-0">
                 <div className="absolute -left-4 md:-left-6 top-0 bottom-0 w-[2px] bg-toyota-red/30" />
                 <p className="text-xs md:text-base text-zinc-600 font-medium leading-relaxed italic text-justify px-2 md:px-0">
-                  "Топ Моторс" ХХК нь 2021 оноос хойш үйл ажиллагаа явуулж байгаа  бөгөөд "ТОЁОТА МОТОР КОРПОРАЦИ"-ийн албан ёсны дилер юм.
+                  {t('about.hero.tagline')}
                 </p>
               </div>
             </motion.div>
@@ -170,20 +120,20 @@ const About = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
             <div className="lg:col-span-5">
               <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-4 md:mb-6 leading-tight">
-                Компанийн тухай
+                {t('about.company.title')}
               </h2>
               <div className="w-12 md:w-16 h-1 bg-toyota-red mb-6 md:mb-10" />
               <p className="text-lg md:text-2xl font-black text-toyota-black mb-4 md:mb-6 leading-tight uppercase">
-                ТОЁОТА БРЭНДИЙН АЛБАН ЁСНЫ ДИЛЕР “ТОП МОТОРС”
+                {t('about.company.subtitle')}
               </p>
             </div>
             <div className="lg:col-span-7">
               <div className="space-y-4 md:space-y-6 text-zinc-600 leading-relaxed text-sm md:text-base text-justify font-medium">
                 <p>
-                  "Топ Моторс" ХХК нь 2021 оноос хойш үйл ажиллагаа явуулж байгаа бөгөөд дэлхийд автомашин үйлдвэрлэлээр тэргүүлэгч "ТОЁОТА МОТОР КОРПОРАЦИ"-ийн албан ёсны дилер, М-Си-Эс Группийн охин компани юм.
+                  {t('about.company.para1')}
                 </p>
                 <p>
-                  Бид Тоёота брэндийн шинэ болон дугаартай автомашины борлуулалт, засвар үйлчилгээ, сэлбэг эд ангийн худалдаа, дилерийн үйл ажиллагааг ТОЁОТА-ийн олон улсын стандартын дагуу хийж гүйцэтгэн үйлчлүүлэгчдэдээ насан туршийнх нь туслах, зөвлөх байхыг зорин ажиллаж байгаа бөгөөд эрч хүчтэй, чадварлаг, бүтээлч залуучууд гар нийлэн үйлчлүүлэгчдэдээ чанартай бүтээгдэхүүн үйлчилгээг хүргэж байна.
+                  {t('about.company.para2')}
                 </p>
               </div>
             </div>
@@ -195,7 +145,7 @@ const About = () => {
       <section className="py-12 md:py-20 bg-toyota-gray-100">
         <div className="container-custom px-4">
           <div className="mb-8 md:mb-12">
-            <h2 className="text-xl md:text-3xl font-black uppercase tracking-tight">Манай үйлчилгээ</h2>
+            <h2 className="text-xl md:text-3xl font-black uppercase tracking-tight">{t('about.servicesTitle')}</h2>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -223,7 +173,7 @@ const About = () => {
       <section className="py-12 md:py-24 bg-white">
         <div className="container-custom px-4">
           <div className="mb-10 md:mb-16 text-center">
-            <h2 className="text-xl md:text-3xl font-black uppercase tracking-tight">Зорилго & Үнэт зүйлс</h2>
+            <h2 className="text-xl md:text-3xl font-black uppercase tracking-tight">{t('about.valuesTitle')}</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">

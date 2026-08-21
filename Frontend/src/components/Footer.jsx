@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import logo from '../assets/home/logo-1.png';
 
 const Footer = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -53,7 +55,7 @@ const Footer = () => {
             <div className="hidden md:inline-flex items-center gap-2.5 px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-full">
               <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isOpen ? 'bg-green-500' : 'bg-red-500'}`} />
               <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                {isOpen ? 'Шоурүүм нээлттэй' : 'Шоурүүм хаалттай'}
+                {isOpen ? t('footer.showroomOpen') : t('footer.showroomClosed')}
               </span>
             </div>
           </div>
@@ -61,18 +63,18 @@ const Footer = () => {
           {/* 2. Navigation */}
           <div className="grid grid-cols-2 md:grid-cols-1 gap-8 md:gap-0 md:contents">
             <div className="text-center md:text-left">
-              <h4 className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-toyota-red mb-4 md:mb-6">Манай цэс</h4>
+              <h4 className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-toyota-red mb-4 md:mb-6">{t('footer.menuTitle')}</h4>
               <ul className="space-y-3 md:space-y-3.5 text-[10px] md:text-xs font-bold uppercase tracking-widest text-zinc-400">
-                <li><Link to="/vehicles" className="hover:text-white transition-colors">Загварууд</Link></li>
-                <li><Link to="/service" className="hover:text-white transition-colors">Засвар үйлчилгээ</Link></li>
-                <li><Link to="/about" className="hover:text-white transition-colors">Бидний тухай</Link></li>
-                <li className="hidden md:block"><a href="https://careers.mcs.mn/jobs/company:15/pg:2" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Ажлын байр</a></li>
+                <li><Link to="/vehicles" className="hover:text-white transition-colors">{t('nav.vehiclesShort')}</Link></li>
+                <li><Link to="/service" className="hover:text-white transition-colors">{t('nav.serviceMaintenance')}</Link></li>
+                <li><Link to="/about" className="hover:text-white transition-colors">{t('nav.about')}</Link></li>
+                <li className="hidden md:block"><a href="https://careers.mcs.mn/jobs/company:15/pg:2" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">{t('nav.careers')}</a></li>
               </ul>
             </div>
 
             {/* 4. Contact & Hours (Mobile only moves up) */}
             <div className="text-center md:text-left md:hidden">
-              <h4 className="text-[9px] font-black uppercase tracking-[0.3em] text-toyota-red mb-4">Холбоо</h4>
+              <h4 className="text-[9px] font-black uppercase tracking-[0.3em] text-toyota-red mb-4">{t('footer.contactTitle')}</h4>
               <a href="mailto:INFO@TOPMOTORS.MN" className="block text-[11px] font-black text-white hover:text-toyota-red transition-colors mb-2">
                 INFO@TOPMOTORS.MN
               </a>
@@ -82,13 +84,13 @@ const Footer = () => {
 
           {/* 3. Locations */}
           <div className="hidden md:block pt-8 md:pt-0 border-t border-zinc-900 md:border-0 text-center md:text-left">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-toyota-red mb-6">Салбарууд</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-toyota-red mb-6">{t('footer.branchesTitle')}</h4>
             <div className="space-y-6">
               <div className="space-y-2">
-                <p className="text-xs font-black uppercase text-white tracking-tight">Салбар 1 (УБ)</p>
+                <p className="text-xs font-black uppercase text-white tracking-tight">{t('footer.branch1Name')}</p>
                 <div className="flex items-start justify-center md:justify-start gap-2 text-zinc-400">
                   <MapPin size={14} className="shrink-0 mt-0.5 text-toyota-red hidden md:block" />
-                  <p className="text-[11px] font-medium leading-relaxed">Баянгол дүүрэг, 10-р хороолол</p>
+                  <p className="text-[11px] font-medium leading-relaxed">{t('footer.branch1Address')}</p>
                 </div>
                 <a href="tel:77778090" className="inline-flex items-center gap-2 text-xs font-black text-white hover:text-toyota-red transition-colors">
                   <Phone size={12} className="text-toyota-red hidden md:block" /> 7777 8090
@@ -96,10 +98,10 @@ const Footer = () => {
               </div>
 
               <div className="hidden md:block space-y-2 pt-4 border-t border-zinc-900">
-                <p className="text-xs font-black uppercase text-white tracking-tight">Салбар 2 (ӨМГ)</p>
+                <p className="text-xs font-black uppercase text-white tracking-tight">{t('footer.branch2Name')}</p>
                 <div className="flex items-start gap-2 text-zinc-400">
                   <MapPin size={14} className="shrink-0 mt-0.5 text-toyota-red" />
-                  <p className="text-[11px] font-medium leading-relaxed">Цогтцэций сум, Өгөөмөр IV баг</p>
+                  <p className="text-[11px] font-medium leading-relaxed">{t('footer.branch2Address')}</p>
                 </div>
                 <a href="tel:77778090" className="inline-flex items-center gap-2 text-xs font-black text-white hover:text-toyota-red transition-colors">
                   <Phone size={12} className="text-toyota-red" /> 7777 8090
@@ -110,12 +112,12 @@ const Footer = () => {
 
           {/* 4. Contact & Hours (Desktop Version) */}
           <div className="hidden md:block">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-toyota-red mb-6">Холбогдох</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-toyota-red mb-6">{t('footer.contactDesktopTitle')}</h4>
             <div className="space-y-6">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2 text-zinc-500">
                   <Mail size={14} className="text-toyota-red" />
-                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">И-мэйл</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">{t('footer.emailLabel')}</p>
                 </div>
                 <a href="mailto:INFO@TOPMOTORS.MN" className="block text-sm font-black text-white hover:text-toyota-red transition-colors">
                   INFO@TOPMOTORS.MN
@@ -123,10 +125,10 @@ const Footer = () => {
               </div>
 
               <div className="space-y-3 pt-4 border-t border-zinc-900">
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Ажиллах цагийн хуваарь</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">{t('footer.hoursTitle')}</p>
                 <div className="space-y-2 text-[11px] font-bold">
                   <div className="flex justify-between border-b border-zinc-900/50 pb-1.5 text-zinc-300">
-                    <span className="uppercase tracking-tighter">Бүх өдөр</span>
+                    <span className="uppercase tracking-tighter">{t('footer.everyday')}</span>
                     <span>09:00 - 18:00</span>
                   </div>
                 </div>

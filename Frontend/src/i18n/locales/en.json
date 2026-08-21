@@ -1,0 +1,232 @@
+{
+  "common": {
+    "select": "Select",
+    "back": "Back",
+    "continue": "Continue",
+    "confirm": "Confirm",
+    "submitting": "Submitting..."
+  },
+  "nav": {
+    "about": "About Us",
+    "aboutIntro": "Overview",
+    "salesStaff": "Sales Team",
+    "careers": "Careers",
+    "contact": "Contact",
+    "news": "News",
+    "newVehicles": "New Vehicles",
+    "toyotaQ": "Toyota Q",
+    "faq": "FAQ",
+    "services": "Services",
+    "serviceMaintenance": "Service & Maintenance",
+    "parts": "Parts",
+    "products": "Products",
+    "home": "Home",
+    "homeShort": "Home",
+    "vehiclesShort": "Vehicles",
+    "locationShort": "Location",
+    "menu": "Menu",
+    "orderButton": "Order Now"
+  },
+  "footer": {
+    "showroomOpen": "Showroom Open",
+    "showroomClosed": "Showroom Closed",
+    "menuTitle": "Quick Links",
+    "contactTitle": "Contact",
+    "branchesTitle": "Our Branches",
+    "branch1Name": "Branch 1 (Ulaanbaatar)",
+    "branch1Address": "Bayangol District, 10th khoroolol",
+    "branch2Name": "Branch 2 (Umnugovi)",
+    "branch2Address": "Tsogttsetsii sum, Ugoomor IV bag",
+    "contactDesktopTitle": "Get In Touch",
+    "emailLabel": "Email",
+    "hoursTitle": "Business Hours",
+    "everyday": "Every day"
+  },
+  "home": {
+    "hero": {
+      "slide1": { "title": "LEGENDARY", "titleRed": "PERFORMANCE", "desc": "Feel the unmatched power and luxury of the all-new Land Cruiser 300, built for any harsh condition in Mongolia." },
+      "slide2": { "title": "LIMITLESS", "titleRed": "JOURNEY", "desc": "Built for your endless journeys. The all-new Land Cruiser Prado 250 - legendary off-road capability, modern design." },
+      "slide3": { "title": "SMART", "titleRed": "CHOICE", "desc": "Toyota RAV4 - a smart, powerful SUV that fills every moment of your life with energy. Your reliable companion on any road." },
+      "showroomBtn": "View Showroom",
+      "testDriveBtn": "Test Drive"
+    },
+    "featured": {
+      "titlePlain": "Featured",
+      "titleRed": "Vehicles",
+      "viewAll": "View All Vehicles"
+    },
+    "news": {
+      "titlePlain": "Latest",
+      "titleRed": "News",
+      "viewAll": "View All News"
+    },
+    "service": {
+      "title": "Professional Support",
+      "desc": "Keep your Toyota feeling new with professional diagnostic support.",
+      "items": ["Regular Service", "Brake System", "Diagnostics", "Wheel Alignment", "Body & Paint", "AC Service", "Hybrid Inspection", "Accessories"],
+      "bookNow": "Book Now"
+    },
+    "visit": {
+      "titleLine1": "Visit Our",
+      "titleLine2": "Showroom",
+      "desc": "Come visit our showroom to explore Toyota's latest models and take them for a test drive.",
+      "directionsBtn": "Get Directions"
+    }
+  },
+  "booking": {
+    "headerPlain": "Which service",
+    "headerRed": "would you like?",
+    "errors": {
+      "submitFailed": "Something went wrong sending your request. Please try again.",
+      "serverError": "Could not connect to the server."
+    },
+    "types": {
+      "newCar": { "title": "Order a New Vehicle", "desc": "Place an order by choosing from our latest models." },
+      "testDrive": { "title": "Test Drive", "desc": "Take the latest models for a drive yourself." },
+      "service": { "title": "Service & Repair", "desc": "Professional repair and diagnostics." }
+    },
+    "contactSalesLink": "Talk to a Sales Representative",
+    "services": {
+      "regular": { "title": "Regular Maintenance", "desc": "Oil, fluid, and consumable parts replacement." },
+      "diagnostics": { "title": "Diagnostics", "desc": "Detailed diagnostics for all vehicle systems." },
+      "engine": { "title": "Engine & Drivetrain Repair", "desc": "Repair of the engine and power transmission systems." },
+      "wheels": { "title": "Wheels & Suspension Service", "desc": "Driving stability and safety." },
+      "care": { "title": "Vehicle Care & Protection", "desc": "Services aimed at preserving appearance and value." },
+      "parts": { "title": "Genuine Parts & Accessories", "desc": "Manufacturer-warrantied genuine parts and accessories." }
+    },
+    "step2": {
+      "titleModel": "Choose a Model",
+      "titleModelTime": "Model & Time",
+      "serviceTypeLabel": "Service Type",
+      "vehicleLabel": "Vehicle of Interest",
+      "vehiclePlaceholder": "Vehicle model (LC300...)",
+      "oneModelOnly": "(You may select only 1 model)",
+      "plateLabel": "License Plate",
+      "dateLabel": "Date",
+      "timeLabel": "Available Time"
+    },
+    "step4": {
+      "title": "Order Terms",
+      "downPaymentLabel": "Down Payment Amount *",
+      "paymentConditionLabel": "Payment Terms *",
+      "otherModelsLabel": "Any other models you're interested in?",
+      "otherModelsPlaceholder": "Model name...",
+      "additionalInfoLabel": "Any additional requests or details? *",
+      "additionalInfoPlaceholder": "Type here..."
+    },
+    "success": {
+      "title": "Request Sent!",
+      "desc": "Thank you. Our staff will contact you shortly to confirm your request."
+    },
+    "contact": {
+      "title": "Contact Info",
+      "nameOrgLabel": "Your full name or (Company name) *",
+      "nameLabel": "Full Name *",
+      "namePlaceholder": "e.g. Dorjiin Batbayar",
+      "phoneLabel": "Your Phone Number *",
+      "emailLabel": "Email Address"
+    }
+  },
+  "contact": {
+    "errors": {
+      "generic": "Something went wrong.",
+      "server": "Could not connect to the server."
+    },
+    "branchesTitle": "Our Branches",
+    "branch1AddressDetailed": "Bayangol District, 10th khoroolol, east side of Emart",
+    "followUs": "Follow Us",
+    "form": {
+      "sentTitle": "Sent",
+      "sentDesc": "Your message has been received, we'll be in touch shortly.",
+      "title": "Send a Message",
+      "nameLabel": "Name",
+      "phoneLabel": "Phone",
+      "subjectLabel": "Subject",
+      "messageLabel": "Message",
+      "sendBtn": "Send"
+    }
+  },
+  "about": {
+    "stats": {
+      "branches": { "label": "Branches", "desc": "Official branches located in Ulaanbaatar and Umnugovi province." },
+      "staff": { "label": "Staff", "desc": "A skilled team certified to Toyota's international standards." },
+      "years": { "label": "Years", "desc": "Stable operations in the Mongolian market since 2021." },
+      "serviceTypes": { "label": "Service Types", "desc": "Sales, repair, parts." }
+    },
+    "services": {
+      "vehicles": { "title": "Vehicles", "desc": "Vehicle sales from Toyota's official dealer. A wide selection of models, colors, and trims." },
+      "warranty": { "title": "Warranty Repair", "desc": "Manufacturer-warrantied service, diagnostics, routine and scheduled maintenance." },
+      "parts": { "title": "Genuine Parts", "desc": "Supply of genuine Toyota parts. Quality-guaranteed and fast." },
+      "maintenance": { "title": "Service & Maintenance", "desc": "Professional diagnostics and repair service." }
+    },
+    "values": {
+      "vision": { "title": "Vision" },
+      "mission": { "title": "Mission" },
+      "slogan": { "title": "Company Slogan" },
+      "principles": { "title": "Core Values" }
+    },
+    "hero": {
+      "tagline": "\"Top Motors\" LLC has been operating since 2021 and is the official dealer of \"TOYOTA MOTOR CORPORATION\"."
+    },
+    "company": {
+      "title": "About the Company",
+      "subtitle": "OFFICIAL TOYOTA DEALER — “TOP MOTORS”",
+      "para1": "\"Top Motors\" LLC has been operating since 2021 and is the official dealer of \"TOYOTA MOTOR CORPORATION\", the world's leading automobile manufacturer, and a subsidiary of the MCS Group.",
+      "para2": "We carry out the sale of new and used Toyota vehicles, maintenance and repair services, and genuine parts trade in accordance with Toyota's international standards, aiming to be our customers' lifelong helper and advisor — with an energetic, skilled, and creative team delivering quality products and service."
+    },
+    "servicesTitle": "Our Services",
+    "valuesTitle": "Mission & Values"
+  },
+  "vehicles": {
+    "categories": {
+      "all": "All Models",
+      "sedan": "Sedan",
+      "pickup": "Pickup"
+    },
+    "list": {
+      "titlePlain": "Vehicles We",
+      "titleRed": "Currently Sell",
+      "compareBtn": "Compare Vehicle Models",
+      "searchPlaceholder": "Search models...",
+      "loading": "Loading...",
+      "noResults": "No models found",
+      "ctaTitleLine1": "Can't Make Up",
+      "ctaTitleLine2": "Your Mind?",
+      "ctaDesc": "Compare up to 3 models side by side and find the Toyota that best fits your needs."
+    },
+    "detail": {
+      "notFound": "Vehicle Not Found",
+      "backToVehicles": "Back to Vehicles",
+      "priceUnknown": "Unknown",
+      "basicSpecs": "Key Specs",
+      "quickFeatures": {
+        "engine": "Engine",
+        "transmission": "Transmission",
+        "horsepower": "Horsepower",
+        "torque": "Torque"
+      },
+      "featureCategories": {
+        "interior": "INTERIOR",
+        "exterior": "EXTERIOR",
+        "safety": "SAFETY",
+        "performance": "PERFORMANCE",
+        "dimensions": "DIMENSIONS",
+        "wheels": "WHEELS & TIRES"
+      },
+      "view360": "View 360°",
+      "defaultColor": "Standard",
+      "chooseColor": "Choose Color",
+      "totalPrice": "Total Price",
+      "calculator": "Calculator",
+      "aboutTitlePlain": "About the",
+      "aboutTitleRed": "Model",
+      "variantSuffix": "Trim",
+      "salon": "Cabin",
+      "dragToRotate": "Drag to rotate",
+      "galleryTitlePlain": "Photo",
+      "galleryTitleRed": "Gallery",
+      "galleryEmpty": "Gallery is empty",
+      "compareDesc": "Compare the {{name}} {{series}} side by side with other Toyota models and find the trim that best fits your needs."
+    }
+  }
+}

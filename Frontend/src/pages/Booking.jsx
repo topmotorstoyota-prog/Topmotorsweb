@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Calendar as CalendarIcon, Clock, Car, User, CheckCircle2, ArrowRight, UserCog, PhoneCall, ShoppingBag, MessageCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 
 const Booking = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -123,50 +125,52 @@ const Booking = () => {
       if (res.ok) {
         setStep('success');
       } else {
-        alert('Захиалга илгээхэд алдаа гарлаа. Та дахин оролдоно уу.');
+        alert(t('booking.errors.submitFailed'));
       }
     } catch (err) {
       console.error(err);
-      alert('Сервертэй холбогдоход алдаа гарлаа.');
+      alert(t('booking.errors.serverError'));
     }
     setIsSubmitting(false);
   };
 
+  // Анхаар: id болон subItems нь backend рүү шууд илгээгддэг тул монгол хэлээр байлгав
+  // (admin panel үргэлж монгол хэлээр харагдана). title/description зөвхөн харуулахад ашиглагддаг тул орчуулав.
   const serviceCategories = [
     {
       id: "Тогтмол засвар үйлчилгээ",
-      title: "Тогтмол засвар үйлчилгээ",
-      description: "Тос, шингэн болон хэрэглээний эд ангиудыг солих үйлчилгээ.",
+      title: t('booking.services.regular.title'),
+      description: t('booking.services.regular.desc'),
       subItems: ["Улирлын тос солих", "Бүх төрлийн шингэн солих", "Хуваарьт болон урсгал засвар"]
     },
     {
       id: "Оношилгоо",
-      title: "Оношилгоо",
-      description: "Автомашины бүх системд нарийвчилсан оношилгоо хийнэ.",
+      title: t('booking.services.diagnostics.title'),
+      description: t('booking.services.diagnostics.desc'),
       subItems: ["Компьютер оношилгоо", "Хөдөлгүүрийн оношилгоо", "Цахилгааны оношилгоо"]
     },
     {
       id: "Хөдөлгүүр ба агрегатын засвар",
-      title: "Хөдөлгүүр ба агрегатын засвар",
-      description: "Хөдөлгүүр болон хүч дамжуулах системийн засвар.",
+      title: t('booking.services.engine.title'),
+      description: t('booking.services.engine.desc'),
       subItems: ["Агрегат засвар", "Хөдөлгүүрийн их засвар", "Хүч дамжуулагчийн их засвар"]
     },
     {
       id: "Дугуй ба явах эд ангийн үйлчилгээ",
-      title: "Дугуй ба явах эд ангийн үйлчилгээ",
-      description: "Жолоодлогын тогтвортой байдал, аюулгүй ажиллагаа.",
+      title: t('booking.services.wheels.title'),
+      description: t('booking.services.wheels.desc'),
       subItems: ["Тэнхлэг тохиргоо", "Дугуй солих/тэнцвэржүүлэх", "Дугуй хадгалах"]
     },
     {
       id: "Автомашины арчилгаа, хамгаалалт",
-      title: "Автомашины арчилгаа, хамгаалалт",
-      description: "Өнгө үзэмж, үнэ цэнийг хадгалахад чиглэсэн үйлчилгээ.",
+      title: t('booking.services.care.title'),
+      description: t('booking.services.care.desc'),
       subItems: ["Угаалга", "Хамгаалалтын хуулга", "Гадна өнгөлгөө"]
     },
     {
       id: "Оригинал сэлбэг ба аксессуар",
-      title: "Оригинал сэлбэг ба аксессуар",
-      description: "Үйлдвэрлэгчийн баталгаат оригинал сэлбэг, аксессуар.",
+      title: t('booking.services.parts.title'),
+      description: t('booking.services.parts.desc'),
       subItems: ["Сэлбэгийн худалдаа", "Аксессуар суурилуулалт", "Захиалгат сэлбэг"]
     }
   ];
@@ -183,7 +187,7 @@ const Booking = () => {
 
           {/* Header */}
           <div className="text-center mb-6 md:mb-12">
-            <h1 className="text-2xl md:text-5xl font-black uppercase tracking-tighter mt-1 md:mt-2 text-toyota-black">Ямар үйлчилгээ <span className="text-zinc-400">авах вэ?</span></h1>
+            <h1 className="text-2xl md:text-5xl font-black uppercase tracking-tighter mt-1 md:mt-2 text-toyota-black">{t('booking.headerPlain')} <span className="text-zinc-400">{t('booking.headerRed')}</span></h1>
           </div>
 
           {/* Stepper Progress */}
@@ -216,24 +220,24 @@ const Booking = () => {
                       className={`p-3 md:p-8 border-2 transition-all text-center flex flex-col items-center h-full rounded-sm ${formData.type === 'new_car_order' ? "border-toyota-red bg-toyota-red/5" : "border-zinc-100 hover:border-zinc-200"}`}
                     >
                       <ShoppingBag className={formData.type === 'new_car_order' ? "text-toyota-red" : "text-zinc-300 md:text-toyota-black"} size={20} md:size={40} />
-                      <h4 className={`font-black uppercase tracking-tighter md:tracking-widest mt-2 md:mt-6 text-[7px] md:text-sm leading-tight ${formData.type === 'new_car_order' ? "text-toyota-red" : "text-toyota-black"}`}>Шинэ автомашин захиалах</h4>
-                      <p className="hidden md:block text-[11px] text-zinc-800 mt-2 leading-relaxed">Хамгийн сүүлийн үеийн загваруудаас сонгон захиалга өгөх.</p>
+                      <h4 className={`font-black uppercase tracking-tighter md:tracking-widest mt-2 md:mt-6 text-[7px] md:text-sm leading-tight ${formData.type === 'new_car_order' ? "text-toyota-red" : "text-toyota-black"}`}>{t('booking.types.newCar.title')}</h4>
+                      <p className="hidden md:block text-[11px] text-zinc-800 mt-2 leading-relaxed">{t('booking.types.newCar.desc')}</p>
                     </button>
                     <button
                       onClick={() => setFormData({...formData, type: 'test_drive'})}
                       className={`p-3 md:p-8 border-2 transition-all text-center flex flex-col items-center h-full rounded-sm ${formData.type === 'test_drive' ? "border-toyota-red bg-toyota-red/5" : "border-zinc-100 hover:border-zinc-200"}`}
                     >
                       <Car className={formData.type === 'test_drive' ? "text-toyota-red" : "text-zinc-300 md:text-toyota-black"} size={20} md:size={40} />
-                      <h4 className={`font-black uppercase tracking-tighter md:tracking-widest mt-2 md:mt-6 text-[7px] md:text-sm leading-tight ${formData.type === 'test_drive' ? "text-toyota-red" : "text-toyota-black"}`}>Тест Драйв</h4>
-                      <p className="hidden md:block text-[11px] text-zinc-800 mt-2 leading-relaxed">Сүүлийн үеийн загваруудыг өөрөө жолоодож үзэх.</p>
+                      <h4 className={`font-black uppercase tracking-tighter md:tracking-widest mt-2 md:mt-6 text-[7px] md:text-sm leading-tight ${formData.type === 'test_drive' ? "text-toyota-red" : "text-toyota-black"}`}>{t('booking.types.testDrive.title')}</h4>
+                      <p className="hidden md:block text-[11px] text-zinc-800 mt-2 leading-relaxed">{t('booking.types.testDrive.desc')}</p>
                     </button>
                     <button
                       onClick={() => setFormData({...formData, type: 'service'})}
                       className={`p-3 md:p-8 border-2 transition-all text-center flex flex-col items-center h-full rounded-sm ${formData.type === 'service' ? "border-toyota-red bg-toyota-red/5" : "border-zinc-100 hover:border-zinc-200"}`}
                     >
                       <Clock className={formData.type === 'service' ? "text-toyota-red" : "text-zinc-300 md:text-toyota-black"} size={20} md:size={40} />
-                      <h4 className={`font-black uppercase tracking-tighter md:tracking-widest mt-2 md:mt-6 text-[7px] md:text-sm leading-tight ${formData.type === 'service' ? "text-toyota-red" : "text-toyota-black"}`}>Засвар Үйлчилгээ</h4>
-                      <p className="hidden md:block text-[11px] text-zinc-800 mt-2 leading-relaxed">Мэргэжлийн засвар, оношилгоо.</p>
+                      <h4 className={`font-black uppercase tracking-tighter md:tracking-widest mt-2 md:mt-6 text-[7px] md:text-sm leading-tight ${formData.type === 'service' ? "text-toyota-red" : "text-toyota-black"}`}>{t('booking.types.service.title')}</h4>
+                      <p className="hidden md:block text-[11px] text-zinc-800 mt-2 leading-relaxed">{t('booking.types.service.desc')}</p>
                     </button>
                   </div>
 
@@ -245,10 +249,10 @@ const Booking = () => {
                       <div className="w-8 h-8 rounded-full border border-zinc-100 flex items-center justify-center group-hover:border-toyota-red/20 group-hover:bg-toyota-red/5 transition-all">
                         <UserCog size={14} />
                       </div>
-                      <span>Борлуулалтын ажилтантай холбогдох</span>
+                      <span>{t('booking.contactSalesLink')}</span>
                     </Link>
                     <Button onClick={nextStep} size="lg" className="w-full sm:w-auto uppercase font-black tracking-widest text-[10px]">
-                      Үргэлжлүүлэх <ArrowRight className="ml-2" size={16} />
+                      {t('common.continue')} <ArrowRight className="ml-2" size={16} />
                     </Button>
                   </div>
                 </motion.div>
@@ -263,7 +267,7 @@ const Booking = () => {
                   className="p-6 md:p-12"
                 >
                   <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-6 md:mb-8">
-                    {formData.type === 'new_car_order' ? 'Загвар сонгох' : 'Загвар ба Хугацаа'}
+                    {formData.type === 'new_car_order' ? t('booking.step2.titleModel') : t('booking.step2.titleModelTime')}
                   </h3>
                   <div className="space-y-4 md:space-y-6 mb-8 md:mb-12">
                     {formData.type === 'service' && (
@@ -271,14 +275,14 @@ const Booking = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                       >
-                        <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">Үйлчилгээний төрөл</label>
+                        <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('booking.step2.serviceTypeLabel')}</label>
                         <select
                           value={formData.serviceType}
                           onChange={(e) => setFormData({...formData, serviceType: e.target.value, serviceDetail: ''})}
                           className="w-full p-3 md:p-4 border border-zinc-200 focus:border-toyota-red focus:outline-none bg-zinc-50 font-bold uppercase text-xs md:text-sm"
                           required={formData.type === 'service'}
                         >
-                          <option value="">Сонгох</option>
+                          <option value="">{t('common.select')}</option>
                           {serviceCategories.map(cat => <option key={cat.id} value={cat.id}>{cat.title}</option>)}
                         </select>
                         {formData.serviceType && (
@@ -307,7 +311,7 @@ const Booking = () => {
                       </motion.div>
                     )}
                     <div>
-                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">Сонирхож буй загвар</label>
+                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('booking.step2.vehicleLabel')}</label>
                       {formData.type === 'test_drive' || formData.type === 'new_car_order' ? (
                         <select
                           value={formData.vehicle}
@@ -315,7 +319,7 @@ const Booking = () => {
                           className="w-full p-3 md:p-4 border border-zinc-200 focus:border-toyota-red focus:outline-none bg-zinc-50 font-bold uppercase text-xs md:text-sm"
                           required
                         >
-                          <option value="">Сонгох</option>
+                          <option value="">{t('common.select')}</option>
                           {availableVehicles.map(v => (
                             <option key={v.id} value={v.name}>{v.name}</option>
                           ))}
@@ -323,14 +327,14 @@ const Booking = () => {
                       ) : (
                         <input
                           type="text"
-                          placeholder="Машины загвар (LC300...)"
+                          placeholder={t('booking.step2.vehiclePlaceholder')}
                           value={formData.vehicle}
                           onChange={(e) => setFormData({...formData, vehicle: e.target.value})}
                           className="w-full p-3 md:p-4 border border-zinc-200 focus:border-toyota-red focus:outline-none bg-zinc-50 font-bold uppercase text-xs md:text-sm"
                         />
                       )}
                       {formData.type === 'new_car_order' && (
-                        <p className="text-[9px] text-zinc-400 mt-2 italic">(Зөвхөн 1 загвараа сонгох боломжтой)</p>
+                        <p className="text-[9px] text-zinc-400 mt-2 italic">{t('booking.step2.oneModelOnly')}</p>
                       )}
                     </div>
                     {formData.type === 'service' && (
@@ -338,7 +342,7 @@ const Booking = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                       >
-                        <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">Улсын дугаар</label>
+                        <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('booking.step2.plateLabel')}</label>
                         <input
                           type="text"
                           placeholder="0000 УБА"
@@ -351,7 +355,7 @@ const Booking = () => {
                     {formData.type !== 'new_car_order' && (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                         <div>
-                          <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">Огноо</label>
+                          <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('booking.step2.dateLabel')}</label>
                           <input
                             type="date"
                             onChange={(e) => setFormData({...formData, date: e.target.value})}
@@ -359,22 +363,22 @@ const Booking = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">Боломжит цаг</label>
+                          <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('booking.step2.timeLabel')}</label>
                           <select
                             value={formData.time}
                             onChange={(e) => setFormData({...formData, time: e.target.value})}
                             className="w-full p-3 md:p-4 border border-zinc-200 focus:border-toyota-red focus:outline-none bg-zinc-50 font-bold uppercase text-xs md:text-sm"
                           >
-                            <option value="">Сонгох</option>
-                            {timeSlots.map(t => <option key={t} value={t}>{t}</option>)}
+                            <option value="">{t('common.select')}</option>
+                            {timeSlots.map(ts => <option key={ts} value={ts}>{ts}</option>)}
                           </select>
                         </div>
                       </div>
                     )}
                   </div>
                   <div className="flex flex-col sm:flex-row justify-between gap-3">
-                    <Button variant="ghost" onClick={prevStep} className="order-2 sm:order-1 text-[10px] font-black uppercase tracking-widest">Буцах</Button>
-                    <Button onClick={nextStep} className="order-1 sm:order-2 text-[10px] font-black uppercase tracking-widest">Үргэлжлүүлэх <ArrowRight className="ml-2" size={16} /></Button>
+                    <Button variant="ghost" onClick={prevStep} className="order-2 sm:order-1 text-[10px] font-black uppercase tracking-widest">{t('common.back')}</Button>
+                    <Button onClick={nextStep} className="order-1 sm:order-2 text-[10px] font-black uppercase tracking-widest">{t('common.continue')} <ArrowRight className="ml-2" size={16} /></Button>
                   </div>
                 </motion.div>
               )}
@@ -407,10 +411,11 @@ const Booking = () => {
                   exit={{ opacity: 0, x: -20 }}
                   className="p-6 md:p-12"
                 >
-                  <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-6 md:mb-8">Захиалгын нөхцөл</h3>
+                  <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-6 md:mb-8">{t('booking.step4.title')}</h3>
                   <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8 mb-8 md:mb-12">
                     <div>
-                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-4">Урьдчилгаа төлбөрийн хэмжээ *</label>
+                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-4">{t('booking.step4.downPaymentLabel')}</label>
+                      {/* Утга нь backend рүү шууд илгээгддэг тул монгол хэлээр байлгав */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {['5-10 сая төгрөг', '10-40 сая төгрөг', '40-100 сая төгрөг', '100 сая төгрөгөөс дээш'].map(opt => (
                           <label key={opt} className={`flex items-center p-4 border-2 cursor-pointer transition-all ${formData.downPayment === opt ? "border-toyota-red bg-toyota-red/5" : "border-zinc-100 hover:border-zinc-200"}`}>
@@ -425,7 +430,7 @@ const Booking = () => {
                     </div>
 
                     <div>
-                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-4">Төлбөрийн нөхцөл *</label>
+                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-4">{t('booking.step4.paymentConditionLabel')}</label>
                       <div className="flex gap-4">
                         {['Бэлэн', 'Зээлээр'].map(opt => (
                           <label key={opt} className={`flex-1 flex items-center p-4 border-2 cursor-pointer transition-all ${formData.paymentCondition === opt ? "border-toyota-red bg-toyota-red/5" : "border-zinc-100 hover:border-zinc-200"}`}>
@@ -440,30 +445,30 @@ const Booking = () => {
                     </div>
 
                     <div>
-                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">Өөр сонирхож буй загвар байгаа эсэх</label>
+                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">{t('booking.step4.otherModelsLabel')}</label>
                       <input
                         type="text"
                         value={formData.otherModels}
                         onChange={(e) => setFormData({...formData, otherModels: e.target.value})}
-                        placeholder="Загварын нэр..."
+                        placeholder={t('booking.step4.otherModelsPlaceholder')}
                         className="w-full p-4 border border-zinc-200 focus:border-toyota-red focus:outline-none bg-zinc-50 font-bold text-xs"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">Танд нэмэлт санал хүсэлт, тодруулах зүйл байвал энд бичнэ үү. *</label>
+                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">{t('booking.step4.additionalInfoLabel')}</label>
                       <textarea
                         value={formData.additionalInfo}
                         onChange={(e) => setFormData({...formData, additionalInfo: e.target.value})}
                         className="w-full p-4 border border-zinc-200 focus:border-toyota-red focus:outline-none bg-zinc-50 font-medium text-xs h-32 resize-none"
-                        placeholder="Бичих..."
+                        placeholder={t('booking.step4.additionalInfoPlaceholder')}
                       />
                     </div>
 
                     <div className="flex flex-col sm:flex-row justify-between gap-3 pt-4 md:pt-6">
-                      <Button variant="ghost" type="button" onClick={prevStep} className="order-2 sm:order-1 text-[10px] font-black uppercase tracking-widest">Буцах</Button>
+                      <Button variant="ghost" type="button" onClick={prevStep} className="order-2 sm:order-1 text-[10px] font-black uppercase tracking-widest">{t('common.back')}</Button>
                       <Button variant="primary" type="submit" className="order-1 sm:order-2 px-10 md:px-16 text-[10px] font-black uppercase tracking-widest" disabled={isSubmitting || !formData.downPayment || !formData.paymentCondition}>
-                        {isSubmitting ? 'Илгээж байна...' : 'Баталгаажуулах'}
+                        {isSubmitting ? t('common.submitting') : t('common.confirm')}
                       </Button>
                     </div>
                   </form>
@@ -480,12 +485,12 @@ const Booking = () => {
                   <div className="w-16 h-16 md:w-24 md:h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8">
                     <CheckCircle2 size={32} md:size={48} className="text-white" />
                   </div>
-                  <h3 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-2 md:mb-4">Хүсэлт илгээгдлээ!</h3>
+                  <h3 className="text-2xl md:text-4xl font-black uppercase tracking-tight mb-2 md:mb-4">{t('booking.success.title')}</h3>
                   <p className="text-zinc-500 text-xs md:text-sm mb-8 md:mb-10 max-w-xs md:max-w-sm mx-auto">
-                    Баярлалаа. Манай ажилтан таны хүсэлтийг баталгаажуулахаар удахгүй холбогдох болно.
+                    {t('booking.success.desc')}
                   </p>
                   <Link to="/">
-                    <Button variant="secondary" size="lg" className="w-full sm:w-auto text-[10px] font-black uppercase tracking-widest">Буцах</Button>
+                    <Button variant="secondary" size="lg" className="w-full sm:w-auto text-[10px] font-black uppercase tracking-widest">{t('common.back')}</Button>
                   </Link>
                 </motion.div>
               )}
@@ -497,26 +502,28 @@ const Booking = () => {
   );
 };
 
-const ContactStep = ({ formData, setFormData, prevStep, handleSubmit, isSubmitting, isNextOnly, nextStep }) => (
+const ContactStep = ({ formData, setFormData, prevStep, handleSubmit, isSubmitting, isNextOnly, nextStep }) => {
+  const { t } = useTranslation();
+  return (
   <>
-    <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-6 md:mb-8">Холбоо барих</h3>
+    <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-6 md:mb-8">{t('booking.contact.title')}</h3>
     <form onSubmit={isNextOnly ? (e) => { e.preventDefault(); nextStep(); } : handleSubmit} className="space-y-4 md:space-y-6 mb-8 md:mb-12">
       <div>
         <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">
-          {formData.type === 'new_car_order' ? 'Таны овог, нэр эсвэл (Байгууллагын нэр) *' : 'Овог нэр *'}
+          {formData.type === 'new_car_order' ? t('booking.contact.nameOrgLabel') : t('booking.contact.nameLabel')}
         </label>
         <input
           type="text"
           required
           value={formData.name}
           onChange={(e) => setFormData({...formData, name: e.target.value})}
-          placeholder="Жишээ: Доржийн Батбаяр"
+          placeholder={t('booking.contact.namePlaceholder')}
           className="w-full p-3 md:p-4 border border-zinc-200 focus:border-toyota-red focus:outline-none bg-zinc-50 font-bold text-xs md:text-sm"
         />
       </div>
       <div className={`grid grid-cols-1 ${formData.type === 'new_car_order' ? '' : 'md:grid-cols-2'} gap-4 md:gap-6`}>
         <div>
-          <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">Таны утасны дугаар *</label>
+          <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('booking.contact.phoneLabel')}</label>
           <input
             type="tel"
             required
@@ -528,7 +535,7 @@ const ContactStep = ({ formData, setFormData, prevStep, handleSubmit, isSubmitti
         </div>
         {formData.type !== 'new_car_order' && (
           <div>
-            <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">И-мэйл хаяг</label>
+            <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('booking.contact.emailLabel')}</label>
             <input
               type="email"
               value={formData.email}
@@ -540,13 +547,14 @@ const ContactStep = ({ formData, setFormData, prevStep, handleSubmit, isSubmitti
         )}
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-3 pt-4 md:pt-6">
-        <Button variant="ghost" type="button" onClick={prevStep} className="order-2 sm:order-1 text-[10px] font-black uppercase tracking-widest">Буцах</Button>
+        <Button variant="ghost" type="button" onClick={prevStep} className="order-2 sm:order-1 text-[10px] font-black uppercase tracking-widest">{t('common.back')}</Button>
         <Button variant="primary" type="submit" className="order-1 sm:order-2 px-10 md:px-16 text-[10px] font-black uppercase tracking-widest" disabled={isSubmitting}>
-          {isSubmitting ? 'Илгээж байна...' : (isNextOnly ? 'Үргэлжлүүлэх' : 'Баталгаажуулах')}
+          {isSubmitting ? t('common.submitting') : (isNextOnly ? t('common.continue') : t('common.confirm'))}
         </Button>
       </div>
     </form>
   </>
-);
+  );
+};
 
 export default Booking;
