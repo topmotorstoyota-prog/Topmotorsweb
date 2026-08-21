@@ -20,6 +20,7 @@ const Merch = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('default');
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/products`)
@@ -32,9 +33,15 @@ const Merch = () => {
       .catch(() => setLoading(false));
   }, []);
 
-  const filteredProducts = products.filter(p =>
-    loc(p.name, p.nameEn).toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const numericPrice = (p) => parseInt(String(p || '').replace(/[^0-9]/g, ''), 10) || 0;
+
+  const filteredProducts = products
+    .filter(p => loc(p.name, p.nameEn).toLowerCase().includes(searchQuery.toLowerCase()))
+    .sort((a, b) => {
+      if (sortBy === 'priceAsc') return numericPrice(a.price) - numericPrice(b.price);
+      if (sortBy === 'priceDesc') return numericPrice(b.price) - numericPrice(a.price);
+      return 0;
+    });
 
   return (
     <div className="pt-24 md:pt-40 pb-20 bg-black min-h-screen relative overflow-hidden">
@@ -69,15 +76,27 @@ const Merch = () => {
 
             <div className="w-12 h-1 bg-toyota-red mt-10" />
 
-            <div className="relative w-full max-w-sm mt-10">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={14} />
-              <input
-                type="text"
-                value={searchQuery}
-                placeholder={t('products.searchPlaceholder')}
-                className="pl-10 pr-6 py-2.5 md:py-3 bg-zinc-900 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red w-full transition-all placeholder:text-zinc-500"
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-md mt-10">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={14} />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  placeholder={t('products.searchPlaceholder')}
+                  className="pl-10 pr-6 py-2.5 md:py-3 bg-zinc-900 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red w-full transition-all placeholder:text-zinc-500"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-4 py-2.5 md:py-3 bg-zinc-900 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red transition-all sm:w-56"
+              >
+                <option value="default">{t('products.sort.default')}</option>
+                <option value="priceAsc">{t('products.sort.priceAsc')}</option>
+                <option value="priceDesc">{t('products.sort.priceDesc')}</option>
+              </select>
             </div>
         </div>
 
