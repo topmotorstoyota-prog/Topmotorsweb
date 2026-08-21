@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Trophy, ChevronRight } from 'lucide-react';
+import { Trophy, ChevronRight, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import Button from '../components/Button';
@@ -19,6 +19,7 @@ const Merch = () => {
   const { loc } = useLocale();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/products`)
@@ -30,6 +31,10 @@ const Merch = () => {
       })
       .catch(() => setLoading(false));
   }, []);
+
+  const filteredProducts = products.filter(p =>
+    loc(p.name, p.nameEn).toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="pt-24 md:pt-40 pb-20 bg-black min-h-screen relative overflow-hidden">
@@ -63,13 +68,24 @@ const Merch = () => {
             </motion.p>
 
             <div className="w-12 h-1 bg-toyota-red mt-10" />
+
+            <div className="relative w-full max-w-sm mt-10">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={14} />
+              <input
+                type="text"
+                value={searchQuery}
+                placeholder={t('products.searchPlaceholder')}
+                className="pl-10 pr-6 py-2.5 md:py-3 bg-zinc-900 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red w-full transition-all placeholder:text-zinc-500"
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
         </div>
 
         {loading ? (
           <div className="py-20 text-center font-black uppercase tracking-widest text-zinc-800">{t('vehicles.list.loading')}</div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
-            {products.map((item, idx) => (
+            {filteredProducts.map((item, idx) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -109,8 +125,10 @@ const Merch = () => {
           </div>
         )}
 
-        {products.length === 0 && !loading && (
-          <div className="py-20 text-center text-zinc-800 font-bold uppercase tracking-widest">{t('products.noProducts')}</div>
+        {!loading && filteredProducts.length === 0 && (
+          <div className="py-20 text-center text-zinc-800 font-bold uppercase tracking-widest">
+            {products.length === 0 ? t('products.noProducts') : t('products.noResults')}
+          </div>
         )}
       </div>
     </div>

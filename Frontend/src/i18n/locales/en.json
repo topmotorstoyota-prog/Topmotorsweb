@@ -479,6 +479,8 @@
   "products": {
     "viewDetails": "View Details",
     "noProducts": "No products found",
+    "searchPlaceholder": "Search products...",
+    "noResults": "No products match your search",
     "tires": {
       "title": "TIRES",
       "desc": "High-quality tires from the renowned Japanese Yokohama brand, suited to every road condition.",
