@@ -79,7 +79,7 @@ const Navbar = () => {
       ),
       isScrolled ? "py-3 md:py-3" : "py-3 md:py-5"
     )}>
-      <div className="container-custom flex justify-between items-center">
+      <div className="container-custom relative flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center">
               <img
@@ -184,10 +184,13 @@ const Navbar = () => {
           <LanguageToggle isWhiteNav={isWhiteNav} isBlackNav={isBlackNav} />
         </div>
 
+        {/* Mobile Language Toggle - centered in navbar */}
+        <div className="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <LanguageToggle isWhiteNav={isWhiteNav} isBlackNav={isBlackNav} />
+        </div>
+
         {/* Mobile Action Icons */}
         <div className="lg:hidden flex items-center space-x-2">
-          <LanguageToggle isWhiteNav={isWhiteNav} isBlackNav={isBlackNav} />
-
           {/* Mobile Visualizer Link */}
           <a
             href="https://topmotors.kt.mn/try"
