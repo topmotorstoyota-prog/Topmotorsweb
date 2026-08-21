@@ -72,7 +72,7 @@ const Merch = () => {
             transition={{ duration: 0.7 }}
             className="max-w-2xl"
           >
-            <div className="mb-6 h-10 md:h-16 w-fit">
+            <div className="mb-6 h-12 md:h-20 w-fit bg-white rounded-sm shadow-2xl px-4 py-2 md:px-6 md:py-3">
               <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
             </div>
 

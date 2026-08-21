@@ -501,9 +501,9 @@
       "longDesc": "Official Toyota Gazoo Racing apparel, gear, and accessories. Stylish, high-quality products for motorsport enthusiasts.",
       "itemCount": "{{count}} products",
       "soldOut": "Sold Out",
-      "ctaTitlePlain": "Visit us in",
-      "ctaTitleRed": "store",
-      "ctaDesc": "Want more details on the GR collection or want to place an order? Give us a call."
+      "ctaTitlePlain": "get in",
+      "ctaTitleRed": "touch",
+      "ctaDesc": "Want more details on GR products or want to place an order? Give us a call."
     }
   },
   "productDetail": {
