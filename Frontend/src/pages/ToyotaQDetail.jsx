@@ -22,7 +22,7 @@ import API_BASE_URL from '../config';
 
 const ToyotaQDetail = () => {
   const { t } = useTranslation();
-  const { loc } = useLocale();
+  const { loc, fuelType } = useLocale();
   const { id } = useParams();
   const [vehicle, setVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -182,7 +182,7 @@ const ToyotaQDetail = () => {
                   <div className="p-3 md:p-5 bg-toyota-gray-100 border border-zinc-100 rounded-sm">
                     <Zap className="text-toyota-red mb-2 md:mb-3 w-4 h-4 md:w-5 md:h-5" />
                     <span className="text-[8px] md:text-[10px] font-bold text-zinc-400 uppercase block tracking-widest leading-none mb-1">{t('toyotaQ.detail.engine')}</span>
-                    <span className="text-xs md:text-sm font-black uppercase">{vehicle.engine} {vehicle.engineType}</span>
+                    <span className="text-xs md:text-sm font-black uppercase">{vehicle.engine} {fuelType(vehicle.engineType)}</span>
                   </div>
                   {vehicle.serviceHistory ? (
                     <button

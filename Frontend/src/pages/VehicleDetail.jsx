@@ -14,7 +14,7 @@ const MIN_360_IMAGES = 16;
 
 const VehicleDetail = () => {
   const { t } = useTranslation();
-  const { loc } = useLocale();
+  const { loc, fuelType } = useLocale();
   const { id } = useParams();
   const navigate = useNavigate();
   const [vehicleModel, setVehicleModel] = useState(null);
@@ -79,7 +79,7 @@ const VehicleDetail = () => {
               modelName: loc(current.name, current.nameEn),
               modelId: current.id,
               category: current.category,
-              fullName: `${loc(current.name, current.nameEn)} - ${firstVariant.series} (${firstVariant.engineType})`,
+              fullName: `${loc(current.name, current.nameEn)} - ${firstVariant.series} (${fuelType(firstVariant.engineType)})`,
               displayImage: last360 || firstVariant.image || current.image,
               features: firstVariant.features || []
             };
@@ -131,7 +131,7 @@ const VehicleDetail = () => {
         modelName: loc(vehicleModel.name, vehicleModel.nameEn),
         modelId: vehicleModel.id,
         category: vehicleModel.category,
-        fullName: `${loc(vehicleModel.name, vehicleModel.nameEn)} - ${variant.series} (${variant.engineType})`,
+        fullName: `${loc(vehicleModel.name, vehicleModel.nameEn)} - ${variant.series} (${fuelType(variant.engineType)})`,
         displayImage: last360 || variant.image || vehicleModel.image,
         features: variant.features || []
       };
@@ -443,7 +443,7 @@ const VehicleDetail = () => {
                               onClick={() => handleEngineChange(engine)}
                               className={`w-full px-4 md:px-5 py-3 md:py-4 text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] border transition-all duration-300 relative text-left flex justify-between items-center ${selectedEngine === engine ? "bg-toyota-black border-toyota-black text-white shadow-lg" : "bg-white border-zinc-200 text-zinc-400 hover:border-zinc-400"}`}
                             >
-                              {engine}
+                              {fuelType(engine)}
                               {selectedEngine === engine && <motion.div layoutId="engineDot" className="w-1 md:w-1.5 h-1 md:h-1.5 bg-toyota-red rounded-full" />}
                             </motion.button>
                         ))}
@@ -475,7 +475,7 @@ const VehicleDetail = () => {
                 <h3 className="text-xl md:text-3xl font-black uppercase tracking-tighter mb-6 md:mb-8 text-toyota-black text-center">{t('vehicles.detail.aboutTitlePlain')} <span className="text-toyota-red">{t('vehicles.detail.aboutTitleRed')}</span></h3>
                 <div className="bg-[#F9F9F9] p-6 md:p-12 rounded-sm border-l-4 border-toyota-red shadow-sm">
                   <p className="text-zinc-500 leading-relaxed text-[10px] md:text-sm whitespace-pre-wrap font-bold uppercase tracking-widest mb-4 md:mb-6 italic">
-                    {selectedVariant?.series} {selectedEngine} {t('vehicles.detail.variantSuffix')}
+                    {selectedVariant?.series} {fuelType(selectedEngine)} {t('vehicles.detail.variantSuffix')}
                   </p>
                   <p className="text-zinc-600 leading-relaxed text-[11px] md:text-base whitespace-pre-wrap font-medium text-justify">
                     {loc(selectedVariant?.description, selectedVariant?.descriptionEn) || loc(vehicleModel.description, vehicleModel.descriptionEn)}

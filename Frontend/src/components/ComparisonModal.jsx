@@ -7,7 +7,7 @@ import { useLocale } from '../hooks/useLocale';
 
 const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelectVehicle, onRemoveVehicle }) => {
   const { t } = useTranslation();
-  const { loc } = useLocale();
+  const { loc, fuelType } = useLocale();
   const navigate = useNavigate();
   if (!isOpen) return null;
 
@@ -27,7 +27,7 @@ const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelect
         modelName: localizedModelName,
         modelId: model.id,
         category: model.category,
-        fullName: `${localizedModelName} - ${variant.series} (${variant.engineType})`,
+        fullName: `${localizedModelName} - ${variant.series} (${fuelType(variant.engineType)})`,
         displayImage: last360 || variant.image || model.image,
         modelFeatures: model.features || [] // Model-ийн үзүүлэлтүүдийг авна
       };
@@ -104,7 +104,7 @@ const ComparisonModal = ({ isOpen, onClose, vehicles, selectedVehicles, onSelect
                         </div>
 
                         <div className="mb-2 md:mb-6">
-                            <span className="text-[6px] md:text-[10px] font-black uppercase text-toyota-red tracking-wider block mb-0.5 md:mb-2">{variant.engineType}</span>
+                            <span className="text-[6px] md:text-[10px] font-black uppercase text-toyota-red tracking-wider block mb-0.5 md:mb-2">{fuelType(variant.engineType)}</span>
                             <h3 className="text-[9px] md:text-xl font-black uppercase tracking-tight leading-tight mb-0.5 md:mb-2 line-clamp-2">{variant.modelName}</h3>
                             <p className="text-[7px] md:text-xs font-bold text-zinc-500 uppercase line-clamp-1">{variant.series}</p>
                         </div>

@@ -25,7 +25,7 @@ import inspection150 from '../assets/toyota-q/150.jpg';
 
 const ToyotaQ = () => {
   const { t } = useTranslation();
-  const { loc } = useLocale();
+  const { loc, fuelType } = useLocale();
   const [qVehicles, setQVehicles] = useState([]);
   const [filters, setFilters] = useState({
     name: '',
@@ -57,8 +57,7 @@ const ToyotaQ = () => {
             rawPrice: clean(v.price),
             rawMileage: clean(v.mileage),
             price: formatNum(v.price),
-            formattedMileage: formatNum(v.mileage),
-            engineText: v.engine ? `${v.engine} ${v.engineType || ''}`.trim() : null
+            formattedMileage: formatNum(v.mileage)
           };
         });
         setQVehicles(formatted);
@@ -330,7 +329,7 @@ const ToyotaQ = () => {
                                   specs={[
                                     vehicle.year ? `${vehicle.year} ${t('toyotaQ.yearSuffix')}`.trim() : null,
                                     vehicle.mileage ? `${vehicle.formattedMileage} ${t('toyotaQ.kmSuffix')}`.trim() : null,
-                                    vehicle.engineText
+                                    vehicle.engine ? `${vehicle.engine} ${fuelType(vehicle.engineType) || ''}`.trim() : null
                                   ].filter(Boolean)}
                                   isFixedPrice={true}
                                   link={`/toyota-q/${vehicle.id}`}
