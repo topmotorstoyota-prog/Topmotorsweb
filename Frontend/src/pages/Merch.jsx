@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
-import grLogo from '../assets/acc/gr-logo-transparent.png';
-import grGallery from '../assets/acc/GR Gallery.webp';
+import grLogo from '../assets/acc/gr-logo-black.svg';
+import grHero from '../assets/acc/gr-hero.jpg';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const formatPrice = (price) => {
@@ -28,11 +28,12 @@ const RacingStripe = ({ className = '' }) => (
 
 const Merch = () => {
   const { t } = useTranslation();
-  const { loc } = useLocale();
+  const { loc, stockStatus } = useLocale();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('default');
+  const [stockFilter, setStockFilter] = useState('all');
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/products`)
@@ -47,6 +48,7 @@ const Merch = () => {
 
   const filteredProducts = products
     .filter(p => loc(p.name, p.nameEn).toLowerCase().includes(searchQuery.toLowerCase()))
+    .filter(p => stockFilter === 'all' || (p.stock || 'Бэлэн байгаа') === stockFilter)
     .sort((a, b) => {
       if (sortBy === 'priceAsc') return numericPrice(a.price) - numericPrice(b.price);
       if (sortBy === 'priceDesc') return numericPrice(b.price) - numericPrice(a.price);
@@ -58,12 +60,12 @@ const Merch = () => {
       {/* Hero */}
       <section className="relative h-[60vh] md:h-[75vh] min-h-[420px] w-full overflow-hidden flex items-end">
         <img
-          src={grGallery}
+          src={grHero}
           alt="Toyota Gazoo Racing"
           className="absolute inset-0 w-full h-full object-cover object-center scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-black/50" />
 
         <div className="container-custom px-4 relative z-10 pb-10 md:pb-16 pt-32">
           <motion.div
@@ -72,7 +74,7 @@ const Merch = () => {
             transition={{ duration: 0.7 }}
             className="max-w-2xl"
           >
-            <div className="mb-6 h-12 md:h-20 w-fit bg-white rounded-sm shadow-2xl px-4 py-2 md:px-6 md:py-3">
+            <div className="mb-6 h-12 md:h-20 w-fit drop-shadow-2xl">
               <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
             </div>
 
@@ -92,7 +94,7 @@ const Merch = () => {
             {loading ? t('vehicles.list.loading') : t('products.merch.itemCount', { count: filteredProducts.length })}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto md:min-w-[420px]">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto md:min-w-[560px]">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={14} />
               <input
@@ -105,9 +107,21 @@ const Merch = () => {
             </div>
 
             <select
+              value={stockFilter}
+              onChange={(e) => setStockFilter(e.target.value)}
+              className="px-4 py-2.5 md:py-3 bg-zinc-950 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red transition-all sm:w-48 rounded-sm cursor-pointer"
+            >
+              <option value="all">{t('products.stockFilter.all')}</option>
+              <option value="Бэлэн байгаа">{stockStatus('Бэлэн байгаа')}</option>
+              <option value="Захиалгаар">{stockStatus('Захиалгаар')}</option>
+              <option value="Ирж байгаа">{stockStatus('Ирж байгаа')}</option>
+              <option value="Дууссан">{stockStatus('Дууссан')}</option>
+            </select>
+
+            <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2.5 md:py-3 bg-zinc-950 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red transition-all sm:w-56 rounded-sm cursor-pointer"
+              className="px-4 py-2.5 md:py-3 bg-zinc-950 border border-zinc-800 text-white text-xs font-bold outline-none focus:border-toyota-red transition-all sm:w-48 rounded-sm cursor-pointer"
             >
               <option value="default">{t('products.sort.default')}</option>
               <option value="priceAsc">{t('products.sort.priceAsc')}</option>
@@ -148,7 +162,15 @@ const Merch = () => {
                     {item.stock === 'Дууссан' && (
                       <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px] flex items-center justify-center z-30">
                         <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[11px] border border-white px-4 py-2">
-                          {t('products.merch.soldOut')}
+                          {stockStatus('Дууссан')}
+                        </span>
+                      </div>
+                    )}
+
+                    {item.stock && item.stock !== 'Дууссан' && item.stock !== 'Бэлэн байгаа' && (
+                      <div className="absolute top-2 left-2 z-30">
+                        <span className="bg-toyota-black/90 text-white font-black uppercase tracking-wider text-[7px] md:text-[9px] px-2.5 py-1.5 rounded-sm border border-white/10">
+                          {stockStatus(item.stock)}
                         </span>
                       </div>
                     )}

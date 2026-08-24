@@ -486,6 +486,9 @@
       "priceAsc": "Price: Low to High",
       "priceDesc": "Price: High to Low"
     },
+    "stockFilter": {
+      "all": "All Status"
+    },
     "tires": {
       "title": "TIRES",
       "desc": "High-quality tires from the renowned Japanese Yokohama brand, suited to every road condition.",
