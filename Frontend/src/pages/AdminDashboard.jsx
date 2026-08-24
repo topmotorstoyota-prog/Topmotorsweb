@@ -54,6 +54,19 @@ export default function AdminDashboard() {
     fetchData();
   };
 
+  const handleToggleContacted = async (booking) => {
+    const contacted = !booking.contacted;
+    const res = await fetch(`${API_BASE_URL}/api/bookings/${booking.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ contacted })
+    });
+    if (res.ok) {
+      setItems(prev => prev.map(b => b.id === booking.id ? { ...b, contacted } : b));
+      setSelectedBooking(prev => prev && prev.id === booking.id ? { ...prev, contacted } : prev);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.clear();
     navigate('/admin-login');
@@ -166,7 +179,7 @@ export default function AdminDashboard() {
                       </thead>
                       <tbody>
                         {(() => { const bookingItems = items.filter(b => activeTab === 'service-bookings' ? (b.type === 'service' || b.type === 'message') : (b.type !== 'service' && b.type !== 'message')); return bookingItems.length > 0 ? bookingItems.map((item) => (
-                          <tr key={item.id} className="border-b hover:bg-zinc-50 transition-colors">
+                          <tr key={item.id} className={`border-b hover:bg-zinc-50 transition-colors ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''}`}>
                             <td className="p-5 px-8">
                               <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-sm inline-block w-fit ${
                                 item.type === 'test_drive' ? 'bg-blue-100 text-blue-700' :
@@ -312,6 +325,11 @@ export default function AdminDashboard() {
                                       {activeTab === 'vehicles' && item.isFeatured && (
                                         <span className="bg-yellow-100 text-yellow-700 text-[9px] font-black uppercase px-2 py-0.5 rounded-sm flex items-center gap-1 ml-2">
                                           <Star size={10} fill="currentColor" /> Онцлох
+                                        </span>
+                                      )}
+                                      {activeTab === 'vehicles' && item.testDriveEnabled && (
+                                        <span className="bg-blue-100 text-blue-700 text-[9px] font-black uppercase px-2 py-0.5 rounded-sm flex items-center gap-1 ml-2">
+                                          <Car size={10} /> Тест драйв
                                         </span>
                                       )}
                                     </>
@@ -481,10 +499,20 @@ export default function AdminDashboard() {
                 )}
               </div>
 
-              <div className="mt-10">
+              <div className="mt-10 flex gap-3">
+                <button
+                  onClick={() => handleToggleContacted(selectedBooking)}
+                  className={`flex-1 py-4 font-black uppercase tracking-[0.3em] text-[10px] transition-all ${
+                    selectedBooking.contacted
+                      ? 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'
+                      : 'bg-toyota-red text-white hover:bg-black'
+                  }`}
+                >
+                  {selectedBooking.contacted ? 'Холбогдсон ✓ (буцаах)' : 'Холбогдсон гэж тэмдэглэх'}
+                </button>
                 <button
                   onClick={() => setSelectedBooking(null)}
-                  className="w-full bg-black text-white py-4 font-black uppercase tracking-[0.3em] text-[10px] hover:bg-toyota-red transition-all"
+                  className="flex-1 bg-black text-white py-4 font-black uppercase tracking-[0.3em] text-[10px] hover:bg-zinc-800 transition-all"
                 >
                   Хаах
                 </button>
@@ -546,11 +574,12 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
   const [formData, setFormData] = useState(initialData ? {
     ...initialData,
     isFeatured: initialData.isFeatured || false,
+    testDriveEnabled: initialData.testDriveEnabled || false,
     colors: typeof initialData.colors === 'string' ? JSON.parse(initialData.colors || '[]') : (initialData.colors || []),
     variants: cleanFeatures(initialData.variants), // Энд шууд цэвэрлэж ачаална
     images: typeof initialData.images === 'string' ? JSON.parse(initialData.images || '[]') : (initialData.images || []),
     images360: typeof initialData.images360 === 'string' ? JSON.parse(initialData.images360 || '[]') : (initialData.images360 || [])
-  } : { id: '', name: '', category: 'SUV', isFeatured: false, image: '', images: [], images360: [], description: '', colors: [], variants: [] });
+  } : { id: '', name: '', category: 'SUV', isFeatured: false, testDriveEnabled: false, image: '', images: [], images360: [], description: '', colors: [], variants: [] });
 
   const [activeSubTab, setActiveTab] = useState('basic');
   const [editingVariantIdx, setEditingVariantIdx] = useState(null);
@@ -633,6 +662,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
       nameEn: formData.nameEn || null,
       category: formData.category,
       isFeatured: formData.isFeatured || false,
+      testDriveEnabled: formData.testDriveEnabled || false,
       image: formData.image,
       description: formData.description,
       descriptionEn: formData.descriptionEn || null,
@@ -690,6 +720,17 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                 <span className="text-[10px] font-black uppercase text-zinc-600 group-hover:text-black transition-colors">Нүүр хуудсанд онцлох</span>
               </label>
             </div>
+          </div>
+          <div className="grid grid-cols-1 gap-6">
+            <label className="flex items-center gap-3 cursor-pointer group p-[13px] bg-zinc-50 border rounded-sm w-fit">
+              <input
+                type="checkbox"
+                checked={formData.testDriveEnabled || false}
+                onChange={e => setFormData({ ...formData, testDriveEnabled: e.target.checked })}
+                className="w-5 h-5 accent-toyota-red"
+              />
+              <span className="text-[10px] font-black uppercase text-zinc-600 group-hover:text-black transition-colors">Тест драйвын жагсаалтад харагдана</span>
+            </label>
           </div>
           <div className="grid grid-cols-1 gap-6">
             <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Үндсэн Зураг</label><div className="flex gap-2"><input value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value })} className="flex-1 p-4 bg-zinc-50 border rounded-sm" /><label className="p-4 bg-black text-white rounded-sm cursor-pointer"><Upload size={18}/><input type="file" className="hidden" onChange={e => handleFileChange(e, url => setFormData({ ...formData, image: url }))} /></label></div></div>

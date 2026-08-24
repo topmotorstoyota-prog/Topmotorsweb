@@ -78,6 +78,10 @@ const Booking = () => {
     }
   }, [location, navigate]);
 
+  const vehicleOptions = formData.type === 'test_drive'
+    ? availableVehicles.filter(v => v.testDriveEnabled)
+    : availableVehicles;
+
   const nextStep = () => {
     setStep(prev => prev + 1);
   };
@@ -320,7 +324,7 @@ const Booking = () => {
                           required
                         >
                           <option value="">{t('common.select')}</option>
-                          {availableVehicles.map(v => (
+                          {vehicleOptions.map(v => (
                             <option key={v.id} value={v.name}>{v.name}</option>
                           ))}
                         </select>

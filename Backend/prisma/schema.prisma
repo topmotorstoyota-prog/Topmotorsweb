@@ -31,6 +31,7 @@ model Vehicle {
   nameEn      String?  // Англи нэр
   category    String
   isFeatured  Boolean  @default(false)
+  testDriveEnabled Boolean @default(false) // Тест драйвын жагсаалтад харагдах эсэх
   image       String   // Үндсэн зураг
   images      String?  // Цомгийн зургууд (Gallery) - JSON string
   images360   String?  // 360 эргэлттэй зургууд (16 ширхэг) - JSON string
@@ -101,6 +102,7 @@ model Booking {
   email       String?
   description String?  // Зурвасын агуулга хадгалах
   status      String   @default("Шинэ") // Шинэ, Баталгаажсан, Цуцлагдсан
+  contacted   Boolean  @default(false) // Админ холбогдсон эсэх
   createdAt   DateTime @default(now())
 }
 
