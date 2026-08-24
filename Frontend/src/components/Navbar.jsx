@@ -230,7 +230,7 @@ const Navbar = () => {
             {/* Close Button Inside Overlay */}
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-7 right-6 text-toyota-black p-2 z-[210] hover:text-toyota-red transition-colors"
+              className="fixed top-7 right-6 text-toyota-black p-2 z-[210] bg-white/90 backdrop-blur-sm rounded-full hover:text-toyota-red transition-colors"
             >
               <X size={32} />
             </button>
