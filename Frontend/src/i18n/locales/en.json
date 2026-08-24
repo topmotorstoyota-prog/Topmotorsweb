@@ -502,7 +502,7 @@
     "merch": {
       "desc": "Official Toyota Gazoo Racing apparel, gear, and accessories.",
       "longDesc": "Official Toyota Gazoo Racing apparel, gear, and accessories. Stylish, high-quality products for motorsport enthusiasts.",
-      "itemCount": "{{count}} products",
+      "itemCount": "{{count}} products total",
       "soldOut": "Sold Out",
       "ctaTitlePlain": "get in",
       "ctaTitleRed": "touch",

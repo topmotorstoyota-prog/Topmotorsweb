@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Search, Phone, ShoppingBag, ArrowRight, PackageSearch } from 'lucide-react';
+import { Search, Phone, ArrowRight, PackageSearch } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import grLogo from '../assets/acc/gr-logo-black.svg';
-import grHero from '../assets/acc/gr-hero.jpg';
+import grHero1 from '../assets/acc/gr-hero-1.jpg';
+import grHero2 from '../assets/acc/gr-hero-2.jpg';
+import grHero3 from '../assets/acc/gr-hero-3.jpg';
+import grHero4 from '../assets/acc/gr-hero-4.jpg';
 import placeholderImage from '../assets/vehicles/hero.jpg';
+
+const heroTiles = [grHero1, grHero2, grHero3, grHero4];
 
 const formatPrice = (price) => {
   if (!price) return '';
@@ -16,15 +21,6 @@ const formatPrice = (price) => {
 };
 
 const numericPrice = (p) => parseInt(String(p || '').replace(/[^0-9]/g, ''), 10) || 0;
-
-// Toyota GR-ийн албан ёсны хар/цагаан/улаан зурвасын өнгө
-const RacingStripe = ({ className = '' }) => (
-  <div className={`flex h-1.5 w-24 overflow-hidden rounded-full ${className}`}>
-    <div className="flex-1 bg-white" />
-    <div className="flex-1 bg-toyota-red" />
-    <div className="flex-1 bg-white" />
-  </div>
-);
 
 const Merch = () => {
   const { t } = useTranslation();
@@ -58,29 +54,31 @@ const Merch = () => {
   return (
     <div className="bg-black min-h-screen">
       {/* Hero */}
-      <section className="relative h-[60vh] md:h-[75vh] min-h-[420px] w-full overflow-hidden flex items-end">
-        <img
-          src={grHero}
-          alt="Toyota Gazoo Racing"
-          className="absolute inset-0 w-full h-full object-cover object-center scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-black/50" />
+      <section className="pt-24 md:pt-32">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-0.5 md:gap-1">
+          {heroTiles.map((src, i) => (
+            <div key={i} className="aspect-square md:aspect-[3/4] overflow-hidden bg-zinc-950">
+              <img
+                src={src}
+                alt="Toyota Gazoo Racing"
+                className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+              />
+            </div>
+          ))}
+        </div>
 
-        <div className="container-custom px-4 relative z-10 pb-10 md:pb-16 pt-32">
+        <div className="container-custom px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="max-w-2xl"
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8 py-10 md:py-14 border-b border-zinc-900"
           >
-            <div className="mb-6 h-12 md:h-20 w-fit drop-shadow-2xl">
+            <div className="h-12 md:h-16 w-fit shrink-0">
               <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
             </div>
 
-            <RacingStripe className="mb-6" />
-
-            <p className="text-zinc-300 text-sm md:text-lg leading-relaxed font-medium max-w-xl">
+            <p className="text-zinc-400 text-sm md:text-base leading-relaxed font-medium max-w-2xl">
               {t('products.merch.longDesc')}
             </p>
           </motion.div>
