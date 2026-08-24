@@ -166,12 +166,12 @@
       "principles": { "title": "Core Values" }
     },
     "hero": {
-      "tagline": "\"Top Motors\" LLC has been operating since 2021 and is the official dealer of \"TOYOTA MOTOR CORPORATION\"."
+      "tagline": "\"Top Motors\" LLC has been operating since 2021 and is the official dealer of \"TOYOTA\"."
     },
     "company": {
       "title": "About the Company",
       "subtitle": "OFFICIAL TOYOTA DEALER — “TOP MOTORS”",
-      "para1": "\"Top Motors\" LLC has been operating since 2021 and is the official dealer of \"TOYOTA MOTOR CORPORATION\", the world's leading automobile manufacturer, and a subsidiary of the MCS Group.",
+      "para1": "\"Top Motors\" LLC has been operating since 2021 and is the official dealer of \"TOYOTA\", the world's leading automobile manufacturer, and a subsidiary of the MCS Group.",
       "para2": "We carry out the sale of new and used Toyota vehicles, maintenance and repair services, and genuine parts trade in accordance with Toyota's international standards, aiming to be our customers' lifelong helper and advisor — with an energetic, skilled, and creative team delivering quality products and service."
     },
     "servicesTitle": "Our Services",
@@ -232,7 +232,7 @@
   "service": {
     "heroTitle": "Service & Maintenance",
     "heroPara1": "Every Toyota is renowned worldwide for its high engineering standards, durability, and reliability. The best way to preserve that quality throughout its lifetime is professional maintenance carried out to the manufacturer's standards.",
-    "heroPara2": "As the official dealer of Toyota Motor Corporation, Toyota Top Motors provides service for all Toyota and Lexus models to international standards. Our center is fully equipped with modern diagnostic and repair equipment, with the capacity to service up to 20 vehicles at once.",
+    "heroPara2": "As the official dealer of Toyota, Toyota Top Motors provides service for all Toyota and Lexus models to international standards. Our center is fully equipped with modern diagnostic and repair equipment, with the capacity to service up to 20 vehicles at once.",
     "bookBtn": "Book an Appointment",
     "viewServices": "View Services",
     "advantagesTitlePlain": "Our",
