@@ -150,8 +150,8 @@
     "stats": {
       "branches": { "label": "Branches", "desc": "Official branches located in Ulaanbaatar and Umnugovi province." },
       "staff": { "label": "Staff", "desc": "A skilled team certified to Toyota's international standards." },
-      "years": { "label": "Years", "desc": "Stable operations in the Mongolian market since 2021." },
-      "serviceTypes": { "label": "Service Types", "desc": "Sales, repair, parts." }
+      "years": { "label": "Years", "desc": "Stable operations in Mongolia since 2021." },
+      "serviceTypes": { "label": "Service Types", "desc": "Sales, Service, Spare parts." }
     },
     "services": {
       "vehicles": { "title": "Vehicles", "desc": "Vehicle sales from Toyota's official dealer. A wide selection of models, colors, and trims." },
@@ -172,7 +172,7 @@
       "title": "About the Company",
       "subtitle": "OFFICIAL TOYOTA DEALER — “TOP MOTORS”",
       "para1": "\"Top Motors\" LLC has been operating since 2021 and is the official dealer of \"TOYOTA\", the world's leading automobile manufacturer, and a subsidiary of the MCS Group.",
-      "para2": "We carry out the sale of new and used Toyota vehicles, maintenance and repair services, and genuine parts trade in accordance with Toyota's international standards, aiming to be our customers' lifelong helper and advisor — with an energetic, skilled, and creative team delivering quality products and service."
+      "para2": "We carry out the sale of new and used (pre-owned) Toyota vehicles, maintenance and repair services, and genuine parts trade (sales) in accordance with Toyota's international standards, aiming to be our customers' lifelong helper and advisor — with an energetic, skilled, and creative team delivering quality products and service."
     },
     "servicesTitle": "Our Services",
     "valuesTitle": "Mission & Values"
@@ -184,8 +184,8 @@
       "pickup": "Pickup"
     },
     "list": {
-      "titlePlain": "Vehicles We",
-      "titleRed": "Currently Sell",
+      "titlePlain": "Our",
+      "titleRed": "Model Lineup",
       "compareBtn": "Compare Vehicle Models",
       "searchPlaceholder": "Search models...",
       "loading": "Loading...",
@@ -244,7 +244,7 @@
       "Skilled engineers and technical team",
       "Transparent pricing policy",
       "Ability to track repair progress",
-      "Comfortable waiting lounge",
+      "Comfortable customer lounge",
       "70+ vehicle parking spaces",
       "La Parisienne coffee shop and a kids' play area",
       "Regular service Monday through Sunday"
@@ -255,7 +255,7 @@
       "parking": "70+ Parking Spaces",
       "restroom": "Comfortable Restrooms",
       "playArea": "Kids' Play Area",
-      "lounge": "Comfortable Waiting Lounge"
+      "lounge": "Comfortable Customer Lounge"
     },
     "ourServicesTitlePlain": "Our",
     "ourServicesTitleRed": "Services",
@@ -343,8 +343,8 @@
   "toyotaQ": {
     "yearSuffix": "",
     "kmSuffix": "km",
-    "heroSubtitle": "Warrantied, Quality-Certified",
-    "heroDesc": "A resale service that reconditions vehicles purchased with a plate from an official dealer.",
+    "heroSubtitle": "Certified Pre-Owned (CPO)",
+    "heroDesc": "Toyota-Q is official certified pre-owned program, offering a dealership brokerage service that guarantees multi-point inspected, dealer-backed Toyota and Lexus models.",
     "viewVehicles": "View Vehicles",
     "sellVehicle": "Sell Your Vehicle",
     "whatIsTitle": "What is Toyota-Q?",
@@ -352,7 +352,7 @@
     "cards": {
       "tradeIn": "Apply toward a new vehicle down payment",
       "buyTitle": "Buy",
-      "buyDesc": "Get a warrantied used vehicle",
+      "buyDesc": "Certified pre-owned vehicle",
       "consignTitle": "Consign",
       "consignDesc": "Sell through an official dealer",
       "points150Title": "150 Points",
@@ -376,7 +376,7 @@
       "badge": "Point Inspection",
       "title": "Quality Certificate",
       "desc": "Toyota's certified appraisers perform a 150-point inspection, and mechanical engineers diagnose everything from the suspension to the engine to guarantee quality.",
-      "items": ["Professional Diagnostics", "Full Chemical Cleaning", "Toyota Warranty", "Quality Certificate"]
+      "items": ["Professional Diagnostics", "Full Cleaning", "Toyota Warranty", "Quality Certificate"]
     },
     "exclusions": {
       "title": "Not Covered by Warranty Repair",
