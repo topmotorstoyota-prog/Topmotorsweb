@@ -92,7 +92,7 @@ export default function AdminDashboard() {
     products: 'Бүтээгдэхүүн',
     'toyota-q': 'Toyota-Q',
     'home-banner': 'Нүүр хуудас',
-    staff: 'Ажилчид',
+    staff: 'Борлуулалтын ажилчид',
     users: 'Хэрэглэгчид',
     'sales-bookings': 'Шинэ машин & Тест драйв',
     'service-bookings': 'CRM',
@@ -183,9 +183,9 @@ export default function AdminDashboard() {
                       </thead>
                       <tbody>
                         {(() => { const bookingItems = items.filter(b => activeTab === 'service-bookings' ? (b.type === 'service' || b.type === 'message') : (b.type !== 'service' && b.type !== 'message')); return bookingItems.length > 0 ? bookingItems.map((item) => (
-                          <tr key={item.id} className={`border-b hover:bg-zinc-50 transition-colors ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''}`}>
+                          <tr key={item.id} className={`border-b hover:bg-zinc-50 transition-colors ${item.contacted ? 'bg-zinc-50/50' : ''}`}>
                             <td className="p-5 px-8">
-                              <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-sm inline-block w-fit ${
+                              <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-sm inline-block w-fit ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''} ${
                                 item.type === 'test_drive' ? 'bg-blue-100 text-blue-700' :
                                 item.type === 'service' ? 'bg-orange-100 text-orange-700' :
                                 item.type === 'new_car_order' ? 'bg-green-100 text-green-700' :
@@ -198,25 +198,27 @@ export default function AdminDashboard() {
                               </span>
                             </td>
                             <td className="p-5">
-                              <p className="font-black uppercase text-[12px] text-slate-800">{item.name}</p>
+                              <p className={`font-black uppercase text-[12px] text-slate-800 ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''}`}>{item.name}</p>
                               {item.contacted && item.contactedBy && (
-                                <p className="no-underline text-[9px] font-bold text-toyota-red uppercase tracking-widest mt-1">Холбогдсон: {item.contactedBy}</p>
+                                <span className="bg-green-100 text-green-700 text-[10px] font-black uppercase px-2 py-1 rounded-sm inline-flex items-center gap-1 mt-2">
+                                  Холбогдсон: {item.contactedBy}
+                                </span>
                               )}
                             </td>
                             <td className="p-5">
-                              <div className="flex flex-col gap-1 text-[11px] font-bold">
+                              <div className={`flex flex-col gap-1 text-[11px] font-bold ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''}`}>
                                 <span className="text-slate-600">{item.phone}</span>
                                 <span className="text-zinc-400">{item.email || '-'}</span>
                               </div>
                             </td>
                             <td className="p-5">
-                              <div className="flex flex-col text-[11px] font-bold text-zinc-600">
+                              <div className={`flex flex-col text-[11px] font-bold text-zinc-600 ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''}`}>
                                 <span>{item.date}</span>
                                 <span className="text-toyota-red">{item.time}</span>
                               </div>
                             </td>
                             <td className="p-5">
-                              <span className="text-[11px] font-bold text-zinc-400">
+                              <span className={`text-[11px] font-bold text-zinc-400 ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''}`}>
                                 {item.createdAt ? new Date(item.createdAt).toLocaleString('mn-MN', {
                                   month: 'short',
                                   day: '2-digit',
@@ -226,7 +228,7 @@ export default function AdminDashboard() {
                               </span>
                             </td>
                             <td className="p-5">
-                              <div className="max-w-xs">
+                              <div className={`max-w-xs ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''}`}>
                                 {item.serviceType && (
                                   <p className="text-[10px] font-black uppercase text-toyota-red mb-1">
                                     {item.serviceType}
@@ -432,7 +434,9 @@ export default function AdminDashboard() {
                   <label className="text-[10px] font-black uppercase text-zinc-400 block mb-1">Төлөв</label>
                   <p className="font-black text-toyota-red uppercase text-sm">{selectedBooking.status}</p>
                   {selectedBooking.contacted && selectedBooking.contactedBy && (
-                    <p className="text-[10px] font-bold text-zinc-400 mt-1">Холбогдсон: {selectedBooking.contactedBy}</p>
+                    <span className="bg-green-100 text-green-700 text-[10px] font-black uppercase px-2 py-1 rounded-sm inline-flex items-center gap-1 mt-2">
+                      Холбогдсон: {selectedBooking.contactedBy}
+                    </span>
                   )}
                 </div>
                 {selectedBooking.type === 'service' && selectedBooking.serviceType && (
