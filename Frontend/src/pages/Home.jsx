@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Cog, Award, MapPin, Zap, ChevronDown, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 import VehicleCard from '../components/VehicleCard';
 import API_BASE_URL from '../config';
@@ -16,6 +17,7 @@ import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const Home = () => {
   const { t } = useTranslation();
+  useDocumentTitle(null, 'Toyota Top Motors LLC - Монгол дахь Тоёотагийн албан ёсны дилер. Шинэ Toyota автомашин, Toyota-Q баталгаат хэрэглэсэн машин, засвар үйлчилгээ, эх сэлбэг.');
   const { loc } = useLocale();
   const slides = [
     { id: 1, image: background1, title: t('home.hero.slide1.title'), titleRed: t('home.hero.slide1.titleRed'), desc: t('home.hero.slide1.desc') },

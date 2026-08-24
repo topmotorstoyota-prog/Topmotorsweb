@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, HelpCircle, Car, Settings, Wrench, CreditCard, ShieldCheck, History } from 'lucide-react';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 
 const categoryIcons = {
   sales: <Car size={18} />,
@@ -14,6 +15,7 @@ const categoryIcons = {
 
 const FAQ = () => {
   const { t } = useTranslation();
+  useDocumentTitle('Түгээмэл асуулт хариулт', 'Автомашин худалдан авах, засвар үйлчилгээ, баталгаа, санхүүжилтийн талаарх түгээмэл асуултын хариулт.');
   const faqCategories = ['sales', 'service', 'parts', 'finance', 'warranty', 'toyotaq'].map(id => ({
     id,
     title: t(`faq.categories.${id}.title`),

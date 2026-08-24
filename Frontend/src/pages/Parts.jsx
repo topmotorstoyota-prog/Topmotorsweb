@@ -20,11 +20,13 @@ import {
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import filterImage from '../assets/parts/filter.jpg';
 import aisinImage from '../assets/parts/aisin.webp';
 
 const Parts = () => {
   const { t } = useTranslation();
+  useDocumentTitle('Эх сэлбэг', 'Toyota-гийн эх сэлбэг, лац наалт, чанарын баталгаа. AISIN болон бусад OEM нийлүүлэгчдийн бүтээгдэхүүн.');
   const responsibilities = [
     { title: t('parts.responsibilities.usage.title'), desc: t('parts.responsibilities.usage.desc'), icon: FileText },
     { title: t('parts.responsibilities.dealer.title'), desc: t('parts.responsibilities.dealer.desc'), icon: MapPin },

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import yokohamaGallery from '../assets/acc/yokohama gallery.png';
 import yokohamaLogo from '../assets/acc/yokohama logo.png';
 import braidGallery from '../assets/acc/Braid Gallery.jpg';
@@ -136,6 +137,7 @@ const AccordionGallery = () => {
 };
 
 const Products = () => {
+  useDocumentTitle('Аксесуар, хэрэгсэл', 'Yokohama дугуй, BRAID обуд, Toyota Gazoo Racing албан ёсны хувцас, хэрэгсэл.');
   return (
     <div className="pt-20 md:pt-28 pb-0 bg-black">
       {/* Horizontal Accordion Gallery */}

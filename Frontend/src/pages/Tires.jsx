@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { CircleDot, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import yokohamaLogo from '../assets/acc/yokohama logo.png';
@@ -17,6 +18,7 @@ const formatPrice = (price) => {
 const Tires = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
+  useDocumentTitle('Yokohama дугуй', 'Японы алдарт Yokohama брэндийн бүх төрлийн замын нөхцөлд тохирсон өндөр чанартай дугуйнууд.');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 

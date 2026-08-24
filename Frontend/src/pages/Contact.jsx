@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Youtube, Send, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 
 const Contact = () => {
   const { t } = useTranslation();
+  useDocumentTitle('Холбоо барих', 'Toyota Top Motors-той холбогдох утас, и-мэйл, салбаруудын хаяг байршил.');
   const [formData, setFormData] = useState({
     name: '',
     phone: '',

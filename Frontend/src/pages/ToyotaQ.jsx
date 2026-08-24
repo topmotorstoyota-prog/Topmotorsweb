@@ -18,6 +18,7 @@ import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import VehicleCard from '../components/VehicleCard';
 import API_BASE_URL from '../config';
 import toyotaQHero from '../assets/toyota-q/q.png';
@@ -26,6 +27,7 @@ import inspection150 from '../assets/toyota-q/150.jpg';
 const ToyotaQ = () => {
   const { t } = useTranslation();
   const { loc, fuelType } = useLocale();
+  useDocumentTitle('Toyota-Q баталгаат хэрэглэсэн машин', 'Toyota-гийн албан ёсны дилерээс 150 цэгийн шалгалт хийгдсэн, баталгаат чанарын гэрчилгээтэй хэрэглэсэн Toyota, Lexus автомашин.');
   const [qVehicles, setQVehicles] = useState([]);
   const [filters, setFilters] = useState({
     name: '',

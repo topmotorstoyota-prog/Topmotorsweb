@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 
 import cafeImg from '../assets/service/00.jpg';
@@ -29,6 +30,7 @@ import serviceHeroImg from '../assets/service/service.jpg';
 
 const Service = () => {
   const { t } = useTranslation();
+  useDocumentTitle('Засвар үйлчилгээ', 'Toyota болон Lexus моделийн албан ёсны засвар, оношилгоо, эх сэлбэгийн үйлчилгээ. Орчин үеийн тоног төхөөрөмж, мэргэшсэн инженерүүд.');
   const servicesRef = useRef(null);
 
   const scrollToServices = () => {

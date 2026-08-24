@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Calendar as CalendarIcon, Clock, Car, User, CheckCircle2, ArrowRight, UserCog, PhoneCall, ShoppingBag, MessageCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 
 const Booking = () => {
   const { t } = useTranslation();
+  useDocumentTitle('Цаг захиалга', 'Тест драйв, засвар үйлчилгээ, шинэ автомашины захиалгын цаг авах.');
   const location = useLocation();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);

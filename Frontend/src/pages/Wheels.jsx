@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Disc, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import braidLogo from '../assets/acc/braid logo.png';
@@ -17,6 +18,7 @@ const formatPrice = (price) => {
 const Wheels = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
+  useDocumentTitle('BRAID обуд', 'Бартаат замын уралдааны дэлхийн шилдэг BRAID брэндийн хөнгөн цагаан хайлшин обуднууд.');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 

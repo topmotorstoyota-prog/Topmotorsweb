@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 
@@ -26,6 +27,10 @@ const ToyotaQDetail = () => {
   const { id } = useParams();
   const [vehicle, setVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
+  useDocumentTitle(
+    vehicle ? loc(vehicle.name, vehicle.nameEn) : null,
+    vehicle ? `Toyota-Q баталгаат хэрэглэсэн машин: ${loc(vehicle.name, vehicle.nameEn)}. ${vehicle.year || ''} он, ${vehicle.mileage || ''} км.` : undefined
+  );
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   useEffect(() => {

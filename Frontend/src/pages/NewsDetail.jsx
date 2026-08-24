@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Calendar, ChevronLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import API_BASE_URL from '../config';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
@@ -12,6 +13,7 @@ const NewsDetail = () => {
   const { loc } = useLocale();
   const { id } = useParams();
   const [news, setNews] = useState(null);
+  useDocumentTitle(news ? loc(news.title, news.titleEn) : null, news ? loc(news.excerpt, news.excerptEn) : undefined);
   const [otherNews, setOtherNews] = useState([]);
   const [loading, setLoading] = useState(true);
 

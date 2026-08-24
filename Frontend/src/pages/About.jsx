@@ -15,9 +15,11 @@ import {
   Shield
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import aboutImage from '../assets/common/about.jpg';
 
 const About = () => {
+  useDocumentTitle('Бидний тухай', 'Toyota Top Motors LLC 2021 оноос хойш Toyota-гийн албан ёсны дилерийн хувиар үйл ажиллагаа явуулж байна. Манай түүх, эрхэм зорилго, үнэт зүйлс.');
   const { t } = useTranslation();
   const stats = [
     { label: t('about.stats.branches.label'), value: "2", icon: MapPin, desc: t('about.stats.branches.desc') },

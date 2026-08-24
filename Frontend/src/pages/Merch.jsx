@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Search, Phone, ArrowRight, PackageSearch } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import grLogo from '../assets/acc/gr-logo-black.svg';
@@ -20,6 +21,7 @@ const numericPrice = (p) => parseInt(String(p || '').replace(/[^0-9]/g, ''), 10)
 const Merch = () => {
   const { t } = useTranslation();
   const { loc, stockStatus } = useLocale();
+  useDocumentTitle('GR Merch', 'Toyota Gazoo Racing-ийн албан ёсны хувцас, хэрэглэл болон аксессуарууд.');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');

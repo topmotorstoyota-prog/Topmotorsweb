@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 
@@ -26,6 +27,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  useDocumentTitle(product ? loc(product.name, product.nameEn) : null, product ? loc(product.description, product.descriptionEn) : undefined);
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   useEffect(() => {

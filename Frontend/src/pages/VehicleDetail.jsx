@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 import ComparisonModal from '../components/ComparisonModal';
 import API_BASE_URL from '../config';
@@ -19,6 +20,10 @@ const VehicleDetail = () => {
   const navigate = useNavigate();
   const [vehicleModel, setVehicleModel] = useState(null);
   const [loading, setLoading] = useState(true);
+  useDocumentTitle(
+    vehicleModel ? loc(vehicleModel.name, vehicleModel.nameEn) : null,
+    vehicleModel ? `Toyota ${loc(vehicleModel.name, vehicleModel.nameEn)} - үнэ, үзүүлэлт, өнгө сонголт. Албан ёсны дилерээс захиалаарай.` : undefined
+  );
 
   const [selectedEngine, setSelectedEngine] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);

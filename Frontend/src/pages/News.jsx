@@ -4,12 +4,14 @@ import { Calendar, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import API_BASE_URL from '../config';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const News = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
+  useDocumentTitle('Мэдээ, мэдээлэл', 'Toyota Top Motors-ийн сүүлийн үеийн мэдээ, зар, урамшуулал.');
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
 

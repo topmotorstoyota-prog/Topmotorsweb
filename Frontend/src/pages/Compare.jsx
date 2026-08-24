@@ -4,11 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, Info, CheckCircle2, ChevronDown, XCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import API_BASE_URL from '../config';
 
 const Compare = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
+  useDocumentTitle('Автомашин харьцуулах', 'Toyota-гийн загваруудыг үзүүлэлт, үнэ, тоноглолоор нь харьцуулж, өөрт тохирсныг сонгоорой.');
   const [searchParams] = useSearchParams();
   const [selectedVariants, setSelectedVariants] = useState([]);
   const [loading, setLoading] = useState(true);

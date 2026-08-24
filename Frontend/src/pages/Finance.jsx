@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calculator, FileText, CheckCircle2, Info, Building2, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 
 const Finance = () => {
   const { t } = useTranslation();
+  useDocumentTitle('Санхүүжилт', 'Автомашины зээл, урьдчилгаа төлбөрийн тооцоолуур. Хувь хүн болон байгууллагад зориулсан санхүүжилтийн нөхцөл.');
   const personalDocs = t('finance.personalDocs', { returnObjects: true });
   const orgDocs = t('finance.orgDocs', { returnObjects: true });
   const [price, setPrice] = useState(150000000);

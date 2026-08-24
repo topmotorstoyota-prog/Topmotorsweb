@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MessageSquare, User, PhoneCall, ChevronRight, FileText, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import reqImage from '../assets/sales/req.png';
@@ -10,6 +11,7 @@ import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const Sales = () => {
   const { t } = useTranslation();
+  useDocumentTitle('Борлуулалтын ажилчид', 'Toyota Top Motors-ийн туршлагатай борлуулалтын мэргэжилтнүүдтэй танилцаж, шууд холбогдоорой.');
   const [salesStaff, setSalesStaff] = useState([]);
   const [loading, setLoading] = useState(true);
 

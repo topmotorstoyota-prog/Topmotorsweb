@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Search, SlidersHorizontal, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import VehicleCard from '../components/VehicleCard';
 import ComparisonModal from '../components/ComparisonModal';
 import API_BASE_URL from '../config';
@@ -22,6 +23,7 @@ const categories = [
 const VehicleList = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
+  useDocumentTitle('Автомашины загварууд', 'Toyota-гийн албан ёсны дилерээс борлуулагдаж буй бүх автомашины загварыг үзээрэй — RAV4, Land Cruiser, Hilux, Hiace болон бусад.');
   const [activeCategory, setActiveCategory] = useState('Бүх загварууд');
   const [searchQuery, setSearchQuery] = useState('');
   const [isCompareOpen, setIsCompareOpen] = useState(false);
