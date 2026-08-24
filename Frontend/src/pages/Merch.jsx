@@ -7,13 +7,8 @@ import { useLocale } from '../hooks/useLocale';
 import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import grLogo from '../assets/acc/gr-logo-black.svg';
-import grHero1 from '../assets/acc/gr-hero-1.jpg';
-import grHero2 from '../assets/acc/gr-hero-2.jpg';
-import grHero3 from '../assets/acc/gr-hero-3.jpg';
-import grHero4 from '../assets/acc/gr-hero-4.jpg';
+import grHero from '../assets/acc/toyota-gr-merch-hero.jpg';
 import placeholderImage from '../assets/vehicles/hero.jpg';
-
-const heroTiles = [grHero1, grHero2, grHero3, grHero4];
 
 const formatPrice = (price) => {
   if (!price) return '';
@@ -54,34 +49,30 @@ const Merch = () => {
   return (
     <div className="bg-black min-h-screen">
       {/* Hero */}
-      <section className="pt-24 md:pt-32">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-0.5 md:gap-1">
-          {heroTiles.map((src, i) => (
-            <div key={i} className="aspect-square md:aspect-[3/4] overflow-hidden bg-zinc-950">
-              <img
-                src={src}
-                alt="Toyota Gazoo Racing"
-                className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
-              />
-            </div>
-          ))}
-        </div>
+      <section className="relative h-[55vh] md:h-[70vh] min-h-[380px] w-full overflow-hidden">
+        <img
+          src={grHero}
+          alt="Toyota Gazoo Racing"
+          className="absolute inset-0 w-full h-full object-cover object-[30%_center] md:object-center"
+        />
 
-        <div className="container-custom px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8 py-10 md:py-14 border-b border-zinc-900"
-          >
-            <div className="h-12 md:h-16 w-fit shrink-0">
-              <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
-            </div>
+        <div className="absolute inset-0 flex items-center">
+          <div className="container-custom px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="max-w-md"
+            >
+              <div className="h-10 md:h-14 w-fit mb-5 md:mb-6 drop-shadow-lg">
+                <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
+              </div>
 
-            <p className="text-zinc-400 text-sm md:text-base leading-relaxed font-medium max-w-2xl">
-              {t('products.merch.longDesc')}
-            </p>
-          </motion.div>
+              <p className="text-white/90 text-sm md:text-lg leading-relaxed font-medium drop-shadow-lg">
+                {t('products.merch.longDesc')}
+              </p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
