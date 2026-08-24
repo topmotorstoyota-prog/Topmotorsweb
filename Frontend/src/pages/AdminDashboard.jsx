@@ -704,7 +704,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
     const data = new FormData();
     data.append('image', file);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', body: data });
+      const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: data });
       const result = await res.json();
       callback(result.imageUrl);
     } catch (err) { alert('Алдаа'); }
@@ -726,6 +726,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
       try {
         const res = await fetch(`${API_BASE_URL}/api/upload`, {
           method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
           body: data
         });
         const result = await res.json();
@@ -1256,7 +1257,7 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
     const data = new FormData();
     data.append('image', file);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', body: data });
+      const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: data });
       const result = await res.json();
       if (isGallery) {
         setFormData(prev => ({ ...prev, images: [...(prev.images || []), result.imageUrl] }));
@@ -1274,7 +1275,7 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
     const data = new FormData();
     data.append('pdf', file);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/upload-pdf`, { method: 'POST', body: data });
+      const res = await fetch(`${API_BASE_URL}/api/upload-pdf`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: data });
       const result = await res.json();
       if (res.ok) {
         setFormData(prev => ({ ...prev, serviceHistory: result.pdfUrl }));

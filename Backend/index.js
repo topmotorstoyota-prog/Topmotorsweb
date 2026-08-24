@@ -60,6 +60,19 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/api/', generalLimiter);
 app.set('trust proxy', 1); // Proxy-ийн ард байгаа бол IP-г зөв таних тохиргоо
 
+// --- AUTH MIDDLEWARE ---
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ message: "Нэвтрэх шаардлагатай" });
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Хүчингүй токен" });
+    req.user = user;
+    next();
+  });
+};
+
 // --- IMAGE UPLOAD (Supabase Storage) ---
 const imageFileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|webp|gif/;
@@ -79,7 +92,7 @@ const upload = multer({
   limits: { fileSize: 50 * 1024 * 1024 } // 50MB болгож нэмэгдүүлэв
 });
 
-app.post('/api/upload', (req, res) => {
+app.post('/api/upload', authenticateToken, (req, res) => {
   upload.single('image')(req, res, async (err) => {
     if (err) {
       return res.status(400).json({ message: err.message });
@@ -105,7 +118,7 @@ const pdfFilter = (req, file, cb) => {
 
 const uploadPdf = multer({ storage: multer.memoryStorage(), fileFilter: pdfFilter });
 
-app.post('/api/upload-pdf', (req, res) => {
+app.post('/api/upload-pdf', authenticateToken, (req, res) => {
   uploadPdf.single('pdf')(req, res, async (err) => {
     if (err) return res.status(400).json({ message: err.message });
     if (!req.file) return res.status(400).json({ message: 'Файл сонгоогүй байна.' });
@@ -119,7 +132,7 @@ app.post('/api/upload-pdf', (req, res) => {
   });
 });
 
-app.post('/api/upload-multiple', (req, res) => {
+app.post('/api/upload-multiple', authenticateToken, (req, res) => {
   upload.array('images', 30)(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
       console.error('Multer Error:', err);
@@ -139,19 +152,6 @@ app.post('/api/upload-multiple', (req, res) => {
     }
   });
 });
-
-// --- AUTH MIDDLEWARE ---
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token) return res.status(401).json({ message: "Нэвтрэх шаардлагатай" });
-
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ message: "Хүчингүй токен" });
-    req.user = user;
-    next();
-  });
-};
 
 // --- AUTH ---
 app.post('/api/auth/login', loginLimiter, async (req, res) => {
