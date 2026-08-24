@@ -49,32 +49,34 @@ const Merch = () => {
   return (
     <div className="bg-black min-h-screen">
       {/* Hero */}
-      <section className="relative h-[55vh] md:h-[70vh] min-h-[380px] w-full overflow-hidden">
-        <img
-          src={grHero}
-          alt="Toyota Gazoo Racing"
-          className="absolute inset-0 w-full h-full object-cover object-[30%_center] md:object-center"
-        />
+      <div className="pt-[64px] lg:pt-[80px]">
+        <section className="relative h-[62vh] md:h-[75vh] min-h-[440px] w-full overflow-hidden">
+          <img
+            src={grHero}
+            alt="Toyota Gazoo Racing"
+            className="absolute inset-0 w-full h-full object-cover object-[30%_center] md:object-center"
+          />
 
-        <div className="absolute inset-0 flex items-center">
-          <div className="container-custom px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="max-w-md"
-            >
-              <div className="h-10 md:h-14 w-fit mb-5 md:mb-6 drop-shadow-lg">
-                <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
-              </div>
+          <div className="absolute inset-0 flex items-center">
+            <div className="pl-6 sm:pl-10 md:pl-16 lg:pl-24 pr-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+                className="max-w-md"
+              >
+                <div className="h-10 md:h-14 w-fit mb-5 md:mb-6 drop-shadow-lg">
+                  <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
+                </div>
 
-              <p className="text-white/90 text-sm md:text-lg leading-relaxed font-medium drop-shadow-lg">
-                {t('products.merch.longDesc')}
-              </p>
-            </motion.div>
+                <p className="text-white/90 text-sm md:text-lg leading-relaxed font-medium drop-shadow-lg">
+                  {t('products.merch.longDesc')}
+                </p>
+              </motion.div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* Filter Bar */}
       <section className="border-b border-zinc-900 bg-black sticky top-[64px] lg:top-[80px] z-30 backdrop-blur-md bg-black/95">
