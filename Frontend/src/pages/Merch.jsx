@@ -65,17 +65,14 @@ const Merch = () => {
                 transition={{ duration: 0.7 }}
                 className="max-w-lg"
               >
-                <span className="block text-toyota-red font-black text-[10px] md:text-xs uppercase tracking-[0.35em] mb-4 md:mb-5 drop-shadow-lg">
-                  {t('products.merch.kicker')}
-                </span>
-
-                <div className="h-9 md:h-12 w-fit mb-5 md:mb-6 drop-shadow-lg">
-                  <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
+                <div className="flex items-center gap-4 md:gap-5 mb-6 md:mb-8">
+                  <div className="h-9 md:h-12 w-fit shrink-0 drop-shadow-lg">
+                    <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
+                  </div>
+                  <p className="text-white/90 text-sm md:text-lg leading-relaxed font-medium drop-shadow-lg">
+                    {t('products.merch.longDesc')}
+                  </p>
                 </div>
-
-                <p className="text-white/90 text-base md:text-xl leading-relaxed font-medium drop-shadow-lg mb-8 md:mb-10">
-                  {t('products.merch.longDesc')}
-                </p>
 
                 <a
                   href="#products"

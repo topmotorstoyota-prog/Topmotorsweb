@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { clsx } from 'clsx';
 import Home from './pages/Home';
 import VehicleList from './pages/VehicleList';
 import VehicleDetail from './pages/VehicleDetail';
@@ -41,10 +42,26 @@ function AppContent() {
     }
   }, [location]);
 
+  // MN/EN хооронд шилжихэд агуулгыг зөөлөн бүдгэрүүлж, солигдоод буцаж тод болгоно
+  const [isLangSwitching, setIsLangSwitching] = useState(false);
+  useEffect(() => {
+    let timer;
+    const handleLangTransition = () => {
+      setIsLangSwitching(true);
+      clearTimeout(timer);
+      timer = setTimeout(() => setIsLangSwitching(false), 360);
+    };
+    window.addEventListener('lang-transition', handleLangTransition);
+    return () => {
+      window.removeEventListener('lang-transition', handleLangTransition);
+      clearTimeout(timer);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen">
       {!isAdminPage && <Navbar />}
-      <main className="flex-grow">
+      <main className={clsx("flex-grow transition-opacity duration-200 ease-out", isLangSwitching && "opacity-0")}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/vehicles" element={<VehicleList />} />

@@ -7,7 +7,9 @@ const LanguageToggle = ({ isWhiteNav = true, isBlackNav = false, className = '' 
   const current = i18n.language?.startsWith('en') ? 'en' : 'mn';
 
   const switchTo = (lng) => {
-    if (lng !== current) i18n.changeLanguage(lng);
+    if (lng === current) return;
+    window.dispatchEvent(new CustomEvent('lang-transition'));
+    setTimeout(() => i18n.changeLanguage(lng), 180);
   };
 
   return (
