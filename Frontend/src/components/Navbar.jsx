@@ -270,7 +270,7 @@ const Navbar = () => {
                       </Link>
                     ) : (
                       <>
-                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 mt-2">{link.name}</span>
+                        <span className="text-3xl font-black uppercase tracking-tighter text-toyota-black">{link.name}</span>
                         <div className="flex flex-col space-y-3 pl-4 border-l-2 border-toyota-red/20">
                           {link.dropdown.map((item) => (
                             item.isExternal ? (
@@ -279,7 +279,7 @@ const Navbar = () => {
                                 href={item.path}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-xl font-bold uppercase tracking-tighter text-toyota-black hover:text-toyota-red"
+                                className="block px-6 py-3 text-xs font-bold uppercase tracking-widest text-toyota-black hover:bg-zinc-50 hover:text-toyota-red transition-all"
                                 onClick={() => setIsOpen(false)}
                               >
                                 {item.name}
