@@ -26,7 +26,7 @@ const LanguageToggle = ({ isWhiteNav = true, isBlackNav = false, className = '' 
         className={clsx(
           "px-2.5 py-1 rounded-full transition-all",
           current === 'mn'
-            ? "bg-toyota-red text-white"
+            ? "bg-toyota-black text-white"
             : (isBlackNav || !isWhiteNav ? "text-white/70 hover:text-white" : "text-zinc-400 hover:text-toyota-black")
         )}
       >
@@ -38,7 +38,7 @@ const LanguageToggle = ({ isWhiteNav = true, isBlackNav = false, className = '' 
         className={clsx(
           "px-2.5 py-1 rounded-full transition-all",
           current === 'en'
-            ? "bg-toyota-red text-white"
+            ? "bg-toyota-black text-white"
             : (isBlackNav || !isWhiteNav ? "text-white/70 hover:text-white" : "text-zinc-400 hover:text-toyota-black")
         )}
       >
