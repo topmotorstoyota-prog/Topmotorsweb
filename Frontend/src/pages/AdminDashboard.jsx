@@ -4,7 +4,7 @@ import {
   Trash2, Edit, Plus, X, Upload, LogOut, LayoutDashboard, Car,
   Newspaper, Box, Package, UserCircle, MessageSquare, Info, ChevronRight, ChevronLeft,
   ChevronDown, Settings, Fuel, Palette, SlidersHorizontal, Image as ImageIcon,
-  Layers, PlusCircle, Phone, Mail, Calendar, Clock, MapPin, User, Star, Users, RotateCcw
+  Layers, PlusCircle, Phone, Mail, Calendar, Clock, MapPin, User, Star, Users, RotateCcw, Lock
 } from 'lucide-react';
 import API_BASE_URL from '../config';
 import logo from '../assets/home/logo-1.png';
@@ -29,6 +29,7 @@ export default function AdminDashboard() {
   const [editingItem, setEditingItem] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   useEffect(() => {
     if (!token) navigate('/admin-login');
@@ -132,7 +133,10 @@ export default function AdminDashboard() {
             </button>
           )}
         </nav>
-        <div className="p-6 mt-auto"><button onClick={handleLogout} className="flex items-center gap-3 w-full p-4 text-zinc-500 hover:text-white transition-all"><LogOut size={18} /> <span className="uppercase tracking-widest text-[10px] font-bold">Гарах</span></button></div>
+        <div className="p-6 mt-auto space-y-1">
+          <button onClick={() => setShowPasswordModal(true)} className="flex items-center gap-3 w-full p-4 text-zinc-500 hover:text-white transition-all"><Lock size={18} /> <span className="uppercase tracking-widest text-[10px] font-bold">Нууц үг солих</span></button>
+          <button onClick={handleLogout} className="flex items-center gap-3 w-full p-4 text-zinc-500 hover:text-white transition-all"><LogOut size={18} /> <span className="uppercase tracking-widest text-[10px] font-bold">Гарах</span></button>
+        </div>
       </div>
 
       <div className="flex-1 ml-72">
@@ -195,6 +199,9 @@ export default function AdminDashboard() {
                             </td>
                             <td className="p-5">
                               <p className="font-black uppercase text-[12px] text-slate-800">{item.name}</p>
+                              {item.contacted && item.contactedBy && (
+                                <p className="no-underline text-[9px] font-bold text-toyota-red uppercase tracking-widest mt-1">Холбогдсон: {item.contactedBy}</p>
+                              )}
                             </td>
                             <td className="p-5">
                               <div className="flex flex-col gap-1 text-[11px] font-bold">
@@ -424,6 +431,9 @@ export default function AdminDashboard() {
                 <div>
                   <label className="text-[10px] font-black uppercase text-zinc-400 block mb-1">Төлөв</label>
                   <p className="font-black text-toyota-red uppercase text-sm">{selectedBooking.status}</p>
+                  {selectedBooking.contacted && selectedBooking.contactedBy && (
+                    <p className="text-[10px] font-bold text-zinc-400 mt-1">Холбогдсон: {selectedBooking.contactedBy}</p>
+                  )}
                 </div>
                 {selectedBooking.type === 'service' && selectedBooking.serviceType && (
                   <div>
@@ -521,6 +531,86 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+
+      {showPasswordModal && (
+        <ChangePasswordModal token={token} onClose={() => setShowPasswordModal(false)} />
+      )}
+    </div>
+  );
+}
+
+function ChangePasswordModal({ token, onClose }) {
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    if (newPassword !== confirmPassword) {
+      setError('Шинэ нууц үг таарахгүй байна.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ currentPassword, newPassword })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSuccess(true);
+      } else {
+        setError(data.message || 'Алдаа гарлаа.');
+      }
+    } catch (err) {
+      setError('Сүлжээний алдаа гарлаа.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-6">
+      <div className="bg-white w-full max-w-md rounded-sm shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+        <div className="h-1.5 bg-toyota-red w-full" />
+        <div className="p-8">
+          <div className="flex justify-between items-center mb-8 pb-4 border-b">
+            <h3 className="text-lg font-black uppercase tracking-tight">Нууц үг <span className="text-toyota-red">солих</span></h3>
+            <button onClick={onClose} className="text-zinc-400 hover:text-black transition-colors"><X size={22} /></button>
+          </div>
+
+          {success ? (
+            <div className="text-center py-6">
+              <p className="font-bold text-green-600 mb-6">Нууц үг амжилттай солигдлоо.</p>
+              <button onClick={onClose} className="w-full bg-black text-white py-4 font-black uppercase tracking-[0.3em] text-[10px] hover:bg-toyota-red transition-all">Хаах</button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Одоогийн нууц үг</label>
+                <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className="w-full p-4 bg-zinc-50 border rounded-sm" required />
+              </div>
+              <div>
+                <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Шинэ нууц үг</label>
+                <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} className="w-full p-4 bg-zinc-50 border rounded-sm" required minLength={6} />
+              </div>
+              <div>
+                <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Шинэ нууц үг давтах</label>
+                <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="w-full p-4 bg-zinc-50 border rounded-sm" required minLength={6} />
+              </div>
+              {error && <p className="text-toyota-red text-xs font-bold">{error}</p>}
+              <button type="submit" disabled={loading} className="w-full bg-toyota-red text-white py-4 font-black uppercase tracking-[0.3em] text-[10px] hover:bg-black transition-all disabled:opacity-50">
+                {loading ? 'Түр хүлээнэ үү...' : 'Хадгалах'}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -103,6 +103,7 @@ model Booking {
   description String?  // Зурвасын агуулга хадгалах
   status      String   @default("Шинэ") // Шинэ, Баталгаажсан, Цуцлагдсан
   contacted   Boolean  @default(false) // Админ холбогдсон эсэх
+  contactedBy String?  // Холбогдсон гэж тэмдэглэсэн админы нэр
   createdAt   DateTime @default(now())
 }
 

@@ -180,6 +180,29 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
   }
 });
 
+// Нэвтэрсэн хэрэглэгч өөрийн нууц үгээ солих
+app.put('/api/auth/change-password', authenticateToken, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ message: "Нууц үгээ бүрэн бөглөнө үү." });
+  }
+  if (newPassword.length < 6) {
+    return res.status(400).json({ message: "Шинэ нууц үг 6-с дээш тэмдэгттэй байх ёстой." });
+  }
+  try {
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    if (!user || !(await bcrypt.compare(currentPassword, user.password))) {
+      return res.status(401).json({ message: "Одоогийн нууц үг буруу байна." });
+    }
+    const hashed = await bcrypt.hash(newPassword, 12);
+    await prisma.user.update({ where: { id: req.user.id }, data: { password: hashed } });
+    res.json({ message: "Нууц үг амжилттай солигдлоо." });
+  } catch (err) {
+    console.error("Change Password Error:", err);
+    res.status(500).json({ message: "Системд алдаа гарлаа." });
+  }
+});
+
 // Бүтээгдэхүүний ангиллаас хамаарч аль эрхэд харьяалагдахыг тодорхойлох
 const WHEELS_TIRES_CATEGORIES = ['Дугуй', 'GR Tyres', 'Обуд'];
 const getProductPermissionKey = (category) => {
@@ -320,6 +343,10 @@ const setupRoutes = (routePath, model, options = {}) => {
 
       if (model === 'user' && updateData.password) {
         updateData.password = await bcrypt.hash(updateData.password, 12);
+      }
+
+      if (routePath === 'bookings' && 'contacted' in updateData) {
+        updateData.contactedBy = updateData.contacted ? (req.user.name || req.user.email) : null;
       }
 
       const item = await prisma[model].update({ where: { id }, data: updateData });
