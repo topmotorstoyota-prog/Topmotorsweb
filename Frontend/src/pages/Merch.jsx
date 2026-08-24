@@ -58,20 +58,32 @@ const Merch = () => {
           />
 
           <div className="absolute inset-0 flex items-center">
-            <div className="pl-6 sm:pl-10 md:pl-16 lg:pl-24 pr-4">
+            <div className="pl-6 sm:pl-10 md:pl-16 lg:pl-24 pr-6 md:pr-10">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
-                className="max-w-md"
+                className="max-w-lg"
               >
-                <div className="h-10 md:h-14 w-fit mb-5 md:mb-6 drop-shadow-lg">
+                <span className="block text-toyota-red font-black text-[10px] md:text-xs uppercase tracking-[0.35em] mb-4 md:mb-5 drop-shadow-lg">
+                  {t('products.merch.kicker')}
+                </span>
+
+                <div className="h-9 md:h-12 w-fit mb-5 md:mb-6 drop-shadow-lg">
                   <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
                 </div>
 
-                <p className="text-white/90 text-sm md:text-lg leading-relaxed font-medium drop-shadow-lg">
+                <p className="text-white/90 text-base md:text-xl leading-relaxed font-medium drop-shadow-lg mb-8 md:mb-10">
                   {t('products.merch.longDesc')}
                 </p>
+
+                <a
+                  href="#products"
+                  className="inline-flex items-center gap-3 text-white font-black uppercase tracking-widest text-[10px] md:text-xs border-b-2 border-toyota-red pb-2 hover:gap-4 hover:text-toyota-red transition-all"
+                >
+                  {t('products.merch.browseCta')}
+                  <ArrowRight size={14} />
+                </a>
               </motion.div>
             </div>
           </div>
@@ -79,7 +91,7 @@ const Merch = () => {
       </div>
 
       {/* Filter Bar */}
-      <section className="border-b border-zinc-900 bg-black sticky top-[64px] lg:top-[80px] z-30 backdrop-blur-md bg-black/95">
+      <section id="products" className="border-b border-zinc-900 bg-black sticky top-[64px] lg:top-[80px] z-30 backdrop-blur-md bg-black/95 scroll-mt-[64px] lg:scroll-mt-[80px]">
         <div className="container-custom px-4 py-4 md:py-5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 md:gap-6">
           <p className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 shrink-0">
             {loading ? t('vehicles.list.loading') : t('products.merch.itemCount', { count: filteredProducts.length })}
@@ -143,12 +155,6 @@ const Merch = () => {
                       alt={loc(item.name, item.nameEn)}
                       className="w-full h-full object-contain p-6 md:p-10 group-hover:scale-110 transition-transform duration-700 mix-blend-multiply"
                     />
-
-                    {/* Racing stripe corner accent */}
-                    <div className="absolute top-0 right-0 flex flex-col opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <div className="w-16 h-1 bg-white" />
-                      <div className="w-16 h-1 bg-toyota-red" />
-                    </div>
 
                     {item.stock === 'Дууссан' && (
                       <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px] flex items-center justify-center z-30">
