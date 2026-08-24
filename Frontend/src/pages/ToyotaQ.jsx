@@ -21,7 +21,7 @@ import { useLocale } from '../hooks/useLocale';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import VehicleCard from '../components/VehicleCard';
 import API_BASE_URL from '../config';
-import toyotaQHero from '../assets/toyota-q/q.png';
+import toyotaQHero from '../assets/toyota-q/q.jpg';
 import inspection150 from '../assets/toyota-q/150.jpg';
 
 const ToyotaQ = () => {

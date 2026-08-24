@@ -12,7 +12,7 @@ import background1 from '../assets/home/background-1.jpg';
 import background2 from '../assets/home/background-2.jpg';
 import background3 from '../assets/home/background-3.jpg';
 import serviceImage from '../assets/home/service.jpg';
-import chiglelImage from '../assets/home/top.png';
+import chiglelImage from '../assets/home/top.jpg';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const Home = () => {

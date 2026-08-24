@@ -8,7 +8,7 @@ import VehicleCard from '../components/VehicleCard';
 import ComparisonModal from '../components/ComparisonModal';
 import API_BASE_URL from '../config';
 import { Link } from 'react-router-dom';
-import hiluxImage from '../assets/vehicles/hilux.png';
+import hiluxImage from '../assets/vehicles/hilux.jpg';
 
 // id нь vehicle.category-той тохирдог өгөгдлийн утга тул монгол хэвээр байлгав; labelKey нь зөвхөн харуулах орчуулга
 const categories = [
