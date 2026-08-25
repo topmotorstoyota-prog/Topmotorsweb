@@ -167,7 +167,8 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
         'toyota-q': user.canManageToyotaQ || false,
         'sales-bookings': user.canManageSalesBookings || false,
         'service-bookings': user.canManageServiceBookings || false,
-        'home-banner': user.canManageHomeBanner || false
+        'home-banner': user.canManageHomeBanner || false,
+        staff: user.canManageStaff || false
       };
       const token = jwt.sign({ id: user.id, role: user.role, email: user.email, name: user.name, permissions }, JWT_SECRET, { expiresIn: '24h' });
       res.json({ token, role: user.role, name: user.name, permissions });

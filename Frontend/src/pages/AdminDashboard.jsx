@@ -1608,7 +1608,8 @@ function UserAdminForm({ token, initialData, onSuccess }) {
     canManageToyotaQ: false,
     canManageSalesBookings: false,
     canManageServiceBookings: false,
-    canManageHomeBanner: false
+    canManageHomeBanner: false,
+    canManageStaff: false
   });
 
   const handleSubmit = async (e) => {
@@ -1659,6 +1660,7 @@ function UserAdminForm({ token, initialData, onSuccess }) {
     { name: 'canManageSalesBookings', label: 'Шинэ машин & Тест драйв удирдах' },
     { name: 'canManageServiceBookings', label: 'CRM удирдах' },
     { name: 'canManageHomeBanner', label: 'Нүүр хуудасны баннер удирдах' },
+    { name: 'canManageStaff', label: 'Борлуулалтын ажилчид удирдах' },
   ];
 
   return (

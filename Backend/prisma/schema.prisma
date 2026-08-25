@@ -22,6 +22,7 @@ model User {
   canManageSalesBookings   Boolean @default(false) // Шинэ машин захиалга, Тест драйв, Зурвас
   canManageServiceBookings Boolean @default(false) // Засварын хүсэлт
   canManageHomeBanner Boolean @default(false)
+  canManageStaff     Boolean  @default(false) // Борлуулалтын ажилчид
   createdAt         DateTime @default(now())
 }
 
