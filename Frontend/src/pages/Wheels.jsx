@@ -54,7 +54,7 @@ const Wheels = () => {
               className="inline-flex items-center gap-2 bg-toyota-red text-white font-black text-[11px] md:text-xs uppercase tracking-widest px-6 py-3 rounded-full shadow-lg shadow-toyota-red/20 hover:bg-white hover:text-toyota-black transition-colors mb-8"
             >
               <Phone size={14} />
-              Борлуулалтын зөвлөхтэй холбогдох: 8007 7772
+              Обуд борлуулалтын зөвлөхтэй холбогдох: 8007 7772
             </a>
 
             <motion.p

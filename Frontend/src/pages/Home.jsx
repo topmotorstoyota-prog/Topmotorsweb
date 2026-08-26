@@ -233,27 +233,37 @@ const Home = () => {
       </section>
 
       {/* Product Categories Section */}
-      <section className="py-12 md:py-24 bg-white border-t border-zinc-100">
-        <div className="container-custom px-4 md:px-0">
-          <div className="mb-8 md:mb-16">
-            <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tight mt-2">{t('home.products.titlePlain')} <span className="text-toyota-red">{t('home.products.titleRed')}</span></h2>
+      <section className="py-12 md:py-24 bg-toyota-black relative overflow-hidden">
+        <div className="absolute top-0 left-0 opacity-[0.03] -translate-x-1/4 -translate-y-1/4 pointer-events-none"><span className="text-[100px] md:text-[220px] font-black tracking-tighter leading-none text-white">SHOP</span></div>
+        <div className="container-custom px-4 md:px-0 relative z-10">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tight text-white">{t('home.products.titlePlain')} <span className="text-toyota-red">{t('home.products.titleRed')}</span></h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 md:gap-8">
+          <div className="grid grid-cols-3 gap-2 md:gap-6">
             {[
               { to: '/tires', image: tiresImage, label: t('home.products.tires') },
               { to: '/wheels', image: wheelsImage, label: t('home.products.wheels') },
               { to: '/merch', image: merchImage, label: t('home.products.merch') }
             ].map((item, idx) => (
-              <motion.div key={item.to} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="group">
-                <Link to={item.to}>
-                  <div className="relative aspect-square overflow-hidden mb-2 md:mb-6 bg-zinc-100">
-                    <img src={item.image} alt={item.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <motion.div
+                key={item.to}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.12 }}
+                className="group"
+              >
+                <Link to={item.to} className="block relative aspect-[3/4] md:aspect-[4/5] overflow-hidden rounded-sm md:rounded-lg border border-white/10 transition-all duration-500 group-hover:border-toyota-red/60 group-hover:shadow-[0_0_50px_rgba(235,10,30,0.25)]">
+                  <img src={item.image} alt={item.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent md:from-black/95 md:via-black/10" />
+                  <div className="absolute bottom-0 left-0 right-0 p-2.5 md:p-6">
+                    <div className="w-5 md:w-8 h-[2px] md:h-[3px] bg-toyota-red mb-1.5 md:mb-3 transition-all duration-300 group-hover:w-8 md:group-hover:w-14" />
+                    <h3 className="text-white text-[10px] md:text-2xl font-black uppercase tracking-tight leading-none">{item.label}</h3>
+                    <span className="hidden md:flex items-center gap-1.5 text-white/60 text-[10px] font-bold uppercase tracking-widest mt-3 group-hover:text-toyota-red transition-colors">
+                      Дэлгэрэнгүй <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
                   </div>
-                  <h3 className="text-[9px] md:text-xl font-bold uppercase tracking-tight group-hover:text-toyota-red transition-colors flex items-center justify-center md:justify-start gap-1 text-center md:text-left">
-                    {item.label}
-                    <ArrowRight className="hidden md:inline group-hover:translate-x-1 transition-transform" size={16} />
-                  </h3>
                 </Link>
               </motion.div>
             ))}

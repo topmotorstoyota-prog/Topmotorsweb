@@ -25,7 +25,7 @@ const TireCard = ({ tile, idx, onPreview, fixedWidth }) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay: Math.min(idx, 10) * 0.04 }}
-    className={`group ${fixedWidth ? 'w-[29vw] sm:w-[calc((100%-2.25rem)/4)] md:w-[calc((100%-4.5rem)/4)] shrink-0 snap-start' : ''}`}
+    className={`group ${fixedWidth ? 'w-[29vw] sm:w-[calc((100%-2.25rem)/4)] md:w-[calc((100%-4.5rem)/4)] shrink-0 snap-align-none md:snap-start' : ''}`}
   >
     <button
       type="button"
@@ -85,7 +85,7 @@ const TireRow = ({ name, items, onPreview }) => {
             <ChevronLeft size={16} className="md:hidden" />
             <ChevronLeft size={18} className="hidden md:block" />
           </button>
-          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-proximity pb-2 px-10 md:px-0 -mx-10 md:mx-0 touch-pan-x">
+          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-none md:snap-x md:snap-mandatory pb-2 px-10 md:px-0 -mx-10 md:mx-0">
             {items.map((tile, idx) => (
               <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} fixedWidth />
             ))}
@@ -214,7 +214,7 @@ const Tires = () => {
               className="inline-flex items-center gap-2 bg-toyota-red text-white font-black text-[11px] md:text-xs uppercase tracking-widest px-6 py-3 rounded-full shadow-lg shadow-toyota-red/20 hover:bg-toyota-black transition-colors mb-8"
             >
               <Phone size={14} />
-              Борлуулалтын зөвлөхтэй холбогдох: 8007 7772
+              Дугуй борлуулалтын зөвлөхтэй холбогдох: 8007 7772
             </a>
 
             <motion.p
