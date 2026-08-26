@@ -19,12 +19,19 @@ const extractDiameter = (size) => {
   return match ? match[1] : null;
 };
 
-const TireCard = ({ tile, idx, onPreview, fixedWidth }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay: Math.min(idx, 10) * 0.04 }}
+const TireCard = ({ tile, idx, onPreview, fixedWidth }) => {
+  const Wrapper = fixedWidth ? 'div' : motion.div;
+  const wrapperProps = fixedWidth
+    ? {}
+    : {
+        initial: { opacity: 0, y: 30 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: Math.min(idx, 10) * 0.04 }
+      };
+  return (
+  <Wrapper
+    {...wrapperProps}
     className={`group ${fixedWidth ? 'w-[29vw] sm:w-[calc((100%-2.25rem)/4)] md:w-[calc((100%-4.5rem)/4)] shrink-0 snap-align-none md:snap-start' : ''}`}
   >
     <button
@@ -58,8 +65,9 @@ const TireCard = ({ tile, idx, onPreview, fixedWidth }) => (
         </div>
       </div>
     </button>
-  </motion.div>
-);
+  </Wrapper>
+  );
+};
 
 const TireRow = ({ name, items, onPreview }) => {
   const scrollRef = useRef(null);
@@ -80,7 +88,7 @@ const TireRow = ({ name, items, onPreview }) => {
         <div className="relative">
           <button
             onClick={() => scroll(-1)}
-            className="flex absolute left-0 md:-left-5 top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-toyota-black text-white shadow-xl items-center justify-center z-10 hover:bg-toyota-red transition-colors"
+            className="flex absolute left-0 md:-left-5 top-[14vw] sm:top-[100px] md:top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-toyota-black text-white shadow-xl items-center justify-center z-10 hover:bg-toyota-red transition-colors"
           >
             <ChevronLeft size={16} className="md:hidden" />
             <ChevronLeft size={18} className="hidden md:block" />
@@ -92,7 +100,7 @@ const TireRow = ({ name, items, onPreview }) => {
           </div>
           <button
             onClick={() => scroll(1)}
-            className="flex absolute right-0 md:-right-5 top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-toyota-black text-white shadow-xl items-center justify-center z-10 hover:bg-toyota-red transition-colors"
+            className="flex absolute right-0 md:-right-5 top-[14vw] sm:top-[100px] md:top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-toyota-black text-white shadow-xl items-center justify-center z-10 hover:bg-toyota-red transition-colors"
           >
             <ChevronRight size={16} className="md:hidden" />
             <ChevronRight size={18} className="hidden md:block" />
