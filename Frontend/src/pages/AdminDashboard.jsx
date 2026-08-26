@@ -1314,9 +1314,11 @@ function AdminForm({ type, presetCategory, token, initialData, onSuccess }) {
     if (Array.isArray(body.images)) {
       body.images = JSON.stringify(body.images);
     }
-    if (Array.isArray(body.variants)) {
+    if (type === 'products' && Array.isArray(body.variants)) {
       const cleanVariants = body.variants.filter(v => v.size?.trim());
       body.variants = cleanVariants.length > 0 ? JSON.stringify(cleanVariants) : null;
+    } else if (type !== 'products') {
+      delete body.variants;
     }
 
     // ЧУХАЛ: Тухайн моделоос хамаарч хэрэггүй талбаруудыг устгах
