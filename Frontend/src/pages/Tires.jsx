@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -19,6 +19,94 @@ const extractDiameter = (size) => {
   return match ? match[1] : null;
 };
 
+const TireCard = ({ tile, idx, onPreview, fixedWidth }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay: Math.min(idx, 10) * 0.04 }}
+    className={`group ${fixedWidth ? 'w-[45vw] sm:w-[220px] md:w-[260px] shrink-0' : ''}`}
+  >
+    <button
+      type="button"
+      onClick={() => onPreview(tile.image || placeholderImage)}
+      className="block w-full text-left"
+    >
+      <div className="aspect-square bg-zinc-50 overflow-hidden relative mb-4 md:mb-6 rounded-sm border border-zinc-100 transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.1)] group-hover:border-toyota-red/30 cursor-zoom-in">
+        <img
+          src={tile.image || placeholderImage}
+          alt={tile.name}
+          className="w-full h-full object-contain p-6 md:p-10 group-hover:scale-105 transition-transform duration-700"
+        />
+
+        {tile.stock === 'Дууссан' && (
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-30">
+            <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[12px] border border-white px-4 py-2">Дууссан</span>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-1">
+        {!fixedWidth && <p className="text-[10px] md:text-xs font-bold text-zinc-400 uppercase tracking-wider line-clamp-1">{tile.name}</p>}
+        {tile.size && <p className="text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-wider">{tile.size}</p>}
+        {tile.purpose && (
+          <p className="text-[9px] md:text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Зориулалт: <span className="text-toyota-red">{tile.purpose}</span></p>
+        )}
+        <div className="flex items-center gap-1.5 pt-1">
+          <span className="text-toyota-black font-black text-lg md:text-2xl tracking-tighter">{formatPrice(tile.price)}</span>
+          <span className="text-toyota-black font-black text-base md:text-xl">₮</span>
+        </div>
+      </div>
+    </button>
+  </motion.div>
+);
+
+const TireRow = ({ name, items, onPreview }) => {
+  const scrollRef = useRef(null);
+  const useCarousel = items.length > 4;
+
+  const scroll = (dir) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: dir * 280, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div>
+      {name && (
+        <h3 className="text-base md:text-xl font-bold text-toyota-black mb-4 md:mb-6 pb-2 border-b border-zinc-100">{name}</h3>
+      )}
+      {useCarousel ? (
+        <div className="relative">
+          <button
+            onClick={() => scroll(-1)}
+            className="hidden md:flex absolute -left-5 top-[35%] -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-zinc-200 shadow-lg items-center justify-center z-10 hover:border-toyota-red hover:text-toyota-red transition-colors"
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <div ref={scrollRef} className="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-2">
+            {items.map((tile, idx) => (
+              <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} fixedWidth />
+            ))}
+          </div>
+          <button
+            onClick={() => scroll(1)}
+            className="hidden md:flex absolute -right-5 top-[35%] -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-zinc-200 shadow-lg items-center justify-center z-10 hover:border-toyota-red hover:text-toyota-red transition-colors"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
+          {items.map((tile, idx) => (
+            <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Tires = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
@@ -26,6 +114,8 @@ const Tires = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeDiameter, setActiveDiameter] = useState('all');
+  const [activePurpose, setActivePurpose] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
@@ -74,23 +164,34 @@ const Tires = () => {
     return [...set].sort((a, b) => Number(a) - Number(b));
   }, [tiles]);
 
-  const filteredTiles = activeDiameter === 'all' ? tiles : tiles.filter(t => extractDiameter(t.size) === activeDiameter);
+  const purposes = useMemo(() => {
+    return [...new Set(tiles.map(t => t.purpose).filter(Boolean))];
+  }, [tiles]);
 
-  // Нэр ижилхэн бол нэг мөрөнд, өөр нэртэй бол доор нь шинэ мөр болгож бүлэглэнэ
+  const filteredTiles = tiles
+    .filter(t => activeDiameter === 'all' || extractDiameter(t.size) === activeDiameter)
+    .filter(t => activePurpose === 'all' || t.purpose === activePurpose)
+    .filter(t => t.name.toLowerCase().includes(searchQuery.toLowerCase()));
+
+  // Хэмжээгээр шүүж байгаа үед нэрээр бүлэглэхгүй, шууд бүгдийг харуулна.
+  // "Бүгд" үед нэр ижилхэн бол нэг мөрөнд, өөр нэртэй бол шинэ мөр болгож бүлэглэнэ
   const groups = useMemo(() => {
+    if (activeDiameter !== 'all') {
+      return filteredTiles.length > 0 ? [{ name: null, items: filteredTiles }] : [];
+    }
     const map = new Map();
     filteredTiles.forEach(tile => {
       if (!map.has(tile.name)) map.set(tile.name, []);
       map.get(tile.name).push(tile);
     });
     return [...map.entries()].map(([name, items]) => ({ name, items }));
-  }, [filteredTiles]);
+  }, [filteredTiles, activeDiameter]);
 
   return (
     <div className="pt-24 md:pt-40 pb-20 bg-white min-h-screen relative overflow-hidden">
       <div className="container-custom px-4 relative z-10">
         {/* Centered Header Section */}
-        <div className="mb-12 md:mb-20 text-center flex flex-col items-center">
+        <div className="mb-12 md:mb-16 text-center flex flex-col items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -116,22 +217,55 @@ const Tires = () => {
         </div>
 
         {!loading && tiles.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12 md:mb-16">
-            <button
-              onClick={() => setActiveDiameter('all')}
-              className={`px-5 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeDiameter === 'all' ? 'bg-toyota-black text-white' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'}`}
-            >
-              Бүгд
-            </button>
-            {diameters.map(d => (
+          <div className="flex flex-col items-center gap-5 mb-12 md:mb-16">
+            <div className="relative w-full max-w-sm">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={14} />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Дугуйн нэрээр хайх..."
+                className="pl-10 pr-6 py-2.5 md:py-3 bg-zinc-50 border border-zinc-200 text-zinc-800 text-xs font-bold outline-none focus:border-toyota-red w-full transition-all rounded-full"
+              />
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-2 md:gap-3">
               <button
-                key={d}
-                onClick={() => setActiveDiameter(d)}
-                className={`px-5 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeDiameter === d ? 'bg-toyota-black text-white' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'}`}
+                onClick={() => setActiveDiameter('all')}
+                className={`px-5 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeDiameter === 'all' ? 'bg-toyota-black text-white' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'}`}
               >
-                Хэмжээ {d}
+                Бүгд
               </button>
-            ))}
+              {diameters.map(d => (
+                <button
+                  key={d}
+                  onClick={() => setActiveDiameter(d)}
+                  className={`px-5 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeDiameter === d ? 'bg-toyota-black text-white' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'}`}
+                >
+                  Хэмжээ {d}
+                </button>
+              ))}
+            </div>
+
+            {purposes.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+                <button
+                  onClick={() => setActivePurpose('all')}
+                  className={`px-5 py-2 rounded-full text-[9px] md:text-[11px] font-bold uppercase tracking-widest transition-all border ${activePurpose === 'all' ? 'bg-toyota-red text-white border-toyota-red' : 'bg-white text-zinc-500 border-zinc-200 hover:border-toyota-red hover:text-toyota-red'}`}
+                >
+                  Бүх зориулалт
+                </button>
+                {purposes.map(p => (
+                  <button
+                    key={p}
+                    onClick={() => setActivePurpose(p)}
+                    className={`px-5 py-2 rounded-full text-[9px] md:text-[11px] font-bold uppercase tracking-widest transition-all border ${activePurpose === p ? 'bg-toyota-red text-white border-toyota-red' : 'bg-white text-zinc-500 border-zinc-200 hover:border-toyota-red hover:text-toyota-red'}`}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -140,60 +274,15 @@ const Tires = () => {
         ) : (
           <div className="space-y-10 md:space-y-14">
             {groups.map((group, gIdx) => (
-              <div key={group.name || gIdx}>
-                {group.name && (
-                  <h3 className="text-base md:text-xl font-bold text-toyota-black mb-4 md:mb-6 pb-2 border-b border-zinc-100">{group.name}</h3>
-                )}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
-                  {group.items.map((tile, idx) => (
-                    <motion.div
-                      key={tile.key}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: Math.min(idx, 10) * 0.04 }}
-                      className="group"
-                    >
-                      <button
-                        type="button"
-                        onClick={() => setPreviewImage(tile.image || placeholderImage)}
-                        className="block w-full text-left"
-                      >
-                        <div className="aspect-square bg-zinc-50 overflow-hidden relative mb-4 md:mb-6 rounded-sm border border-zinc-100 transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.1)] group-hover:border-toyota-red/30 cursor-zoom-in">
-                          <img
-                            src={tile.image || placeholderImage}
-                            alt={tile.name}
-                            className="w-full h-full object-contain p-6 md:p-10 group-hover:scale-105 transition-transform duration-700"
-                          />
-
-                          {tile.stock === 'Дууссан' && (
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-30">
-                              <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[12px] border border-white px-4 py-2">Дууссан</span>
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="space-y-1">
-                          {tile.size && <p className="text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-wider">{tile.size}</p>}
-                          {tile.purpose && (
-                            <p className="text-[9px] md:text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Зориулалт: <span className="text-toyota-red">{tile.purpose}</span></p>
-                          )}
-                          <div className="flex items-center gap-1.5 pt-1">
-                            <span className="text-toyota-black font-black text-lg md:text-2xl tracking-tighter">{formatPrice(tile.price)}</span>
-                            <span className="text-toyota-black font-black text-base md:text-xl">₮</span>
-                          </div>
-                        </div>
-                      </button>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
+              <TireRow key={group.name || gIdx} name={group.name} items={group.items} onPreview={setPreviewImage} />
             ))}
           </div>
         )}
 
-        {tiles.length === 0 && !loading && (
-          <div className="py-20 text-center text-zinc-300 font-bold uppercase tracking-widest border border-dashed border-zinc-200">{t('products.noProducts')}</div>
+        {groups.length === 0 && !loading && (
+          <div className="py-20 text-center text-zinc-300 font-bold uppercase tracking-widest border border-dashed border-zinc-200">
+            {tiles.length === 0 ? t('products.noProducts') : t('products.noResults')}
+          </div>
         )}
       </div>
 
