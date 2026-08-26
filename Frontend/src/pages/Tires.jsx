@@ -184,7 +184,11 @@ const Tires = () => {
       if (!map.has(tile.name)) map.set(tile.name, []);
       map.get(tile.name).push(tile);
     });
-    return [...map.entries()].map(([name, items]) => ({ name, items }));
+    const diameterOf = (tile) => Number(extractDiameter(tile.size)) || 0;
+    const maxDiameter = (items) => Math.max(...items.map(diameterOf));
+    return [...map.entries()]
+      .map(([name, items]) => ({ name, items: [...items].sort((a, b) => diameterOf(b) - diameterOf(a)) }))
+      .sort((a, b) => maxDiameter(b.items) - maxDiameter(a.items));
   }, [filteredTiles, activeDiameter]);
 
   return (
