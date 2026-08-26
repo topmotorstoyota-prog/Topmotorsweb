@@ -29,6 +29,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   useDocumentTitle(product ? loc(product.name, product.nameEn) : null, product ? loc(product.description, product.descriptionEn) : undefined);
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/products`)
@@ -98,6 +99,17 @@ const ProductDetail = () => {
   // Split by comma or any whitespace to handle "265/15R18 265/15R19" properly
   const sizes = product.size ? product.size.split(/[,\s]+/).filter(s => s.trim() !== '') : [];
 
+  const productVariants = (() => {
+    try {
+      const parsed = typeof product.variants === 'string' ? JSON.parse(product.variants || '[]') : (product.variants || []);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  })();
+  const activeVariant = productVariants[selectedVariantIdx] || null;
+  const displayPrice = activeVariant ? activeVariant.price : product.price;
+
   const contactPhone = (product.category === 'Дугуй' || product.category === 'GR Tyres' || product.category === 'Обуд')
     ? '80077772'
     : '77778090';
@@ -157,10 +169,31 @@ const ProductDetail = () => {
 
                 <div className="mb-6 lg:mb-8 bg-zinc-900 p-6 lg:p-8 border-l-4 border-toyota-red shadow-sm">
                   <p className="text-[10px] font-black uppercase text-toyota-red mb-1 lg:mb-2">{t('productDetail.priceLabel')}</p>
-                  <p className="text-3xl lg:text-4xl font-black text-white">₮{formatPrice(product.price)}</p>
+                  <p className="text-3xl lg:text-4xl font-black text-white">₮{formatPrice(displayPrice)}</p>
                 </div>
 
-                {sizes.length > 0 && (
+                {productVariants.length > 0 && (
+                  <div className="mb-6 lg:mb-8">
+                    <p className="text-[10px] font-black uppercase text-zinc-500 mb-3 tracking-widest flex items-center gap-2">
+                      <Layers size={12}/>
+                      {t('productDetail.availableSizes')}
+                    </p>
+                    <div className="flex flex-col gap-2">
+                      {productVariants.map((v, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setSelectedVariantIdx(idx)}
+                          className={`w-full px-4 py-3 text-left text-xs font-black uppercase tracking-wider rounded-sm border transition-all flex justify-between items-center ${selectedVariantIdx === idx ? 'bg-toyota-black border-toyota-black text-white' : 'bg-zinc-900 border-zinc-800 text-zinc-300 hover:border-zinc-600'}`}
+                        >
+                          <span>{v.size}</span>
+                          <span className={selectedVariantIdx === idx ? 'text-white' : 'text-toyota-red'}>₮{formatPrice(v.price)}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {productVariants.length === 0 && sizes.length > 0 && (
                   <div className="mb-6 lg:mb-8">
                     <p className="text-[10px] font-black uppercase text-zinc-500 mb-3 tracking-widest flex items-center gap-2">
                       <Layers size={12}/>

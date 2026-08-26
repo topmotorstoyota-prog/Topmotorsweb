@@ -1243,8 +1243,9 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
   const canManageMerch = userRole === 'SUPER_ADMIN' || userRole === 'ADMIN' || permissions.merch;
   const [formData, setFormData] = useState(initialData ? {
     ...initialData,
-    images: typeof initialData.images === 'string' ? JSON.parse(initialData.images || '[]') : (initialData.images || [])
-  } : { stock: 'Бэлэн байгаа', images: [] });
+    images: typeof initialData.images === 'string' ? JSON.parse(initialData.images || '[]') : (initialData.images || []),
+    variants: typeof initialData.variants === 'string' ? JSON.parse(initialData.variants || '[]') : (initialData.variants || [])
+  } : { stock: 'Бэлэн байгаа', images: [], variants: [] });
   const [uploading, setUploading] = useState(false);
   const [uploadingPdf, setUploadingPdf] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -1300,6 +1301,10 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
     // Stringify images array
     if (Array.isArray(body.images)) {
       body.images = JSON.stringify(body.images);
+    }
+    if (Array.isArray(body.variants)) {
+      const cleanVariants = body.variants.filter(v => v.size?.trim());
+      body.variants = cleanVariants.length > 0 ? JSON.stringify(cleanVariants) : null;
     }
 
     // ЧУХАЛ: Тухайн моделоос хамаарч хэрэггүй талбаруудыг устгах
@@ -1513,7 +1518,7 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
                 </div>
               </>
             )}
-            {type !== 'users' && type !== 'staff' && formData.category !== 'Обуд' && (
+            {type !== 'users' && type !== 'staff' && formData.category !== 'Обуд' && formData.category !== 'Дугуй' && (
                 <div className={type === 'toyota-q' ? 'col-span-2' : ''}>
                   <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Үнэ</label>
                   <input name="price" value={formData.price || ''} onChange={e => setFormData({ ...formData, price: handlePriceInput(e.target.value) })} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold text-toyota-red" />
@@ -1527,7 +1532,7 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
             )}
         </div>
 
-        {type === 'products' && formData.category !== 'Обуд' && (
+        {type === 'products' && formData.category !== 'Обуд' && formData.category !== 'Дугуй' && (
           <div>
             <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">
               Хэмжээ (Size) - Олон бол зай эсвэл таслалаар тусгаарлаарай
@@ -1539,6 +1544,53 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
         {type === 'products' && formData.category === 'Обуд' && (
           <div className="p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-700 text-xs">
             Обуд-ын зурган дээр нэр, үнэ, хэмжээ, тохирох загваруудын мэдээлэл багтсан тул зөвхөн зураг оруулахад хангалттай.
+          </div>
+        )}
+
+        {type === 'products' && formData.category === 'Дугуй' && (
+          <div className="space-y-3">
+            <label className="block text-[10px] font-black uppercase text-zinc-400">Хэмжээ ба үнэ (нэг зурагтай, хэмжээ тус бүр өөр үнэтэй)</label>
+            {(formData.variants || []).map((v, idx) => (
+              <div key={idx} className="flex gap-3 items-center">
+                <input
+                  placeholder="Жишээ: 285/60/R18"
+                  value={v.size || ''}
+                  onChange={e => {
+                    const nv = [...formData.variants];
+                    nv[idx] = { ...nv[idx], size: e.target.value };
+                    setFormData({ ...formData, variants: nv });
+                  }}
+                  className="flex-1 p-4 bg-zinc-50 border rounded-sm font-bold"
+                />
+                <input
+                  placeholder="Үнэ"
+                  value={v.price || ''}
+                  onChange={e => {
+                    const nv = [...formData.variants];
+                    nv[idx] = { ...nv[idx], price: handlePriceInput(e.target.value) };
+                    setFormData({ ...formData, variants: nv });
+                  }}
+                  className="w-40 p-4 bg-zinc-50 border rounded-sm font-bold text-toyota-red"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const nv = formData.variants.filter((_, i) => i !== idx);
+                    setFormData({ ...formData, variants: nv });
+                  }}
+                  className="w-12 h-[52px] flex items-center justify-center bg-zinc-100 text-toyota-red rounded-sm hover:bg-toyota-red hover:text-white transition-all shrink-0"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => setFormData({ ...formData, variants: [...(formData.variants || []), { size: '', price: '' }] })}
+              className="w-full py-3 border-2 border-dashed rounded-sm text-zinc-400 hover:text-toyota-red hover:border-toyota-red transition-all font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2"
+            >
+              <Plus size={14} /> Хэмжээ нэмэх
+            </button>
           </div>
         )}
 

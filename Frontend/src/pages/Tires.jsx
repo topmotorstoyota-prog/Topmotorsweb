@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CircleDot, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
-import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import yokohamaLogo from '../assets/acc/yokohama logo.png';
 import placeholderImage from '../assets/vehicles/hero.jpg';
@@ -15,12 +13,19 @@ const formatPrice = (price) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+// "285/60/R18" эсвэл хуучин "265/65R17" хэлбэрээс радиусын тоог гаргаж авна
+const extractDiameter = (size) => {
+  const match = String(size || '').match(/R\s*(\d+)/i);
+  return match ? match[1] : null;
+};
+
 const Tires = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
   useDocumentTitle('Yokohama дугуй', 'Японы алдарт Yokohama брэндийн бүх төрлийн замын нөхцөлд тохирсон өндөр чанартай дугуйнууд.');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeDiameter, setActiveDiameter] = useState('all');
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/products`)
@@ -33,25 +38,55 @@ const Tires = () => {
       .catch(() => setLoading(false));
   }, []);
 
-  return (
-    <div className="pt-24 md:pt-40 pb-20 bg-black min-h-screen relative overflow-hidden">
-      {/* Background Decorative Text */}
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 text-[80px] md:text-[200px] font-black text-white/[0.02] whitespace-nowrap select-none pointer-events-none uppercase tracking-tighter">
-        Yokohama
-      </div>
+  // Бүтээгдэхүүн бүрийн хэмжээ тус бүрийг тусдаа карт болгож дэлгэнэ
+  const tiles = useMemo(() => {
+    return products.flatMap(item => {
+      const variants = typeof item.variants === 'string' ? JSON.parse(item.variants || '[]') : (item.variants || []);
+      if (variants.length > 0) {
+        return variants.map((v, i) => ({
+          key: `${item.id}-${i}`,
+          productId: item.id,
+          name: loc(item.name, item.nameEn),
+          image: item.image,
+          size: v.size,
+          price: v.price,
+          stock: item.stock
+        }));
+      }
+      // Хуучин өгөгдөл (variants-гүй) - нэг л карт
+      return [{
+        key: `${item.id}`,
+        productId: item.id,
+        name: loc(item.name, item.nameEn),
+        image: item.image,
+        size: item.size,
+        price: item.price,
+        stock: item.stock
+      }];
+    });
+  }, [products, loc]);
 
+  const diameters = useMemo(() => {
+    const set = new Set(tiles.map(t => extractDiameter(t.size)).filter(Boolean));
+    return [...set].sort((a, b) => Number(a) - Number(b));
+  }, [tiles]);
+
+  const filteredTiles = activeDiameter === 'all' ? tiles : tiles.filter(t => extractDiameter(t.size) === activeDiameter);
+
+  return (
+    <div className="pt-24 md:pt-40 pb-20 bg-white min-h-screen relative overflow-hidden">
       <div className="container-custom px-4 relative z-10">
         {/* Centered Header Section */}
-        <div className="mb-16 md:mb-32 text-center flex flex-col items-center">
+        <div className="mb-12 md:mb-20 text-center flex flex-col items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mb-8 h-16 md:h-32"
+              className="mb-8 h-16 md:h-24"
             >
               <img
                 src={yokohamaLogo}
                 alt="Yokohama Tires"
-                className="h-full object-contain brightness-0 invert"
+                className="h-full object-contain"
               />
             </motion.div>
 
@@ -59,7 +94,7 @@ const Tires = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.1 }}
-              className="text-zinc-400 max-w-xl text-sm md:text-lg leading-relaxed font-medium"
+              className="text-zinc-500 max-w-xl text-sm md:text-lg leading-relaxed font-medium"
             >
               {t('products.tires.longDesc')}
             </motion.p>
@@ -67,42 +102,59 @@ const Tires = () => {
             <div className="w-12 h-1 bg-toyota-red mt-10" />
         </div>
 
+        {!loading && tiles.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12 md:mb-16">
+            <button
+              onClick={() => setActiveDiameter('all')}
+              className={`px-5 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeDiameter === 'all' ? 'bg-toyota-black text-white' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'}`}
+            >
+              Бүгд
+            </button>
+            {diameters.map(d => (
+              <button
+                key={d}
+                onClick={() => setActiveDiameter(d)}
+                className={`px-5 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeDiameter === d ? 'bg-toyota-black text-white' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'}`}
+              >
+                Хэмжээ {d}
+              </button>
+            ))}
+          </div>
+        )}
+
         {loading ? (
-          <div className="py-20 text-center font-black uppercase tracking-widest text-zinc-800">{t('vehicles.list.loading')}</div>
+          <div className="py-20 text-center font-black uppercase tracking-widest text-zinc-300">{t('vehicles.list.loading')}</div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
-            {products.map((item, idx) => (
+            {filteredTiles.map((tile, idx) => (
               <motion.div
-                key={item.id}
+                key={tile.key}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.05 }}
+                transition={{ delay: Math.min(idx, 10) * 0.04 }}
                 className="group"
               >
-                <Link to={`/tires/${item.id}`}>
-                  <div className="aspect-square bg-white overflow-hidden relative mb-4 md:mb-6 rounded-none transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.15)] border border-transparent group-hover:border-toyota-red/30">
+                <Link to={`/tires/${tile.productId}`}>
+                  <div className="aspect-square bg-zinc-50 overflow-hidden relative mb-4 md:mb-6 rounded-sm border border-zinc-100 transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.1)] group-hover:border-toyota-red/30">
                     <img
-                      src={item.image || placeholderImage}
-                      alt={loc(item.name, item.nameEn)}
-                      className="w-full h-full object-contain p-4 md:p-8 group-hover:scale-110 transition-transform duration-700 mix-blend-multiply"
+                      src={tile.image || placeholderImage}
+                      alt={tile.name}
+                      className="w-full h-full object-contain p-6 md:p-10 group-hover:scale-105 transition-transform duration-700"
                     />
 
-                    {/* Decorative Corner */}
-                    <div className="absolute top-0 right-0 w-8 h-8 bg-toyota-red translate-x-4 -translate-y-4 rotate-45 transition-transform group-hover:translate-x-3 group-hover:-translate-y-3" />
-
-                    {item.stock === 'Дууссан' && (
+                    {tile.stock === 'Дууссан' && (
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-30">
                         <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[12px] border border-white px-4 py-2">Дууссан</span>
                       </div>
                     )}
                   </div>
 
-                  <div className="mt-4 space-y-2">
-                    <h4 className="font-medium uppercase text-[10px] md:text-xs tracking-[0.15em] text-zinc-400 group-hover:text-white transition-colors line-clamp-1">{loc(item.name, item.nameEn)}</h4>
+                  <div className="space-y-1.5">
+                    <h4 className="font-black uppercase text-[11px] md:text-sm tracking-tight text-toyota-black line-clamp-1">{tile.size || tile.name}</h4>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-white font-black text-lg md:text-2xl tracking-tighter">{formatPrice(item.price)}</span>
-                      <span className="text-white font-black text-base md:text-xl">₮</span>
+                      <span className="text-toyota-black font-black text-lg md:text-2xl tracking-tighter">{formatPrice(tile.price)}</span>
+                      <span className="text-toyota-black font-black text-base md:text-xl">₮</span>
                     </div>
                   </div>
                 </Link>
@@ -111,8 +163,8 @@ const Tires = () => {
           </div>
         )}
 
-        {products.length === 0 && !loading && (
-          <div className="py-20 text-center text-zinc-800 font-bold uppercase tracking-widest border border-dashed border-zinc-900">{t('products.noProducts')}</div>
+        {tiles.length === 0 && !loading && (
+          <div className="py-20 text-center text-zinc-300 font-bold uppercase tracking-widest border border-dashed border-zinc-200">{t('products.noProducts')}</div>
         )}
       </div>
     </div>
