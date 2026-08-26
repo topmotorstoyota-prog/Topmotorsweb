@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -26,6 +26,7 @@ const Tires = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeDiameter, setActiveDiameter] = useState('all');
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/products`)
@@ -135,8 +136,12 @@ const Tires = () => {
                 transition={{ delay: Math.min(idx, 10) * 0.04 }}
                 className="group"
               >
-                <Link to={`/tires/${tile.productId}`}>
-                  <div className="aspect-square bg-zinc-50 overflow-hidden relative mb-4 md:mb-6 rounded-sm border border-zinc-100 transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.1)] group-hover:border-toyota-red/30">
+                <button
+                  type="button"
+                  onClick={() => setPreviewImage(tile.image || placeholderImage)}
+                  className="block w-full text-left"
+                >
+                  <div className="aspect-square bg-zinc-50 overflow-hidden relative mb-4 md:mb-6 rounded-sm border border-zinc-100 transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.1)] group-hover:border-toyota-red/30 cursor-zoom-in">
                     <img
                       src={tile.image || placeholderImage}
                       alt={tile.name}
@@ -157,7 +162,7 @@ const Tires = () => {
                       <span className="text-toyota-black font-black text-base md:text-xl">₮</span>
                     </div>
                   </div>
-                </Link>
+                </button>
               </motion.div>
             ))}
           </div>
@@ -167,6 +172,34 @@ const Tires = () => {
           <div className="py-20 text-center text-zinc-300 font-bold uppercase tracking-widest border border-dashed border-zinc-200">{t('products.noProducts')}</div>
         )}
       </div>
+
+      <AnimatePresence>
+        {previewImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setPreviewImage(null)}
+            className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] flex items-center justify-center p-4 md:p-10 cursor-zoom-out"
+          >
+            <button
+              onClick={() => setPreviewImage(null)}
+              className="fixed top-6 right-6 text-white p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-10"
+            >
+              <X size={28} />
+            </button>
+            <motion.img
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              src={previewImage}
+              alt="Preview"
+              onClick={(e) => e.stopPropagation()}
+              className="max-w-full max-h-full object-contain cursor-default"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
