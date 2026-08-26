@@ -15,7 +15,7 @@ const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  const isDarkPage = ['/products', '/wheels', '/tires', '/merch'].includes(location.pathname) ||
+  const isDarkPage = ['/products', '/wheels', '/merch'].includes(location.pathname) ||
                    location.pathname.startsWith('/products/') ||
                    location.pathname.startsWith('/wheels/') ||
                    location.pathname.startsWith('/tires/') ||

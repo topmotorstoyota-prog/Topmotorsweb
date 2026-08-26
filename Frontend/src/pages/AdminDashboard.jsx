@@ -9,8 +9,13 @@ import {
 import API_BASE_URL from '../config';
 import logo from '../assets/home/logo-1.png';
 
-const TAB_ORDER = ['vehicles', 'news', 'products', 'toyota-q', 'home-banner', 'staff', 'sales-bookings', 'service-bookings'];
-const apiPath = (tab) => (tab === 'sales-bookings' || tab === 'service-bookings') ? 'bookings' : tab;
+const TAB_ORDER = ['vehicles', 'news', 'tires', 'wheels', 'merch', 'toyota-q', 'home-banner', 'staff', 'sales-bookings', 'service-bookings'];
+const PRODUCT_CATEGORY = { tires: 'Дугуй', wheels: 'Обуд', merch: 'GR Merch' };
+const apiPath = (tab) => {
+  if (tab === 'sales-bookings' || tab === 'service-bookings') return 'bookings';
+  if (PRODUCT_CATEGORY[tab]) return 'products';
+  return tab;
+};
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -20,7 +25,8 @@ export default function AdminDashboard() {
 
   const hasTabAccess = (tab) => {
     if (userRole === 'SUPER_ADMIN' || userRole === 'ADMIN') return true;
-    if (tab === 'products') return permissions['wheels-tires'] || permissions.merch;
+    if (tab === 'tires' || tab === 'wheels') return permissions['wheels-tires'];
+    if (tab === 'merch') return permissions.merch;
     return permissions[tab];
   };
 
@@ -42,7 +48,11 @@ export default function AdminDashboard() {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
-      setItems(Array.isArray(data) ? data : []);
+      let arr = Array.isArray(data) ? data : [];
+      if (PRODUCT_CATEGORY[activeTab]) {
+        arr = arr.filter(p => p.category === PRODUCT_CATEGORY[activeTab]);
+      }
+      setItems(arr);
     } catch (err) { console.error(err); }
   };
 
@@ -76,7 +86,9 @@ export default function AdminDashboard() {
   const tabIcons = {
     vehicles: <Car size={18} />,
     news: <Newspaper size={18} />,
-    products: <Package size={18} />,
+    tires: <Box size={18} />,
+    wheels: <Layers size={18} />,
+    merch: <Package size={18} />,
     'toyota-q': <LayoutDashboard size={18} />,
     'home-banner': <ImageIcon size={18} />,
     staff: <Users size={18} />,
@@ -89,7 +101,9 @@ export default function AdminDashboard() {
   const tabLabels = {
     vehicles: 'Загварууд',
     news: 'Мэдээ мэдээлэл',
-    products: 'Бүтээгдэхүүн',
+    tires: 'Дугуй',
+    wheels: 'Обуд',
+    merch: 'GR Merch',
     'toyota-q': 'Toyota-Q',
     'home-banner': 'Нүүр хуудас',
     staff: 'Борлуулалтын ажилчид',
@@ -160,7 +174,7 @@ export default function AdminDashboard() {
                     ) : activeTab === 'users' ? (
                       <UserAdminForm key={editingItem?.id || 'new'} token={token} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
                     ) : (
-                      <AdminForm key={`${activeTab}-${editingItem?.id || 'new'}`} type={apiPath(activeTab)} token={token} userRole={userRole} permissions={permissions} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
+                      <AdminForm key={`${activeTab}-${editingItem?.id || 'new'}`} type={apiPath(activeTab)} presetCategory={PRODUCT_CATEGORY[activeTab]} token={token} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
                     )}
                   </div>
                 </div>
@@ -359,7 +373,7 @@ export default function AdminDashboard() {
                               ) :
                                activeTab === 'toyota-q' ? `${item.year} / ${item.mileage} км` :
                                activeTab === 'news' ? item.date :
-                               activeTab === 'products' ? (
+                               PRODUCT_CATEGORY[activeTab] ? (
                                  <div className="flex flex-col gap-1">
                                    <span>{item.price ? `₮${formatPriceDisplay(item.price)}` : '-'}</span>
                                    <span className={`text-[9px] px-2 py-0.5 rounded-full inline-block ${
@@ -1238,14 +1252,12 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
   );
 }
 
-function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuccess }) {
-  const canManageWheelsTires = userRole === 'SUPER_ADMIN' || userRole === 'ADMIN' || permissions['wheels-tires'];
-  const canManageMerch = userRole === 'SUPER_ADMIN' || userRole === 'ADMIN' || permissions.merch;
+function AdminForm({ type, presetCategory, token, initialData, onSuccess }) {
   const [formData, setFormData] = useState(initialData ? {
     ...initialData,
     images: typeof initialData.images === 'string' ? JSON.parse(initialData.images || '[]') : (initialData.images || []),
     variants: typeof initialData.variants === 'string' ? JSON.parse(initialData.variants || '[]') : (initialData.variants || [])
-  } : { stock: 'Бэлэн байгаа', images: [], variants: [] });
+  } : { stock: 'Бэлэн байгаа', images: [], variants: [], category: presetCategory || '' });
   const [uploading, setUploading] = useState(false);
   const [uploadingPdf, setUploadingPdf] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -1507,8 +1519,10 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
         <div className="grid grid-cols-2 gap-4">
             {type !== 'toyota-q' && type !== 'users' && type !== 'staff' && (
               <>
-                <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Ангилал</label>{type === 'products' ? <select name="category" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold"><option value="">Сонгох</option>{canManageWheelsTires && <option value="Обуд">Обуд</option>}{canManageWheelsTires && <option value="Дугуй">Дугуй</option>}{canManageMerch && <option value="GR Merch">GR Merch</option>}</select> : <input name="category" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" />}</div>
-                <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Үлдэгдэл / Төлөв</label>
+                {type !== 'products' && (
+                  <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Ангилал</label><input name="category" value={formData.category || ''} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" /></div>
+                )}
+                <div className={type === 'products' ? 'col-span-2' : ''}><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Үлдэгдэл / Төлөв</label>
                   <select name="stock" value={formData.stock || 'Бэлэн байгаа'} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold">
                     <option value="Бэлэн байгаа">Бэлэн байгаа</option>
                     <option value="Дууссан">Дууссан</option>
