@@ -1562,6 +1562,18 @@ function AdminForm({ type, presetCategory, token, initialData, onSuccess }) {
         )}
 
         {type === 'products' && formData.category === 'Дугуй' && (
+          <div>
+            <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Зориулалт</label>
+            <select name="purpose" value={formData.purpose || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold">
+              <option value="">Сонгоогүй</option>
+              <option value="Зун">Зун</option>
+              <option value="Өвөл">Өвөл</option>
+              <option value="Бүх улирал">Бүх улирал</option>
+            </select>
+          </div>
+        )}
+
+        {type === 'products' && formData.category === 'Дугуй' && (
           <div className="space-y-3">
             <label className="block text-[10px] font-black uppercase text-zinc-400">Хэмжээ ба үнэ (нэг зурагтай, хэмжээ тус бүр өөр үнэтэй)</label>
             {(formData.variants || []).map((v, idx) => (

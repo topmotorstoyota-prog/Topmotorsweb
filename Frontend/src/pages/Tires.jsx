@@ -51,6 +51,7 @@ const Tires = () => {
           image: item.image,
           size: v.size,
           price: v.price,
+          purpose: item.purpose,
           stock: item.stock
         }));
       }
@@ -62,6 +63,7 @@ const Tires = () => {
         image: item.image,
         size: item.size,
         price: item.price,
+        purpose: item.purpose,
         stock: item.stock
       }];
     });
@@ -155,9 +157,13 @@ const Tires = () => {
                     )}
                   </div>
 
-                  <div className="space-y-1.5">
-                    <h4 className="font-black uppercase text-[11px] md:text-sm tracking-tight text-toyota-black line-clamp-1">{tile.size || tile.name}</h4>
-                    <div className="flex items-center gap-1.5">
+                  <div className="space-y-1">
+                    <h4 className="font-black uppercase text-[11px] md:text-sm tracking-tight text-toyota-black line-clamp-1">{tile.name}</h4>
+                    {tile.size && <p className="text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-wider">{tile.size}</p>}
+                    {tile.purpose && (
+                      <p className="text-[9px] md:text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Зориулалт: <span className="text-toyota-red">{tile.purpose}</span></p>
+                    )}
+                    <div className="flex items-center gap-1.5 pt-1">
                       <span className="text-toyota-black font-black text-lg md:text-2xl tracking-tighter">{formatPrice(tile.price)}</span>
                       <span className="text-toyota-black font-black text-base md:text-xl">₮</span>
                     </div>
