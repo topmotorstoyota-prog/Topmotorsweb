@@ -76,6 +76,16 @@ const Tires = () => {
 
   const filteredTiles = activeDiameter === 'all' ? tiles : tiles.filter(t => extractDiameter(t.size) === activeDiameter);
 
+  // Нэр ижилхэн бол нэг мөрөнд, өөр нэртэй бол доор нь шинэ мөр болгож бүлэглэнэ
+  const groups = useMemo(() => {
+    const map = new Map();
+    filteredTiles.forEach(tile => {
+      if (!map.has(tile.name)) map.set(tile.name, []);
+      map.get(tile.name).push(tile);
+    });
+    return [...map.entries()].map(([name, items]) => ({ name, items }));
+  }, [filteredTiles]);
+
   return (
     <div className="pt-24 md:pt-40 pb-20 bg-white min-h-screen relative overflow-hidden">
       <div className="container-custom px-4 relative z-10">
@@ -128,48 +138,56 @@ const Tires = () => {
         {loading ? (
           <div className="py-20 text-center font-black uppercase tracking-widest text-zinc-300">{t('vehicles.list.loading')}</div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
-            {filteredTiles.map((tile, idx) => (
-              <motion.div
-                key={tile.key}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: Math.min(idx, 10) * 0.04 }}
-                className="group"
-              >
-                <button
-                  type="button"
-                  onClick={() => setPreviewImage(tile.image || placeholderImage)}
-                  className="block w-full text-left"
-                >
-                  <div className="aspect-square bg-zinc-50 overflow-hidden relative mb-4 md:mb-6 rounded-sm border border-zinc-100 transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.1)] group-hover:border-toyota-red/30 cursor-zoom-in">
-                    <img
-                      src={tile.image || placeholderImage}
-                      alt={tile.name}
-                      className="w-full h-full object-contain p-6 md:p-10 group-hover:scale-105 transition-transform duration-700"
-                    />
+          <div className="space-y-10 md:space-y-14">
+            {groups.map((group, gIdx) => (
+              <div key={group.name || gIdx}>
+                {group.name && (
+                  <h3 className="text-base md:text-xl font-bold text-toyota-black mb-4 md:mb-6 pb-2 border-b border-zinc-100">{group.name}</h3>
+                )}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
+                  {group.items.map((tile, idx) => (
+                    <motion.div
+                      key={tile.key}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: Math.min(idx, 10) * 0.04 }}
+                      className="group"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setPreviewImage(tile.image || placeholderImage)}
+                        className="block w-full text-left"
+                      >
+                        <div className="aspect-square bg-zinc-50 overflow-hidden relative mb-4 md:mb-6 rounded-sm border border-zinc-100 transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.1)] group-hover:border-toyota-red/30 cursor-zoom-in">
+                          <img
+                            src={tile.image || placeholderImage}
+                            alt={tile.name}
+                            className="w-full h-full object-contain p-6 md:p-10 group-hover:scale-105 transition-transform duration-700"
+                          />
 
-                    {tile.stock === 'Дууссан' && (
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-30">
-                        <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[12px] border border-white px-4 py-2">Дууссан</span>
-                      </div>
-                    )}
-                  </div>
+                          {tile.stock === 'Дууссан' && (
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-30">
+                              <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[12px] border border-white px-4 py-2">Дууссан</span>
+                            </div>
+                          )}
+                        </div>
 
-                  <div className="space-y-1">
-                    <h4 className="font-black uppercase text-[11px] md:text-sm tracking-tight text-toyota-black line-clamp-1">{tile.name}</h4>
-                    {tile.size && <p className="text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-wider">{tile.size}</p>}
-                    {tile.purpose && (
-                      <p className="text-[9px] md:text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Зориулалт: <span className="text-toyota-red">{tile.purpose}</span></p>
-                    )}
-                    <div className="flex items-center gap-1.5 pt-1">
-                      <span className="text-toyota-black font-black text-lg md:text-2xl tracking-tighter">{formatPrice(tile.price)}</span>
-                      <span className="text-toyota-black font-black text-base md:text-xl">₮</span>
-                    </div>
-                  </div>
-                </button>
-              </motion.div>
+                        <div className="space-y-1">
+                          {tile.size && <p className="text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-wider">{tile.size}</p>}
+                          {tile.purpose && (
+                            <p className="text-[9px] md:text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Зориулалт: <span className="text-toyota-red">{tile.purpose}</span></p>
+                          )}
+                          <div className="flex items-center gap-1.5 pt-1">
+                            <span className="text-toyota-black font-black text-lg md:text-2xl tracking-tighter">{formatPrice(tile.price)}</span>
+                            <span className="text-toyota-black font-black text-base md:text-xl">₮</span>
+                          </div>
+                        </div>
+                      </button>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}
