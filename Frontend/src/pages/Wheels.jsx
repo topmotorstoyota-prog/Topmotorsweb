@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Disc, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -16,6 +15,7 @@ const Wheels = () => {
   useDocumentTitle('BRAID обуд', 'Бартаат замын уралдааны дэлхийн шилдэг BRAID брэндийн хөнгөн цагаан хайлшин обуднууд.');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/products`)
@@ -75,8 +75,12 @@ const Wheels = () => {
                 transition={{ delay: idx * 0.05 }}
                 className="group"
               >
-                <Link to={`/wheels/${item.id}`}>
-                  <div className="aspect-square bg-white overflow-hidden relative rounded-none transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.15)] border border-transparent group-hover:border-toyota-red/30">
+                <button
+                  type="button"
+                  onClick={() => setPreviewImage(item.image || placeholderImage)}
+                  className="block w-full text-left"
+                >
+                  <div className="aspect-square bg-white overflow-hidden relative rounded-none transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.15)] border border-transparent group-hover:border-toyota-red/30 cursor-zoom-in">
                     <img
                       src={item.image || placeholderImage}
                       alt={loc(item.name, item.nameEn)}
@@ -89,7 +93,7 @@ const Wheels = () => {
                       </div>
                     )}
                   </div>
-                </Link>
+                </button>
               </motion.div>
             ))}
           </div>
@@ -99,6 +103,34 @@ const Wheels = () => {
           <div className="py-20 text-center text-zinc-800 font-bold uppercase tracking-widest border border-dashed border-zinc-900">{t('products.noProducts')}</div>
         )}
       </div>
+
+      <AnimatePresence>
+        {previewImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setPreviewImage(null)}
+            className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] flex items-center justify-center p-4 md:p-10 cursor-zoom-out"
+          >
+            <button
+              onClick={() => setPreviewImage(null)}
+              className="fixed top-6 right-6 text-white p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-10"
+            >
+              <X size={28} />
+            </button>
+            <motion.img
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              src={previewImage}
+              alt="Preview"
+              onClick={(e) => e.stopPropagation()}
+              className="max-w-full max-h-full object-contain cursor-default"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

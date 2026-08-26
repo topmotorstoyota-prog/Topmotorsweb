@@ -1341,6 +1341,9 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
         delete body.name;
     } else if (type === 'products') {
         // Keep stock, category, price, and images
+        if (body.category === 'Обуд' && !body.name?.trim()) {
+          body.name = `Обуд ${Date.now()}`;
+        }
     } else {
         delete body.images;
     }
@@ -1482,8 +1485,12 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
         </div>
       )}
       <div className="space-y-4">
-        <label className="block text-[10px] font-black uppercase text-zinc-400">Нэр</label>
-        <input name="name" value={formData.name || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" required />
+        {formData.category !== 'Обуд' && (
+          <>
+            <label className="block text-[10px] font-black uppercase text-zinc-400">Нэр</label>
+            <input name="name" value={formData.name || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" required />
+          </>
+        )}
 
         {type !== 'staff' && formData.category !== 'Обуд' && (
           <>
@@ -1531,7 +1538,7 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
 
         {type === 'products' && formData.category === 'Обуд' && (
           <div className="p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-700 text-xs">
-            Обуд-ын зурган дээр үнэ, хэмжээ, тохирох загваруудын мэдээлэл багтсан тул зөвхөн нэр, зураг оруулахад хангалттай.
+            Обуд-ын зурган дээр нэр, үнэ, хэмжээ, тохирох загваруудын мэдээлэл багтсан тул зөвхөн зураг оруулахад хангалттай.
           </div>
         )}
 
