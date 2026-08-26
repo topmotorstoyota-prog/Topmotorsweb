@@ -35,19 +35,12 @@ const Wheels = () => {
       </div>
 
       <div className="container-custom px-4 relative z-10">
-        <div className="flex justify-center mb-6 md:mb-8">
-          <a href="tel:+97680077772" className="inline-flex items-center gap-1.5 text-[10px] md:text-xs font-bold text-zinc-500 hover:text-toyota-red transition-colors uppercase tracking-wider">
-            <Phone size={12} />
-            Борлуулалтын зөвлөхтэй холбогдох: 8007 7772
-          </a>
-        </div>
-
         {/* Centered Header Section */}
         <div className="mb-16 md:mb-32 text-center flex flex-col items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mb-8 h-16 md:h-32"
+              className="mb-6 h-16 md:h-32"
             >
               <img
                 src={braidLogo}
@@ -55,6 +48,14 @@ const Wheels = () => {
                 className="h-full object-contain brightness-0 invert"
               />
             </motion.div>
+
+            <a
+              href="tel:+97680077772"
+              className="inline-flex items-center gap-2 bg-toyota-red text-white font-black text-[11px] md:text-xs uppercase tracking-widest px-6 py-3 rounded-full shadow-lg shadow-toyota-red/20 hover:bg-white hover:text-toyota-black transition-colors mb-8"
+            >
+              <Phone size={14} />
+              Борлуулалтын зөвлөхтэй холбогдох: 8007 7772
+            </a>
 
             <motion.p
               initial={{ opacity: 0 }}

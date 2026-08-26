@@ -60,6 +60,13 @@
       "titleRed": "News",
       "viewAll": "View All News"
     },
+    "products": {
+      "titlePlain": "Our",
+      "titleRed": "Products",
+      "tires": "Tires",
+      "wheels": "Wheels",
+      "merch": "GR Merch"
+    },
     "service": {
       "title": "Professional Support",
       "desc": "Keep your Toyota feeling new with professional diagnostic support.",

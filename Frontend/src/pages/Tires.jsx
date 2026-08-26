@@ -85,7 +85,7 @@ const TireRow = ({ name, items, onPreview }) => {
             <ChevronLeft size={16} className="md:hidden" />
             <ChevronLeft size={18} className="hidden md:block" />
           </button>
-          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-2 px-10 md:px-0 -mx-10 md:mx-0 touch-pan-x">
+          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-proximity pb-2 px-10 md:px-0 -mx-10 md:mx-0 touch-pan-x">
             {items.map((tile, idx) => (
               <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} fixedWidth />
             ))}
@@ -195,19 +195,12 @@ const Tires = () => {
   return (
     <div className="pt-24 md:pt-40 pb-20 bg-white min-h-screen relative overflow-hidden">
       <div className="container-custom px-4 relative z-10">
-        <div className="flex justify-center mb-6 md:mb-8">
-          <a href="tel:+97680077772" className="inline-flex items-center gap-1.5 text-[10px] md:text-xs font-bold text-zinc-400 hover:text-toyota-red transition-colors uppercase tracking-wider">
-            <Phone size={12} />
-            Борлуулалтын зөвлөхтэй холбогдох: 8007 7772
-          </a>
-        </div>
-
         {/* Centered Header Section */}
         <div className="mb-12 md:mb-16 text-center flex flex-col items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mb-8 h-16 md:h-24"
+              className="mb-6 h-16 md:h-24"
             >
               <img
                 src={yokohamaLogo}
@@ -215,6 +208,14 @@ const Tires = () => {
                 className="h-full object-contain"
               />
             </motion.div>
+
+            <a
+              href="tel:+97680077772"
+              className="inline-flex items-center gap-2 bg-toyota-red text-white font-black text-[11px] md:text-xs uppercase tracking-widest px-6 py-3 rounded-full shadow-lg shadow-toyota-red/20 hover:bg-toyota-black transition-colors mb-8"
+            >
+              <Phone size={14} />
+              Борлуулалтын зөвлөхтэй холбогдох: 8007 7772
+            </a>
 
             <motion.p
               initial={{ opacity: 0 }}

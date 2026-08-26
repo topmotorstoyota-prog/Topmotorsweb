@@ -14,6 +14,9 @@ import background3 from '../assets/home/background-3.jpg';
 import serviceImage from '../assets/home/service.jpg';
 import chiglelImage from '../assets/home/top.jpg';
 import placeholderImage from '../assets/vehicles/hero.jpg';
+import tiresImage from '../assets/acc/yokohama gallery.png';
+import wheelsImage from '../assets/acc/Braid Gallery.jpg';
+import merchImage from '../assets/acc/GR Gallery.webp';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -222,6 +225,35 @@ const Home = () => {
                   </div>
                   <span className="text-zinc-400 text-[6px] md:text-xs font-medium uppercase tracking-widest">{news.date}</span>
                   <h3 className="text-[9px] md:text-xl font-bold mt-1 group-hover:text-toyota-red transition-colors line-clamp-2 uppercase tracking-tight leading-tight h-7 md:h-auto">{loc(news.title, news.titleEn)}</h3>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Product Categories Section */}
+      <section className="py-12 md:py-24 bg-white border-t border-zinc-100">
+        <div className="container-custom px-4 md:px-0">
+          <div className="mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tight mt-2">{t('home.products.titlePlain')} <span className="text-toyota-red">{t('home.products.titleRed')}</span></h2>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 md:gap-8">
+            {[
+              { to: '/tires', image: tiresImage, label: t('home.products.tires') },
+              { to: '/wheels', image: wheelsImage, label: t('home.products.wheels') },
+              { to: '/merch', image: merchImage, label: t('home.products.merch') }
+            ].map((item, idx) => (
+              <motion.div key={item.to} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="group">
+                <Link to={item.to}>
+                  <div className="relative aspect-square overflow-hidden mb-2 md:mb-6 bg-zinc-100">
+                    <img src={item.image} alt={item.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  </div>
+                  <h3 className="text-[9px] md:text-xl font-bold uppercase tracking-tight group-hover:text-toyota-red transition-colors flex items-center justify-center md:justify-start gap-1 text-center md:text-left">
+                    {item.label}
+                    <ArrowRight className="hidden md:inline group-hover:translate-x-1 transition-transform" size={16} />
+                  </h3>
                 </Link>
               </motion.div>
             ))}
