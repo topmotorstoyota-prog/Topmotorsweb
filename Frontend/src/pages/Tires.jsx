@@ -25,18 +25,18 @@ const TireCard = ({ tile, idx, onPreview, fixedWidth }) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay: Math.min(idx, 10) * 0.04 }}
-    className={`group ${fixedWidth ? 'w-[45vw] sm:w-[220px] md:w-[260px] shrink-0' : ''}`}
+    className={`group ${fixedWidth ? 'w-[29vw] sm:w-[200px] md:w-[260px] shrink-0' : ''}`}
   >
     <button
       type="button"
       onClick={() => onPreview(tile.image || placeholderImage)}
       className="block w-full text-left"
     >
-      <div className="aspect-square bg-zinc-50 overflow-hidden relative mb-4 md:mb-6 rounded-sm border border-zinc-100 transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.1)] group-hover:border-toyota-red/30 cursor-zoom-in">
+      <div className="aspect-square bg-zinc-50 overflow-hidden relative mb-2 md:mb-6 rounded-sm border border-zinc-100 transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(235,10,30,0.1)] group-hover:border-toyota-red/30 cursor-zoom-in">
         <img
           src={tile.image || placeholderImage}
           alt={tile.name}
-          className="w-full h-full object-contain p-6 md:p-10 group-hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-contain p-2 md:p-10 group-hover:scale-105 transition-transform duration-700"
         />
 
         {tile.stock === 'Дууссан' && (
@@ -80,24 +80,26 @@ const TireRow = ({ name, items, onPreview }) => {
         <div className="relative">
           <button
             onClick={() => scroll(-1)}
-            className="hidden md:flex absolute -left-5 top-[35%] -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-zinc-200 shadow-lg items-center justify-center z-10 hover:border-toyota-red hover:text-toyota-red transition-colors"
+            className="flex absolute -left-2 md:-left-5 top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white border border-zinc-200 shadow-lg items-center justify-center z-10 hover:border-toyota-red hover:text-toyota-red transition-colors"
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={16} className="md:hidden" />
+            <ChevronLeft size={18} className="hidden md:block" />
           </button>
-          <div ref={scrollRef} className="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-2">
+          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-2">
             {items.map((tile, idx) => (
               <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} fixedWidth />
             ))}
           </div>
           <button
             onClick={() => scroll(1)}
-            className="hidden md:flex absolute -right-5 top-[35%] -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-zinc-200 shadow-lg items-center justify-center z-10 hover:border-toyota-red hover:text-toyota-red transition-colors"
+            className="flex absolute -right-2 md:-right-5 top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white border border-zinc-200 shadow-lg items-center justify-center z-10 hover:border-toyota-red hover:text-toyota-red transition-colors"
           >
-            <ChevronRight size={18} />
+            <ChevronRight size={16} className="md:hidden" />
+            <ChevronRight size={18} className="hidden md:block" />
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-10">
           {items.map((tile, idx) => (
             <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} />
           ))}
