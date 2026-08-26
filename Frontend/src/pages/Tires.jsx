@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Search, ChevronLeft, ChevronRight, Phone } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import yokohamaLogo from '../assets/acc/yokohama logo.png';
 import placeholderImage from '../assets/vehicles/hero.jpg';
@@ -25,7 +26,7 @@ const TireCard = ({ tile, idx, onPreview, fixedWidth }) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay: Math.min(idx, 10) * 0.04 }}
-    className={`group ${fixedWidth ? 'w-[29vw] sm:w-[200px] md:w-[260px] shrink-0' : ''}`}
+    className={`group ${fixedWidth ? 'w-[29vw] sm:w-[200px] md:w-[260px] shrink-0 snap-start' : ''}`}
   >
     <button
       type="button"
@@ -85,7 +86,7 @@ const TireRow = ({ name, items, onPreview }) => {
             <ChevronLeft size={16} className="md:hidden" />
             <ChevronLeft size={18} className="hidden md:block" />
           </button>
-          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-2 px-10 md:px-0 -mx-10 md:mx-0">
+          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-2 px-10 md:px-0 -mx-10 md:mx-0">
             {items.map((tile, idx) => (
               <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} fixedWidth />
             ))}
@@ -213,7 +214,7 @@ const Tires = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.1 }}
-              className="text-zinc-500 max-w-xl text-sm md:text-lg leading-relaxed font-medium"
+              className="hidden md:block text-zinc-500 max-w-xl text-sm md:text-lg leading-relaxed font-medium"
             >
               {t('products.tires.longDesc')}
             </motion.p>
@@ -290,6 +291,26 @@ const Tires = () => {
           </div>
         )}
       </div>
+
+      {/* Bottom CTA */}
+      <section className="border-t border-zinc-100 py-16 md:py-24 mt-12 md:mt-20">
+        <div className="container-custom px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 text-center md:text-left">
+            <div className="max-w-xl">
+              <h3 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-4 text-toyota-black leading-[1.1]">
+                Борлуулалтын <span className="text-toyota-red">зөвлөхтэй холбогдох</span>
+              </h3>
+              <p className="text-zinc-500 text-sm md:text-base leading-relaxed">Дугуй сонголт, хэмжээ тохирохын талаар зөвлөгөө авахыг хүсвэл бидэнтэй утсаар холбогдоно уу.</p>
+            </div>
+            <a href="tel:+97680077772" className="w-full md:w-auto shrink-0">
+              <Button variant="primary" className="w-full md:w-auto px-10 py-4 md:py-5 flex items-center justify-center gap-3 text-[10px] md:text-xs">
+                <Phone size={16} />
+                <span>8007 7772</span>
+              </Button>
+            </a>
+          </div>
+        </div>
+      </section>
 
       <AnimatePresence>
         {previewImage && (
