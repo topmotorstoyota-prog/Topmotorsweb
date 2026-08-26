@@ -225,6 +225,9 @@ const Home = () => {
                   </div>
                   <span className="text-zinc-400 text-[6px] md:text-xs font-medium uppercase tracking-widest">{news.date}</span>
                   <h3 className="text-[9px] md:text-xl font-bold mt-1 group-hover:text-toyota-red transition-colors line-clamp-2 uppercase tracking-tight leading-tight h-7 md:h-auto">{loc(news.title, news.titleEn)}</h3>
+                  {news.excerpt && (
+                    <p className="text-zinc-500 text-[7px] md:text-sm mt-1 md:mt-2 line-clamp-1 md:line-clamp-2 leading-snug">{loc(news.excerpt, news.excerptEn)}</p>
+                  )}
                 </Link>
               </motion.div>
             ))}
