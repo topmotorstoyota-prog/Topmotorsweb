@@ -80,19 +80,19 @@ const TireRow = ({ name, items, onPreview }) => {
         <div className="relative">
           <button
             onClick={() => scroll(-1)}
-            className="flex absolute -left-2 md:-left-5 top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white border border-zinc-200 shadow-lg items-center justify-center z-10 hover:border-toyota-red hover:text-toyota-red transition-colors"
+            className="flex absolute left-0 md:-left-5 top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-toyota-black text-white shadow-xl items-center justify-center z-10 hover:bg-toyota-red transition-colors"
           >
             <ChevronLeft size={16} className="md:hidden" />
             <ChevronLeft size={18} className="hidden md:block" />
           </button>
-          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-2">
+          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-2 px-10 md:px-0 -mx-10 md:mx-0">
             {items.map((tile, idx) => (
               <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} fixedWidth />
             ))}
           </div>
           <button
             onClick={() => scroll(1)}
-            className="flex absolute -right-2 md:-right-5 top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white border border-zinc-200 shadow-lg items-center justify-center z-10 hover:border-toyota-red hover:text-toyota-red transition-colors"
+            className="flex absolute right-0 md:-right-5 top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-toyota-black text-white shadow-xl items-center justify-center z-10 hover:bg-toyota-red transition-colors"
           >
             <ChevronRight size={16} className="md:hidden" />
             <ChevronRight size={18} className="hidden md:block" />
@@ -187,10 +187,9 @@ const Tires = () => {
       map.get(tile.name).push(tile);
     });
     const diameterOf = (tile) => Number(extractDiameter(tile.size)) || 0;
-    const maxDiameter = (items) => Math.max(...items.map(diameterOf));
     return [...map.entries()]
       .map(([name, items]) => ({ name, items: [...items].sort((a, b) => diameterOf(b) - diameterOf(a)) }))
-      .sort((a, b) => maxDiameter(b.items) - maxDiameter(a.items));
+      .sort((a, b) => b.items.length - a.items.length);
   }, [filteredTiles, activeDiameter]);
 
   return (
