@@ -496,15 +496,25 @@
     "stockFilter": {
       "all": "All Status"
     },
+    "soldOut": "Sold Out",
+    "purposeLabel": "Purpose",
+    "swipeHint": "Swipe",
+    "previewAlt": "Preview",
     "tires": {
       "title": "TIRES",
       "desc": "High-quality tires from the renowned Japanese Yokohama brand, suited to every road condition.",
-      "longDesc": "High-quality tires from the renowned Japanese Yokohama brand, suited to every road condition. A perfect blend of safety, comfort, and durability."
+      "longDesc": "High-quality tires from the renowned Japanese Yokohama brand, suited to every road condition. A perfect blend of safety, comfort, and durability.",
+      "searchPlaceholder": "Search by tire name...",
+      "allSizes": "All",
+      "sizeLabel": "Size",
+      "allPurposes": "All Purposes",
+      "ctaLabel": "Talk to a Tire Sales Consultant"
     },
     "wheels": {
       "title": "WHEELS",
       "desc": "Lightweight alloy wheels from BRAID, the world's top brand in off-road racing.",
-      "longDesc": "Lightweight alloy wheels from BRAID, the world's top brand in off-road racing. Durable in any harsh condition, light yet strong."
+      "longDesc": "Lightweight alloy wheels from BRAID, the world's top brand in off-road racing. Durable in any harsh condition, light yet strong.",
+      "ctaLabel": "Talk to a Wheel Sales Consultant"
     },
     "merch": {
       "desc": "Official Toyota Gazoo Racing apparel, gear, and accessories.",

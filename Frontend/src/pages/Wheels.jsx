@@ -54,7 +54,7 @@ const Wheels = () => {
               className="inline-flex items-center gap-2 bg-toyota-red text-white font-black text-[11px] md:text-xs uppercase tracking-widest px-6 py-3 rounded-full shadow-lg shadow-toyota-red/20 hover:bg-white hover:text-toyota-black transition-colors mb-8"
             >
               <Phone size={14} />
-              Обуд борлуулалтын зөвлөхтэй холбогдох: 8007 7772
+              {t('products.wheels.ctaLabel')}: 8007 7772
             </a>
 
             <motion.p
@@ -96,7 +96,7 @@ const Wheels = () => {
 
                     {item.stock === 'Дууссан' && (
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-30">
-                        <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[12px] border border-white px-4 py-2">Дууссан</span>
+                        <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[12px] border border-white px-4 py-2">{t('products.soldOut')}</span>
                       </div>
                     )}
                   </div>
@@ -131,7 +131,7 @@ const Wheels = () => {
               animate={{ scale: 1 }}
               exit={{ scale: 0.9 }}
               src={previewImage}
-              alt="Preview"
+              alt={t('products.previewAlt')}
               onClick={(e) => e.stopPropagation()}
               className="max-w-full max-h-full object-contain cursor-default"
             />

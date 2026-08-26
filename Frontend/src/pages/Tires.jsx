@@ -19,7 +19,7 @@ const extractDiameter = (size) => {
   return match ? match[1] : null;
 };
 
-const TireCard = ({ tile, idx, onPreview, fixedWidth }) => {
+const TireCard = ({ tile, idx, onPreview, fixedWidth, t }) => {
   const Wrapper = fixedWidth ? 'div' : motion.div;
   const wrapperProps = fixedWidth
     ? {}
@@ -48,7 +48,7 @@ const TireCard = ({ tile, idx, onPreview, fixedWidth }) => {
 
         {tile.stock === 'Дууссан' && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-30">
-            <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[12px] border border-white px-4 py-2">Дууссан</span>
+            <span className="text-white font-black uppercase tracking-wider text-[8px] md:text-[12px] border border-white px-4 py-2">{t('products.soldOut')}</span>
           </div>
         )}
       </div>
@@ -57,7 +57,7 @@ const TireCard = ({ tile, idx, onPreview, fixedWidth }) => {
         {!fixedWidth && <p className="text-[10px] md:text-xs font-bold text-zinc-400 uppercase tracking-wider line-clamp-1">{tile.name}</p>}
         {tile.size && <p className="text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-wider">{tile.size}</p>}
         {tile.purpose && (
-          <p className="text-[9px] md:text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Зориулалт: <span className="text-toyota-red">{tile.purpose}</span></p>
+          <p className="text-[9px] md:text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{t('products.purposeLabel')}: <span className="text-toyota-red">{tile.purpose}</span></p>
         )}
         <div className="flex items-center gap-1.5 pt-1">
           <span className="text-toyota-black font-black text-lg md:text-2xl tracking-tighter">{formatPrice(tile.price)}</span>
@@ -69,7 +69,7 @@ const TireCard = ({ tile, idx, onPreview, fixedWidth }) => {
   );
 };
 
-const TireRow = ({ name, items, onPreview }) => {
+const TireRow = ({ name, items, onPreview, t }) => {
   const scrollRef = useRef(null);
   const useCarousel = items.length > 4;
 
@@ -90,7 +90,7 @@ const TireRow = ({ name, items, onPreview }) => {
               animate={{ x: [0, 4, 0] }}
               transition={{ duration: 1.3, repeat: Infinity, ease: 'easeInOut' }}
             >
-              Гулсуулна уу <MoveHorizontal size={12} />
+              {t('products.swipeHint')} <MoveHorizontal size={12} />
             </motion.div>
           )}
         </div>
@@ -105,7 +105,7 @@ const TireRow = ({ name, items, onPreview }) => {
           </button>
           <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-none md:snap-x md:snap-mandatory pb-2">
             {items.map((tile, idx) => (
-              <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} fixedWidth />
+              <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} fixedWidth t={t} />
             ))}
           </div>
           <button
@@ -118,7 +118,7 @@ const TireRow = ({ name, items, onPreview }) => {
       ) : (
         <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-10">
           {items.map((tile, idx) => (
-            <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} />
+            <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} t={t} />
           ))}
         </div>
       )}
@@ -231,7 +231,7 @@ const Tires = () => {
               className="inline-flex items-center gap-2 bg-toyota-red text-white font-black text-[11px] md:text-xs uppercase tracking-widest px-6 py-3 rounded-full shadow-lg shadow-toyota-red/20 hover:bg-toyota-black transition-colors mb-8"
             >
               <Phone size={14} />
-              Дугуй борлуулалтын зөвлөхтэй холбогдох: 8007 7772
+              {t('products.tires.ctaLabel')}: 8007 7772
             </a>
 
             <motion.p
@@ -254,7 +254,7 @@ const Tires = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Дугуйн нэрээр хайх..."
+                placeholder={t('products.tires.searchPlaceholder')}
                 className="pl-10 pr-6 py-2.5 md:py-3 bg-zinc-50 border border-zinc-200 text-zinc-800 text-xs font-bold outline-none focus:border-toyota-red w-full transition-all rounded-full"
               />
             </div>
@@ -264,7 +264,7 @@ const Tires = () => {
                 onClick={() => setActiveDiameter('all')}
                 className={`px-5 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeDiameter === 'all' ? 'bg-toyota-black text-white' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'}`}
               >
-                Бүгд
+                {t('products.tires.allSizes')}
               </button>
               {diameters.map(d => (
                 <button
@@ -272,7 +272,7 @@ const Tires = () => {
                   onClick={() => setActiveDiameter(d)}
                   className={`px-5 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeDiameter === d ? 'bg-toyota-black text-white' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'}`}
                 >
-                  Хэмжээ {d}
+                  {t('products.tires.sizeLabel')} {d}
                 </button>
               ))}
             </div>
@@ -283,7 +283,7 @@ const Tires = () => {
                   onClick={() => setActivePurpose('all')}
                   className={`px-5 py-2 rounded-full text-[9px] md:text-[11px] font-bold uppercase tracking-widest transition-all border ${activePurpose === 'all' ? 'bg-toyota-red text-white border-toyota-red' : 'bg-white text-zinc-500 border-zinc-200 hover:border-toyota-red hover:text-toyota-red'}`}
                 >
-                  Бүх зориулалт
+                  {t('products.tires.allPurposes')}
                 </button>
                 {purposes.map(p => (
                   <button
@@ -304,7 +304,7 @@ const Tires = () => {
         ) : (
           <div className="space-y-10 md:space-y-14">
             {groups.map((group, gIdx) => (
-              <TireRow key={group.name || gIdx} name={group.name} items={group.items} onPreview={setPreviewImage} />
+              <TireRow key={group.name || gIdx} name={group.name} items={group.items} onPreview={setPreviewImage} t={t} />
             ))}
           </div>
         )}
@@ -336,7 +336,7 @@ const Tires = () => {
               animate={{ scale: 1 }}
               exit={{ scale: 0.9 }}
               src={previewImage}
-              alt="Preview"
+              alt={t('products.previewAlt')}
               onClick={(e) => e.stopPropagation()}
               className="max-w-full max-h-full object-contain cursor-default"
             />
