@@ -4,7 +4,6 @@ import { X, Search, ChevronLeft, ChevronRight, Phone } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
-import Button from '../components/Button';
 import API_BASE_URL from '../config';
 import yokohamaLogo from '../assets/acc/yokohama logo.png';
 import placeholderImage from '../assets/vehicles/hero.jpg';
@@ -26,7 +25,7 @@ const TireCard = ({ tile, idx, onPreview, fixedWidth }) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay: Math.min(idx, 10) * 0.04 }}
-    className={`group ${fixedWidth ? 'w-[29vw] sm:w-[200px] md:w-[260px] shrink-0 snap-start' : ''}`}
+    className={`group ${fixedWidth ? 'w-[29vw] sm:w-[calc((100%-2.25rem)/4)] md:w-[calc((100%-4.5rem)/4)] shrink-0 snap-start' : ''}`}
   >
     <button
       type="button"
@@ -68,7 +67,7 @@ const TireRow = ({ name, items, onPreview }) => {
 
   const scroll = (dir) => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: dir * 280, behavior: 'smooth' });
+      scrollRef.current.scrollBy({ left: dir * scrollRef.current.clientWidth, behavior: 'smooth' });
     }
   };
 
@@ -86,7 +85,7 @@ const TireRow = ({ name, items, onPreview }) => {
             <ChevronLeft size={16} className="md:hidden" />
             <ChevronLeft size={18} className="hidden md:block" />
           </button>
-          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-2 px-10 md:px-0 -mx-10 md:mx-0">
+          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-2 px-10 md:px-0 -mx-10 md:mx-0 touch-pan-x">
             {items.map((tile, idx) => (
               <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} fixedWidth />
             ))}
@@ -196,6 +195,13 @@ const Tires = () => {
   return (
     <div className="pt-24 md:pt-40 pb-20 bg-white min-h-screen relative overflow-hidden">
       <div className="container-custom px-4 relative z-10">
+        <div className="flex justify-center mb-6 md:mb-8">
+          <a href="tel:+97680077772" className="inline-flex items-center gap-1.5 text-[10px] md:text-xs font-bold text-zinc-400 hover:text-toyota-red transition-colors uppercase tracking-wider">
+            <Phone size={12} />
+            Борлуулалтын зөвлөхтэй холбогдох: 8007 7772
+          </a>
+        </div>
+
         {/* Centered Header Section */}
         <div className="mb-12 md:mb-16 text-center flex flex-col items-center">
             <motion.div
@@ -291,26 +297,6 @@ const Tires = () => {
           </div>
         )}
       </div>
-
-      {/* Bottom CTA */}
-      <section className="border-t border-zinc-100 py-16 md:py-24 mt-12 md:mt-20">
-        <div className="container-custom px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 text-center md:text-left">
-            <div className="max-w-xl">
-              <h3 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-4 text-toyota-black leading-[1.1]">
-                Борлуулалтын <span className="text-toyota-red">зөвлөхтэй холбогдох</span>
-              </h3>
-              <p className="text-zinc-500 text-sm md:text-base leading-relaxed">Дугуй сонголт, хэмжээ тохирохын талаар зөвлөгөө авахыг хүсвэл бидэнтэй утсаар холбогдоно уу.</p>
-            </div>
-            <a href="tel:+97680077772" className="w-full md:w-auto shrink-0">
-              <Button variant="primary" className="w-full md:w-auto px-10 py-4 md:py-5 flex items-center justify-center gap-3 text-[10px] md:text-xs">
-                <Phone size={16} />
-                <span>8007 7772</span>
-              </Button>
-            </a>
-          </div>
-        </div>
-      </section>
 
       <AnimatePresence>
         {previewImage && (
