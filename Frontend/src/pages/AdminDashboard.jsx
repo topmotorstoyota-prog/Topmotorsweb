@@ -1367,7 +1367,7 @@ function AdminForm({ type, presetCategory, token, initialData, onSuccess }) {
 
     try {
       const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(body) });
-      if (res.ok) onSuccess(); else { let d = await res.json(); alert(d.message || 'Алдаа гарлаа'); }
+      if (res.ok) onSuccess(); else { let d = await res.json(); alert(d.detail ? `${d.message}\n\n${d.detail}` : (d.message || 'Алдаа гарлаа')); }
     } finally {
       submittingRef.current = false;
       setSubmitting(false);

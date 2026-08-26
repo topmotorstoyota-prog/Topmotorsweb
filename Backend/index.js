@@ -235,6 +235,12 @@ const logActivity = async (req, action, entity, entityId, entityName) => {
 };
 
 // --- CRUD HELPER ---
+// Prisma/DB алдааны гол утгыг response-д хавсаргаж, admin panel дээр шууд харагдуулна (log өгсөн байсан ч дэлгэц дээрээс шалгах боломжтой байх зорилготой)
+const formatErrorDetail = (err) => {
+  if (err.code) return `[${err.code}] ${err.meta ? JSON.stringify(err.meta) : err.message}`;
+  return err.message || String(err);
+};
+
 const setupRoutes = (routePath, model, options = {}) => {
   const checkAccess = async (req, res, next) => {
     try {
@@ -332,8 +338,8 @@ const setupRoutes = (routePath, model, options = {}) => {
       }
       res.json(item);
     } catch (err) {
-      console.error(`POST /api/${routePath} Error:`, err);
-      res.status(500).json({ message: "Хадгалахад алдаа гарлаа." });
+      console.error(`POST /api/${routePath} Error:`, err.code, err.message, err.meta || '', '\n', err.stack);
+      res.status(500).json({ message: "Хадгалахад алдаа гарлаа.", detail: formatErrorDetail(err) });
     }
   });
 
@@ -360,8 +366,8 @@ const setupRoutes = (routePath, model, options = {}) => {
       }
       res.json(item);
     } catch (err) {
-      console.error(`PUT /api/${routePath} Error:`, err);
-      res.status(500).json({ message: "Шинэчлэхэд алдаа гарлаа." });
+      console.error(`PUT /api/${routePath} Error:`, err.code, err.message, err.meta || '', '\n', err.stack);
+      res.status(500).json({ message: "Шинэчлэхэд алдаа гарлаа.", detail: formatErrorDetail(err) });
     }
   });
 
