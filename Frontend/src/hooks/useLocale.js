@@ -16,6 +16,13 @@ const STOCK_STATUS_EN = {
   'Захиалгаар': 'On Order',
 };
 
+// Дугуйн "Зориулалт" dropdown - хаалттай тогтмол жагсаалт
+const TIRE_PURPOSE_EN = {
+  'Зун': 'Summer',
+  'Өвөл': 'Winter',
+  'Бүх улирал': 'All-Season',
+};
+
 // Admin-аас оруулсан монгол/англи хос талбаруудаас идэвхтэй хэлэнд тохирсныг сонгоно
 export function useLocale() {
   const { i18n } = useTranslation();
@@ -23,5 +30,6 @@ export function useLocale() {
   const loc = (mn, en) => (isEn && en) ? en : mn;
   const fuelType = (mn) => (isEn && FUEL_TYPE_EN[mn]) ? FUEL_TYPE_EN[mn] : mn;
   const stockStatus = (mn) => (isEn && STOCK_STATUS_EN[mn]) ? STOCK_STATUS_EN[mn] : mn;
-  return { isEn, loc, fuelType, stockStatus };
+  const tirePurpose = (mn) => (isEn && TIRE_PURPOSE_EN[mn]) ? TIRE_PURPOSE_EN[mn] : mn;
+  return { isEn, loc, fuelType, stockStatus, tirePurpose };
 }
