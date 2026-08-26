@@ -118,7 +118,7 @@ const Home = () => {
               transition={{ duration: 6, ease: "linear" }}
               src={slides[currentSlide].image}
               alt={slides[currentSlide].title}
-              className="w-full h-full object-cover brightness-[0.85]"
+              className="w-full h-full object-contain md:object-cover brightness-[0.85]"
             />
           </motion.div>
         </AnimatePresence>
