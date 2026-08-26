@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, ChevronLeft, ChevronRight, Phone } from 'lucide-react';
+import { X, Search, ChevronLeft, ChevronRight, Phone, MoveHorizontal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -81,29 +81,38 @@ const TireRow = ({ name, items, onPreview }) => {
 
   return (
     <div>
-      {name && (
-        <h3 className="text-base md:text-xl font-bold text-toyota-black mb-4 md:mb-6 pb-2 border-b border-zinc-100">{name}</h3>
+      {(name || useCarousel) && (
+        <div className={`flex items-center justify-between mb-4 md:mb-6 ${name ? 'pb-2 border-b border-zinc-100' : ''}`}>
+          {name ? <h3 className="text-base md:text-xl font-bold text-toyota-black">{name}</h3> : <span />}
+          {useCarousel && (
+            <motion.div
+              className="flex md:hidden items-center gap-1 text-zinc-400 text-[9px] font-bold uppercase tracking-wider shrink-0"
+              animate={{ x: [0, 4, 0] }}
+              transition={{ duration: 1.3, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              Гулсуулна уу <MoveHorizontal size={12} />
+            </motion.div>
+          )}
+        </div>
       )}
       {useCarousel ? (
         <div className="relative">
           <button
             onClick={() => scroll(-1)}
-            className="flex absolute left-0 md:-left-5 top-[14vw] sm:top-[100px] md:top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-toyota-black text-white shadow-xl items-center justify-center z-10 hover:bg-toyota-red transition-colors"
+            className="hidden md:flex absolute md:-left-5 top-[35%] -translate-y-1/2 w-10 h-10 rounded-full bg-toyota-black text-white shadow-xl items-center justify-center z-10 hover:bg-toyota-red transition-colors"
           >
-            <ChevronLeft size={16} className="md:hidden" />
-            <ChevronLeft size={18} className="hidden md:block" />
+            <ChevronLeft size={18} />
           </button>
-          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-none md:snap-x md:snap-mandatory pb-2 px-10 md:px-0 -mx-10 md:mx-0">
+          <div ref={scrollRef} className="flex gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-none md:snap-x md:snap-mandatory pb-2">
             {items.map((tile, idx) => (
               <TireCard key={tile.key} tile={tile} idx={idx} onPreview={onPreview} fixedWidth />
             ))}
           </div>
           <button
             onClick={() => scroll(1)}
-            className="flex absolute right-0 md:-right-5 top-[14vw] sm:top-[100px] md:top-[35%] -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-toyota-black text-white shadow-xl items-center justify-center z-10 hover:bg-toyota-red transition-colors"
+            className="hidden md:flex absolute md:-right-5 top-[35%] -translate-y-1/2 w-10 h-10 rounded-full bg-toyota-black text-white shadow-xl items-center justify-center z-10 hover:bg-toyota-red transition-colors"
           >
-            <ChevronRight size={16} className="md:hidden" />
-            <ChevronRight size={18} className="hidden md:block" />
+            <ChevronRight size={18} />
           </button>
         </div>
       ) : (
