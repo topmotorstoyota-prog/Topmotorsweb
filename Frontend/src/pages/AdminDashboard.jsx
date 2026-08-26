@@ -1485,7 +1485,7 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
         <label className="block text-[10px] font-black uppercase text-zinc-400">Нэр</label>
         <input name="name" value={formData.name || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" required />
 
-        {type !== 'staff' && (
+        {type !== 'staff' && formData.category !== 'Обуд' && (
           <>
             <label className="block text-[10px] font-black uppercase text-toyota-red">Нэр (Англи)</label>
             <input name="nameEn" value={formData.nameEn || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" placeholder="English name (хоосон бол монгол нэрийг ашиглана)" />
@@ -1506,7 +1506,7 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
                 </div>
               </>
             )}
-            {type !== 'users' && type !== 'staff' && (
+            {type !== 'users' && type !== 'staff' && formData.category !== 'Обуд' && (
                 <div className={type === 'toyota-q' ? 'col-span-2' : ''}>
                   <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Үнэ</label>
                   <input name="price" value={formData.price || ''} onChange={e => setFormData({ ...formData, price: handlePriceInput(e.target.value) })} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold text-toyota-red" />
@@ -1520,14 +1520,18 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
             )}
         </div>
 
-        {type === 'products' && (
+        {type === 'products' && formData.category !== 'Обуд' && (
           <div>
             <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">
-              {formData.category === 'Дугуй' ? 'Дугуйны хэмжээ (Size) - Олон бол зай эсвэл таслалаар тусгаарлаарай' :
-               formData.category === 'Обуд' ? 'Радиус (R) - Жишээ нь: R18' :
-               'Хэмжээ (Size) - Олон бол зай эсвэл таслалаар тусгаарлаарай'}
+              Хэмжээ (Size) - Олон бол зай эсвэл таслалаар тусгаарлаарай
             </label>
-            <input name="size" value={formData.size || ''} onChange={handleChange} placeholder={formData.category === 'Обуд' ? "Жишээ: R17 R18" : "Жишээ: 265/65R17 285/50R20"} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" />
+            <input name="size" value={formData.size || ''} onChange={handleChange} placeholder="Жишээ: 265/65R17 285/50R20" className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" />
+          </div>
+        )}
+
+        {type === 'products' && formData.category === 'Обуд' && (
+          <div className="p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-700 text-xs">
+            Обуд-ын зурган дээр үнэ, хэмжээ, тохирох загваруудын мэдээлэл багтсан тул зөвхөн нэр, зураг оруулахад хангалттай.
           </div>
         )}
 
@@ -1579,8 +1583,10 @@ function AdminForm({ type, token, userRole, permissions = {}, initialData, onSuc
           </div>
         )}
 
-        <textarea name="description" placeholder="Тайлбар..." value={formData.description || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-32 resize-none font-medium" />
-        {type !== 'staff' && (
+        {formData.category !== 'Обуд' && (
+          <textarea name="description" placeholder="Тайлбар..." value={formData.description || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-32 resize-none font-medium" />
+        )}
+        {type !== 'staff' && formData.category !== 'Обуд' && (
           <>
             <label className="block text-[10px] font-black uppercase text-toyota-red">Тайлбар (Англи)</label>
             <textarea name="descriptionEn" placeholder="English description... (хоосон бол монгол тайлбарыг ашиглана)" value={formData.descriptionEn || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-32 resize-none font-medium" />
