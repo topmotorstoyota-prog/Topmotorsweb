@@ -312,7 +312,7 @@ const Home = () => {
               <h3 className="text-xl lg:text-4xl font-black uppercase tracking-tight mb-3 lg:mb-8 leading-tight text-toyota-black">
                 {t('home.visit.titleLine1')} <br className="hidden lg:block" /> {t('home.visit.titleLine2')}
               </h3>
-              <p className="text-zinc-600 mb-4 lg:mb-10 leading-relaxed text-[11px] lg:text-lg px-2 lg:px-0">
+              <p className="text-zinc-600 mb-4 lg:mb-10 leading-relaxed text-[11px] lg:text-lg px-2 lg:px-0 text-justify">
                 {t('home.visit.desc')}
               </p>
               <a href="https://www.google.com/maps/dir/?api=1&destination=47.914517,106.873933" target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto px-4 lg:px-0">
