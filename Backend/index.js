@@ -232,6 +232,52 @@ const parseOcsYearMonth = (ocsNumber) => {
   return `20${last4.slice(0, 2)}-${last4.slice(2, 4)}`;
 };
 
+// Excel-ийн Katashiki (E багана) + SFX (F багана) хослолоор тодорхой загварын нэрийг тохируулна.
+// Тохирол олдвол Excel-ийн D баганын ерөнхий нэрийн оронд энэ илvv нарийвчилсан нэрийг ашиглана.
+const KATASHIKI_SFX_MODEL = [
+  ['HZJ79L-DKMRS', 'C3', 'LC79 Rollbar'],
+  ['HZJ79L-TJMRS', 'Q1', 'LC79 Single Cab'],
+  ['XPN225L-DTDLSW', 'MW', 'Hilux BEV'],
+  ['GDJ79L-DKTRY', 'D6', 'LC79 A/T'],
+  ['AXAL64L-ANXGB', 'A1', 'RAV4 GEN6'],
+  ['HZJ79L-DKMRS', 'CA', 'LC79 Rollbar'],
+  ['VJA300L-GNUSZ', 'S1', 'LC300 GR-Sport Petrol'],
+  ['VJA300L-GNUZZ', 'Z1', 'LC300 ZX Petrol'],
+  ['FJA300L-GMUSY', 'M1', 'LC300 GR-Sport Diesel'],
+  ['FJA300L-GNUAY', 'Y1', 'LC300 GX-R Diesel'],
+  ['VJH300L-GNVSZ', 'SA', 'LC300 GR-Sport Hybrid'],
+  ['VJH300L-GNVVZ', 'VA', 'LC300 VX Hybrid'],
+  ['VJH300L-GNVZZ', 'ZA', 'LC300 ZX Hybrid'],
+  ['GGN125L-DTTHKV', 'T5', 'IMV-3'],
+  ['GDJ79L-DKTRY', 'I1', 'LC79 A/T'],
+  ['HZJ79L-DKMRS', 'C1', 'LC79 Standard'],
+  ['GDH322L-EDFDY', 'D1', 'HIACE Diesel MT'],
+  ['HZJ76L-RKMRS', 'AA', 'LC76 Rollbar'],
+  ['GRJ76L-RKMRK', 'E1', 'LC76 Petrol'],
+  ['VJA300L-GNUVZ', 'V1', 'LC300 VX Petrol'],
+  ['GRJ78L-RJMRK', 'F1', 'LC78 Petrol'],
+  ['GDJ76L-RKTNY', 'G1', 'LC76 AT/Diesel'],
+  ['GDJ78L-RJTRY', 'H1', 'LC78 A/T'],
+  ['GRJ300L-GNTAKV', 'G1', 'LC300 GX-R leather'],
+  ['TJA250L-GNZLZ', 'B1', 'LC250 Medium Petrol'],
+  ['TJA250L-GNZLZ', 'A1', 'LC250 High Petrol'],
+  ['GRH322L-EDTDH', 'G1', 'HIACE Petrol Commuter'],
+  ['GRH303L-RDTJH', 'L1', 'HIACE Granvia'],
+  ['HZJ76L-RKMRS', 'AB', 'LC76 Rollbar'],
+  ['HZJ76L-RKMRS', 'A1', 'LC76 Standard'],
+  ['HZJ78L-RJMRS', 'BA', 'LC78 Rollbar'],
+  ['AAHH45L-PFXLB', 'H3', 'Alphard'],
+  ['GGN125L-DTTHKV', 'T6', 'Hilux'],
+  ['HZJ78L-RJMRS', 'B1', 'LC78 Standard'],
+];
+const MODEL_LOOKUP = new Map(
+  KATASHIKI_SFX_MODEL.map(([katashiki, sfx, model]) => [`${katashiki.toUpperCase()}|${sfx.toUpperCase()}`, model])
+);
+const resolveModelName = (katashiki, sfx, fallback) => {
+  const key = `${String(katashiki || '').trim().toUpperCase()}|${String(sfx || '').trim().toUpperCase()}`;
+  return MODEL_LOOKUP.get(key) || fallback;
+};
+
 const shipmentExcelFilter = (req, file, cb) => {
   const allowed = /xlsx|xls/;
   if (allowed.test(path.extname(file.originalname).toLowerCase())) return cb(null, true);
@@ -260,13 +306,16 @@ app.post('/api/shipment/upload', authenticateToken, adminOnly, (req, res) => {
         if (vin.length < 10) continue; // толгой мөр/хоосон/pivot table-ийн хог мөрүүдийг алгасна
 
         const ocsNumber = String(row[1] || '').trim() || null;
+        const rawModelName = String(row[3] || '').trim() || null;
+        const katashiki = row[4];
+        const sfx = row[5];
         parsed.push({
           vin,
           vinLast5: vin.slice(-5).toUpperCase(),
           ocsNumber,
           manufactureYearMonth: parseOcsYearMonth(ocsNumber),
           shipmentNumber: String(row[2] || '').trim() || null,
-          modelName: String(row[3] || '').trim() || null,
+          modelName: resolveModelName(katashiki, sfx, rawModelName),
           exteriorColor: String(row[6] || '').trim() || null,
           interiorColor: String(row[7] || '').trim() || null,
           status: String(row[10] || '').trim() || null

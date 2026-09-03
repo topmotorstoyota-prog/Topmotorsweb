@@ -55,6 +55,20 @@ const pointColorFor = (d) => {
 };
 const pointRadiusFor = (d) => d.kind === 'waypoint' ? 0.15 : 0.22;
 
+// Одоогийн байршлын улаан "радар" анивчих цэгийн CSS keyframes-ийг нэг удаа тарааж оруулна
+if (typeof document !== 'undefined' && !document.getElementById('ot-radar-style')) {
+  const style = document.createElement('style');
+  style.id = 'ot-radar-style';
+  style.textContent = '@keyframes ot-radar-pulse { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(2.6); opacity: 0; } }';
+  document.head.appendChild(style);
+}
+
+// "VH-TM0364" -> "364" (сvvлийн 3 орон хангалттай, бvтэн дугаар шаардлагагvй)
+const shortShipment = (num) => {
+  const digits = String(num || '').replace(/\D/g, '');
+  return digits.slice(-3) || num || '';
+};
+
 const OrderTracking = () => {
   const { t } = useTranslation();
   useDocumentTitle('Захиалга хянах', 'Шинэ машины захиалгынхаа тээвэрлэлтийн явцыг VIN дугаараар хянана уу.');
@@ -187,7 +201,7 @@ const OrderTracking = () => {
                     <tr><td colSpan="2" className="p-10 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">{t('orderTracking.loading')}</td></tr>
                   ) : summary.length > 0 ? summary.map((s) => (
                     <tr key={s.shipmentNumber} className="border-b border-zinc-200/70 last:border-0">
-                      <td className="p-4 text-xs font-bold tracking-wider align-top whitespace-nowrap">{s.shipmentNumber}</td>
+                      <td className="p-4 text-xs font-bold tracking-wider align-top whitespace-nowrap">{shortShipment(s.shipmentNumber)}</td>
                       <td className="p-4 text-[11px] font-medium text-zinc-700 leading-relaxed">{s.sentence || s.locationName || t('orderTracking.unknown')}</td>
                     </tr>
                   )) : (
@@ -256,12 +270,12 @@ const OrderTracking = () => {
                     const el = document.createElement('div');
                     el.style.pointerEvents = 'none';
                     if (d.kind === 'current') {
-                      // Тухайн байршил Нагоёад бол усан онгоц, vгvй бол галт тэрэг дvрс
-                      const isSeaLeg = (d.locationName || '').includes('Нагоёа');
-                      el.innerHTML = isSeaLeg ? '🚢' : '🚂';
-                      el.style.fontSize = '24px';
-                      el.style.filter = 'drop-shadow(0 0 6px rgba(235,10,30,0.9))';
+                      // Одоогийн байршлыг улаан "радар" анивчих цэгээр тэмдэглэнэ
+                      el.style.width = '18px';
+                      el.style.height = '18px';
+                      el.style.position = 'relative';
                       el.style.transform = 'translate(-50%, -50%)';
+                      el.innerHTML = '<div style="position:absolute;inset:0;border-radius:50%;background:#EB0A1E;animation:ot-radar-pulse 1.6s ease-out infinite;"></div><div style="position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#EB0A1E;box-shadow:0 0 6px rgba(235,10,30,0.9);"></div>';
                     } else {
                       // 3D WebGL текст (troika) кириллийг дэмждэггvй ("?" болж харагддаг) тул
                       // нэрийн шошгыг энгийн HTML-аар зурна (цэг өөрөө pointsData дээр vлддэг)
@@ -348,7 +362,7 @@ const OrderTracking = () => {
                         {r.shipmentNumber && (
                           <div className="flex justify-between items-center">
                             <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 flex items-center gap-1.5"><Truck size={12} /> {t('orderTracking.shipmentLabel')}</span>
-                            <span className="text-sm font-bold text-zinc-900">{r.shipmentNumber}</span>
+                            <span className="text-sm font-bold text-zinc-900">{shortShipment(r.shipmentNumber)}</span>
                           </div>
                         )}
                       </div>
