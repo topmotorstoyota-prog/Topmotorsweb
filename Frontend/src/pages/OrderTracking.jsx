@@ -103,7 +103,10 @@ const OrderTracking = () => {
   useEffect(() => {
     const updateSize = () => {
       if (containerRef.current) {
-        setGlobeSize({ width: containerRef.current.offsetWidth, height: containerRef.current.offsetWidth });
+        // Mobile дээр globe-ийг дэлгэц бvтэн өргөнд нь биш, компакт (app шиг) хэмжээтэй болгоно
+        const isMobile = window.innerWidth < 768;
+        const size = isMobile ? Math.min(containerRef.current.offsetWidth, 300) : containerRef.current.offsetWidth;
+        setGlobeSize({ width: size, height: size });
       }
     };
     updateSize();
@@ -245,9 +248,10 @@ const OrderTracking = () => {
           </div>
         </div>
 
-        <div ref={resultsSectionRef} className="max-w-6xl mx-auto mt-16 md:mt-24 scroll-mt-24">
+        <div ref={resultsSectionRef} className="max-w-6xl mx-auto mt-10 md:mt-24 scroll-mt-24">
             <div className="grid sm:grid-cols-2 gap-10 items-center">
-              <div ref={containerRef} className="flex flex-col items-center justify-center gap-3">
+              <div className="flex flex-col items-center justify-center gap-4 bg-black rounded-2xl border border-white/10 shadow-xl p-4 md:p-6 overflow-hidden">
+                <div ref={containerRef} className="w-full flex items-center justify-center">
                 <Globe
                   ref={globeRef}
                   width={globeSize.width}
@@ -317,12 +321,13 @@ const OrderTracking = () => {
                     }
                   }}
                 />
-                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[9px] font-bold uppercase tracking-wider text-zinc-500">
-                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#22c55e]" /> Нагоёа</span>
-                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#EB0A1E]" /> Улаанбаатар</span>
-                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#38bdf8]" /> {t('orderTracking.legendWaypoint')}</span>
-                  <span className="flex items-center gap-1.5"><span className="w-3 h-[2px] bg-[#38bdf8]" /> {t('orderTracking.legendSea')}</span>
-                  <span className="flex items-center gap-1.5"><span className="w-3 h-[2px] bg-[#f59e0b]" /> {t('orderTracking.legendRail')}</span>
+                </div>
+                <div className="w-full grid grid-cols-2 gap-x-3 gap-y-2 text-[9px] font-bold uppercase tracking-wider text-zinc-500">
+                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#22c55e] shrink-0" /> Нагоёа</span>
+                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#EB0A1E] shrink-0" /> Улаанбаатар</span>
+                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#38bdf8] shrink-0" /> {t('orderTracking.legendWaypoint')}</span>
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-[2px] bg-[#38bdf8] shrink-0" /> {t('orderTracking.legendSea')}</span>
+                  <span className="flex items-center gap-1.5 col-span-2 justify-center"><span className="w-3 h-[2px] bg-[#f59e0b] shrink-0" /> {t('orderTracking.legendRail')}</span>
                 </div>
               </div>
 

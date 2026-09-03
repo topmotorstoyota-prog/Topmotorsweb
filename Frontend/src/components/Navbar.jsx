@@ -5,7 +5,6 @@ import { clsx } from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { WheelIcon } from './FloatingCalculator';
-import LanguageToggle from './LanguageToggle';
 import logo from '../assets/home/logo-1.png';
 
 const Navbar = () => {
@@ -182,12 +181,6 @@ const Navbar = () => {
             <Phone size={14} strokeWidth={3} />
             <span>{t('nav.orderButton')}</span>
           </Link>
-          <LanguageToggle isWhiteNav={isWhiteNav} isBlackNav={isBlackNav} />
-        </div>
-
-        {/* Mobile Language Toggle - centered in navbar */}
-        <div className="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <LanguageToggle isWhiteNav={isWhiteNav} isBlackNav={isBlackNav} />
         </div>
 
         {/* Mobile Action Icons */}

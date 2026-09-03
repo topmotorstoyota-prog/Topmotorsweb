@@ -30,7 +30,7 @@ export default function AdminDashboard() {
     return permissions[tab];
   };
 
-  const [activeTab, setActiveTab] = useState(() => TAB_ORDER.find(hasTabAccess) || 'sales-bookings');
+  const [activeTab, setActiveTab] = useState(() => TAB_ORDER.find(hasTabAccess) || (hasTabAccess('shipment') ? 'shipment' : 'sales-bookings'));
   const [items, setItems] = useState([]);
   const [editingItem, setEditingItem] = useState(null);
   const [showForm, setShowForm] = useState(false);
