@@ -149,7 +149,7 @@ export default function AdminDashboard() {
               {tabIcons['activity-logs']} <span className="uppercase tracking-widest text-[10px]">Үйл ажиллагааны түүх</span>
             </button>
           )}
-          {(userRole === 'SUPER_ADMIN' || userRole === 'ADMIN') && (
+          {(userRole === 'SUPER_ADMIN' || userRole === 'ADMIN' || permissions.shipment) && (
             <button onClick={() => { setActiveTab('shipment'); setShowForm(false); setEditingItem(null); }} className={`flex items-center gap-3 w-full text-left p-4 rounded-sm font-bold transition-all ${activeTab === 'shipment' ? 'bg-blue-600 text-white' : 'text-zinc-400 hover:text-white'}`}>
               {tabIcons.shipment} <span className="uppercase tracking-widest text-[10px]">Тээвэрлэлт хянах</span>
             </button>
@@ -1761,7 +1761,8 @@ function UserAdminForm({ token, initialData, onSuccess }) {
     canManageSalesBookings: false,
     canManageServiceBookings: false,
     canManageHomeBanner: false,
-    canManageStaff: false
+    canManageStaff: false,
+    canManageShipment: false
   });
 
   const handleSubmit = async (e) => {
@@ -1813,6 +1814,7 @@ function UserAdminForm({ token, initialData, onSuccess }) {
     { name: 'canManageServiceBookings', label: 'CRM удирдах' },
     { name: 'canManageHomeBanner', label: 'Нүүр хуудасны баннер удирдах' },
     { name: 'canManageStaff', label: 'Борлуулалтын ажилчид удирдах' },
+    { name: 'canManageShipment', label: 'Тээвэрлэлт хянах' },
   ];
 
   return (

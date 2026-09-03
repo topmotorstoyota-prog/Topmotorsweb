@@ -23,6 +23,7 @@ model User {
   canManageServiceBookings Boolean @default(false) // Засварын хүсэлт
   canManageHomeBanner Boolean @default(false)
   canManageStaff     Boolean  @default(false) // Борлуулалтын ажилчид
+  canManageShipment  Boolean  @default(false) // Тээвэрлэлт хянах
   createdAt         DateTime @default(now())
 }
 

@@ -187,7 +187,7 @@ const SHIPMENT_LOCATIONS = [
     arrived: (d) => `${d}-нд Замын-Үүд боомт дээр ирсэн`,
     departed: (d) => `${d}-нд Замын-Үүд боомтоос хөдөлсөн` },
   { match: /ub station|ulaanbaatar/i, name: 'Улаанбаатар', lat: 47.9184, lng: 106.9177,
-    arrived: (d) => `${d}-нд Улаанбаатар хотод ирсэн, задрагvй хvлээгдэж байна`,
+    arrived: (d) => `${d}-нд Улаанбаатар хотод ирсэн, задраагvй хvлээгдэж байна`,
     departed: (d) => `${d}-нд Улаанбаатараас хөдөлсөн` },
 ];
 
@@ -241,6 +241,7 @@ const uploadShipmentExcel = multer({ storage: multer.memoryStorage(), fileFilter
 
 const adminOnly = (req, res, next) => {
   if (req.user.role === 'SUPER_ADMIN' || req.user.role === 'ADMIN') return next();
+  if (req.user.role === 'EDITOR' && req.user.permissions && req.user.permissions.shipment) return next();
   return res.status(403).json({ message: "Танд энэ хэсгийг удирдах эрх байхгүй байна." });
 };
 
@@ -375,7 +376,8 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
         'sales-bookings': user.canManageSalesBookings || false,
         'service-bookings': user.canManageServiceBookings || false,
         'home-banner': user.canManageHomeBanner || false,
-        staff: user.canManageStaff || false
+        staff: user.canManageStaff || false,
+        shipment: user.canManageShipment || false
       };
       const token = jwt.sign({ id: user.id, role: user.role, email: user.email, name: user.name, permissions }, JWT_SECRET, { expiresIn: '24h' });
       res.json({ token, role: user.role, name: user.name, permissions });
