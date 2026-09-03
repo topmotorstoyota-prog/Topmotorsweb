@@ -190,7 +190,7 @@ const OrderTracking = () => {
               </div>
               {error && <p className="text-toyota-red text-xs font-bold mt-3 text-center">{error}</p>}
             </form>
-            <h3 className="text-sm md:text-lg font-black uppercase tracking-tight text-toyota-black px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4">{t('orderTracking.summaryTitle')}</h3>
+            <h3 className="text-sm md:text-lg font-black uppercase tracking-tight text-toyota-black px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4 text-center">{t('orderTracking.summaryTitle')}</h3>
             <div className="flex-1">
               <table className="w-full text-left">
                 <thead>
@@ -205,7 +205,7 @@ const OrderTracking = () => {
                   ) : summary.length > 0 ? summary.map((s) => (
                     <tr key={s.shipmentNumber} className="border-b border-zinc-300 last:border-0">
                       <td className="p-4 text-xs font-bold tracking-wider align-top whitespace-nowrap text-center border-r-2 border-zinc-300">{shortShipment(s.shipmentNumber)}</td>
-                      <td className="p-4 text-[11px] font-medium text-zinc-700 leading-relaxed text-center">{s.sentence || s.locationName || t('orderTracking.unknown')}</td>
+                      <td className="p-4 text-[11px] font-medium text-zinc-700 leading-relaxed text-left">{s.sentence || s.locationName || t('orderTracking.unknown')}</td>
                     </tr>
                   )) : (
                     <tr><td colSpan="2" className="p-10 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">{t('orderTracking.noData')}</td></tr>
@@ -334,12 +334,12 @@ const OrderTracking = () => {
               {results && results.length > 0 ? (
                 <div className="space-y-6">
                   {results.map((r, idx) => (
-                    <div key={r.vin || idx} className="bg-zinc-50 border border-zinc-200 rounded-sm p-6 md:p-8">
-                      <div className="flex items-center justify-between mb-4 pb-4 border-b border-zinc-200">
+                    <div key={r.vin || idx} className="bg-zinc-50 border border-zinc-200 rounded-sm p-6 md:p-8 flex flex-col">
+                      <div className="order-2 md:order-1 flex items-center justify-between mb-4 pb-4 border-b border-zinc-200">
                         <span className="text-[10px] font-black uppercase tracking-widest text-zinc-600">{t('orderTracking.vinLabel')}</span>
                         <span className="text-xs font-bold tracking-wider">{r.vin}</span>
                       </div>
-                      <div className="space-y-3">
+                      <div className="order-3 md:order-2 space-y-3">
                         {r.modelName && (
                           <div className="flex justify-between items-center">
                             <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">{t('orderTracking.modelLabel')}</span>
@@ -372,7 +372,7 @@ const OrderTracking = () => {
                         )}
                       </div>
 
-                      <div className="mt-6 pt-6 border-t border-zinc-200">
+                      <div className="order-1 md:order-3 mb-6 pb-6 border-b border-zinc-200 md:mt-6 md:pt-6 md:border-t md:mb-0 md:pb-0 md:border-b-0">
                         <div className="flex items-center gap-2 text-toyota-red mb-2">
                           <MapPin size={16} />
                           <span className="text-sm font-black uppercase tracking-wide">{r.locationName || t('orderTracking.unknownLocation')}</span>
