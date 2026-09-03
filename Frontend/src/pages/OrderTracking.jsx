@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Globe from 'react-globe.gl';
 import { Search, MapPin, Truck, Calendar, Loader2, Palette } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import API_BASE_URL from '../config';
 
@@ -55,6 +56,7 @@ const pointColorFor = (d) => {
 const pointRadiusFor = (d) => d.kind === 'waypoint' ? 0.15 : 0.22;
 
 const OrderTracking = () => {
+  const { t } = useTranslation();
   useDocumentTitle('Захиалга хянах', 'Шинэ машины захиалгынхаа тээвэрлэлтийн явцыг VIN дугаараар хянана уу.');
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -108,7 +110,7 @@ const OrderTracking = () => {
     e.preventDefault();
     const last5 = query.trim().toUpperCase();
     if (!/^[A-Z0-9]{5}$/.test(last5)) {
-      setError('VIN дугаарын сүүлийн 5 оронг (үсэг+тоо) зөв оруулна уу.');
+      setError(t('orderTracking.errorInvalid'));
       setResults(null);
       return;
     }
@@ -119,9 +121,9 @@ const OrderTracking = () => {
       const res = await fetch(`${API_BASE_URL}/api/shipment/track/${last5}`);
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message || 'Алдаа гарлаа.');
+        setError(data.message || t('orderTracking.errorGeneric'));
       } else if (data.length === 0) {
-        setError('Энэ дугаартай захиалга олдсонгүй.');
+        setError(t('orderTracking.errorNotFound'));
       } else {
         setResults(data);
         setTimeout(() => {
@@ -129,7 +131,7 @@ const OrderTracking = () => {
         }, 100);
       }
     } catch (err) {
-      setError('Сүлжээний алдаа гарлаа. Дахин оролдоно уу.');
+      setError(t('orderTracking.errorNetwork'));
     }
     setLoading(false);
   };
@@ -142,14 +144,14 @@ const OrderTracking = () => {
       <div className="container-custom px-4">
         <div className="mb-10 md:mb-16 text-center">
           <p className="text-xl md:text-3xl font-black text-toyota-black max-w-2xl mx-auto leading-tight">
-            Захиалсан машиныхаа VIN дугаарын сvvлийн 5 оронг оруулж, тээвэрлэлтийн явцыг шалгана уу.
+            {t('orderTracking.heroText')}
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 max-w-6xl mx-auto items-stretch">
           {/* Зvvн тал: бvх тээврийн дугаарын одоогийн байршлыг харуулах хvснэгт (mobile дээр хайлттай нэг карт болно) */}
           <div className="flex flex-col">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 mb-4">Тээвэрлэлтийн ерөнхий байдал</h3>
+            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 mb-4">{t('orderTracking.summaryTitle')}</h3>
             <div className="bg-zinc-50 border border-zinc-200 rounded-sm overflow-hidden flex-1">
               {/* Mobile-д зориулсан компакт хайлт - зөвхөн lg-ээс доош харагдана */}
               <form onSubmit={handleSearch} className="lg:hidden p-4 border-b border-zinc-200">
@@ -159,7 +161,7 @@ const OrderTracking = () => {
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="VIN сvvлийн 5 орон"
+                    placeholder={t('orderTracking.searchPlaceholder')}
                     maxLength={5}
                     className="w-full pl-11 pr-28 py-3.5 bg-white border border-zinc-200 text-toyota-black text-sm font-bold uppercase tracking-widest outline-none focus:border-toyota-red rounded-full transition-all"
                   />
@@ -168,7 +170,7 @@ const OrderTracking = () => {
                     disabled={loading}
                     className="absolute right-1.5 top-1.5 bottom-1.5 px-5 bg-toyota-red hover:bg-toyota-black text-white text-[10px] font-black uppercase tracking-widest rounded-full transition-colors flex items-center gap-2"
                   >
-                    {loading ? <Loader2 size={14} className="animate-spin" /> : 'Хайх'}
+                    {loading ? <Loader2 size={14} className="animate-spin" /> : t('orderTracking.searchBtn')}
                   </button>
                 </div>
                 {error && <p className="text-toyota-red text-xs font-bold mt-3 text-center">{error}</p>}
@@ -176,20 +178,20 @@ const OrderTracking = () => {
               <table className="w-full text-left">
                 <thead>
                   <tr className="border-b border-zinc-200">
-                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600">Тээврийн №</th>
-                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600">Дэлгэрэнгvй</th>
+                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600">{t('orderTracking.shipmentNumberCol')}</th>
+                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600">{t('orderTracking.detailCol')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {summaryLoading ? (
-                    <tr><td colSpan="2" className="p-10 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">Уншиж байна...</td></tr>
+                    <tr><td colSpan="2" className="p-10 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">{t('orderTracking.loading')}</td></tr>
                   ) : summary.length > 0 ? summary.map((s) => (
                     <tr key={s.shipmentNumber} className="border-b border-zinc-200/70 last:border-0">
                       <td className="p-4 text-xs font-bold tracking-wider align-top whitespace-nowrap">{s.shipmentNumber}</td>
-                      <td className="p-4 text-[11px] font-medium text-zinc-700 leading-relaxed">{s.sentence || s.locationName || 'Тодорхойгvй'}</td>
+                      <td className="p-4 text-[11px] font-medium text-zinc-700 leading-relaxed">{s.sentence || s.locationName || t('orderTracking.unknown')}</td>
                     </tr>
                   )) : (
-                    <tr><td colSpan="2" className="p-10 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">Мэдээлэл алга байна</td></tr>
+                    <tr><td colSpan="2" className="p-10 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">{t('orderTracking.noData')}</td></tr>
                   )}
                 </tbody>
               </table>
@@ -201,9 +203,9 @@ const OrderTracking = () => {
             <div className="w-14 h-14 rounded-full bg-toyota-red/10 flex items-center justify-center mb-6">
               <Search className="text-toyota-red" size={24} />
             </div>
-            <h3 className="text-base md:text-lg font-black uppercase tracking-tight mb-2">VIN дугаараар хайх</h3>
+            <h3 className="text-base md:text-lg font-black uppercase tracking-tight mb-2">{t('orderTracking.searchTitle')}</h3>
             <p className="text-zinc-500 text-xs mb-8 max-w-xs leading-relaxed">
-              Захиалсан машиныхаа тээвэрлэлтийн явцыг шалгахын тулд VIN дугаарын сvvлийн 5 оронг оруулна уу.
+              {t('orderTracking.searchDesc')}
             </p>
             <form onSubmit={handleSearch} className="w-full max-w-sm">
               <div className="relative">
@@ -212,7 +214,7 @@ const OrderTracking = () => {
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="VIN сvvлийн 5 орон"
+                  placeholder={t('orderTracking.searchPlaceholder')}
                   maxLength={5}
                   className="w-full pl-11 pr-28 py-4 bg-white border border-zinc-200 text-toyota-black text-sm font-bold uppercase tracking-widest outline-none focus:border-toyota-red rounded-full transition-all"
                 />
@@ -221,7 +223,7 @@ const OrderTracking = () => {
                   disabled={loading}
                   className="absolute right-1.5 top-1.5 bottom-1.5 px-6 bg-toyota-red hover:bg-toyota-black text-white text-[10px] font-black uppercase tracking-widest rounded-full transition-colors flex items-center gap-2"
                 >
-                  {loading ? <Loader2 size={14} className="animate-spin" /> : 'Хайх'}
+                  {loading ? <Loader2 size={14} className="animate-spin" /> : t('orderTracking.searchBtn')}
                 </button>
               </div>
               {error && <p className="text-toyota-red text-xs font-bold mt-4 text-center">{error}</p>}
@@ -304,9 +306,9 @@ const OrderTracking = () => {
                 <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[9px] font-bold uppercase tracking-wider text-zinc-500">
                   <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#22c55e]" /> Нагоёа</span>
                   <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#EB0A1E]" /> Улаанбаатар</span>
-                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#38bdf8]" /> Өртөө</span>
-                  <span className="flex items-center gap-1.5"><span className="w-3 h-[2px] bg-[#38bdf8]" /> Далайн зам</span>
-                  <span className="flex items-center gap-1.5"><span className="w-3 h-[2px] bg-[#f59e0b]" /> Төмөр зам</span>
+                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#38bdf8]" /> {t('orderTracking.legendWaypoint')}</span>
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-[2px] bg-[#38bdf8]" /> {t('orderTracking.legendSea')}</span>
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-[2px] bg-[#f59e0b]" /> {t('orderTracking.legendRail')}</span>
                 </div>
               </div>
 
@@ -315,37 +317,37 @@ const OrderTracking = () => {
                   {results.map((r, idx) => (
                     <div key={r.vin || idx} className="bg-zinc-50 border border-zinc-200 rounded-sm p-6 md:p-8">
                       <div className="flex items-center justify-between mb-4 pb-4 border-b border-zinc-200">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-zinc-600">VIN</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-zinc-600">{t('orderTracking.vinLabel')}</span>
                         <span className="text-xs font-bold tracking-wider">{r.vin}</span>
                       </div>
                       <div className="space-y-3">
                         {r.modelName && (
                           <div className="flex justify-between items-center">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">Загвар</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">{t('orderTracking.modelLabel')}</span>
                             <span className="text-sm font-black">{r.modelName}</span>
                           </div>
                         )}
                         {r.exteriorColor && (
                           <div className="flex justify-between items-center">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 flex items-center gap-1.5"><Palette size={12} /> Гадна өнгөний код</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 flex items-center gap-1.5"><Palette size={12} /> {t('orderTracking.exteriorColorLabel')}</span>
                             <span className="text-sm font-bold text-zinc-900">{r.exteriorColor}</span>
                           </div>
                         )}
                         {r.interiorColor && (
                           <div className="flex justify-between items-center">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 flex items-center gap-1.5"><Palette size={12} /> Дотор өнгөний код</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 flex items-center gap-1.5"><Palette size={12} /> {t('orderTracking.interiorColorLabel')}</span>
                             <span className="text-sm font-bold text-zinc-900">{r.interiorColor}</span>
                           </div>
                         )}
                         {r.manufactureYearMonth && (
                           <div className="flex justify-between items-center">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">Vйлдвэрлэсэн</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">{t('orderTracking.manufacturedLabel')}</span>
                             <span className="text-sm font-bold text-zinc-900">{r.manufactureYearMonth}</span>
                           </div>
                         )}
                         {r.shipmentNumber && (
                           <div className="flex justify-between items-center">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 flex items-center gap-1.5"><Truck size={12} /> Тээврийн №</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 flex items-center gap-1.5"><Truck size={12} /> {t('orderTracking.shipmentLabel')}</span>
                             <span className="text-sm font-bold text-zinc-900">{r.shipmentNumber}</span>
                           </div>
                         )}
@@ -354,7 +356,7 @@ const OrderTracking = () => {
                       <div className="mt-6 pt-6 border-t border-zinc-200">
                         <div className="flex items-center gap-2 text-toyota-red mb-2">
                           <MapPin size={16} />
-                          <span className="text-sm font-black uppercase tracking-wide">{r.locationName || 'Байршил тодорхойгүй'}</span>
+                          <span className="text-sm font-black uppercase tracking-wide">{r.locationName || t('orderTracking.unknownLocation')}</span>
                         </div>
                         {r.sentence ? (
                           <p className="text-[12px] font-medium text-zinc-600 leading-relaxed">{r.sentence}</p>
@@ -370,7 +372,7 @@ const OrderTracking = () => {
                 </div>
               ) : (
                 <div className="border border-dashed border-zinc-200 rounded-sm py-16 px-6 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">
-                  VIN сvvлийн 5 оронг оруулж хайна уу
+                  {t('orderTracking.searchPrompt')}
                 </div>
               )}
             </div>
