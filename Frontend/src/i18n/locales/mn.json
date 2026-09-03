@@ -492,7 +492,7 @@
   "orderTracking": {
     "heroText": "Захиалсан машиныхаа VIN дугаарын сvvлийн 5 оронг оруулж, тээвэрлэлтийн явцыг шалгана уу.",
     "summaryTitle": "Тээвэрлэлтийн ерөнхий байдал",
-    "shipmentNumberCol": "Тээврийн №",
+    "shipmentNumberCol": "Тээврийн дугаар",
     "detailCol": "Дэлгэрэнгvй",
     "loading": "Уншиж байна...",
     "noData": "Мэдээлэл алга байна",
@@ -511,7 +511,7 @@
     "exteriorColorLabel": "Гадна өнгө",
     "interiorColorLabel": "Дотор өнгө",
     "manufacturedLabel": "Vйлдвэрлэл",
-    "shipmentLabel": "Тээврийн №",
+    "shipmentLabel": "Тээврийн дугаар",
     "unknownLocation": "Байршил тодорхойгvй",
     "legendWaypoint": "Өртөө",
     "legendSea": "Далайн зам",
