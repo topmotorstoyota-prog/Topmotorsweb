@@ -167,36 +167,36 @@ const OrderTracking = () => {
 
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 max-w-6xl mx-auto items-stretch">
           {/* Зvvн тал: бvх тээврийн дугаарын одоогийн байршлыг харуулах хvснэгт (mobile дээр хайлттай нэг карт болно) */}
-          <div className="flex flex-col">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 mb-4">{t('orderTracking.summaryTitle')}</h3>
-            <div className="bg-zinc-50 border border-zinc-200 rounded-sm overflow-hidden flex-1">
-              {/* Mobile-д зориулсан компакт хайлт - зөвхөн lg-ээс доош харагдана */}
-              <form onSubmit={handleSearch} className="lg:hidden p-4 border-b border-zinc-200">
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
-                  <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder={t('orderTracking.searchPlaceholder')}
-                    maxLength={5}
-                    className="w-full pl-11 pr-28 py-3.5 bg-white border border-zinc-200 text-toyota-black text-sm font-bold uppercase tracking-widest outline-none focus:border-toyota-red rounded-full transition-all"
-                  />
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="absolute right-1.5 top-1.5 bottom-1.5 px-5 bg-toyota-red hover:bg-toyota-black text-white text-[10px] font-black uppercase tracking-widest rounded-full transition-colors flex items-center gap-2"
-                  >
-                    {loading ? <Loader2 size={14} className="animate-spin" /> : t('orderTracking.searchBtn')}
-                  </button>
-                </div>
-                {error && <p className="text-toyota-red text-xs font-bold mt-3 text-center">{error}</p>}
-              </form>
+          <div className="bg-zinc-50 border border-zinc-200 rounded-sm overflow-hidden flex flex-col">
+            {/* Mobile-д зориулсан компакт хайлт - гарчгаас дээгvvр, зөвхөн lg-ээс доош харагдана */}
+            <form onSubmit={handleSearch} className="lg:hidden p-4 border-b border-zinc-200">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={t('orderTracking.searchPlaceholder')}
+                  maxLength={5}
+                  className="w-full pl-10 pr-24 py-3.5 bg-white border border-zinc-200 text-toyota-black text-[11px] font-bold uppercase tracking-wide outline-none focus:border-toyota-red rounded-full transition-all"
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="absolute right-1.5 top-1.5 bottom-1.5 px-5 bg-toyota-red hover:bg-toyota-black text-white text-[10px] font-black uppercase tracking-widest rounded-full transition-colors flex items-center gap-2"
+                >
+                  {loading ? <Loader2 size={14} className="animate-spin" /> : t('orderTracking.searchBtn')}
+                </button>
+              </div>
+              {error && <p className="text-toyota-red text-xs font-bold mt-3 text-center">{error}</p>}
+            </form>
+            <h3 className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.12em] md:tracking-[0.2em] text-zinc-600 px-4 pt-4 md:px-6 md:pt-6">{t('orderTracking.summaryTitle')}</h3>
+            <div className="flex-1">
               <table className="w-full text-left">
                 <thead>
                   <tr className="border-b border-zinc-200">
-                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600">{t('orderTracking.shipmentNumberCol')}</th>
-                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600">{t('orderTracking.detailCol')}</th>
+                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600 text-center">{t('orderTracking.shipmentNumberCol')}</th>
+                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600 text-center">{t('orderTracking.detailCol')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -204,7 +204,7 @@ const OrderTracking = () => {
                     <tr><td colSpan="2" className="p-10 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">{t('orderTracking.loading')}</td></tr>
                   ) : summary.length > 0 ? summary.map((s) => (
                     <tr key={s.shipmentNumber} className="border-b border-zinc-200/70 last:border-0">
-                      <td className="p-4 text-xs font-bold tracking-wider align-top whitespace-nowrap">{shortShipment(s.shipmentNumber)}</td>
+                      <td className="p-4 text-xs font-bold tracking-wider align-top whitespace-nowrap text-center">{shortShipment(s.shipmentNumber)}</td>
                       <td className="p-4 text-[11px] font-medium text-zinc-700 leading-relaxed">{s.sentence || s.locationName || t('orderTracking.unknown')}</td>
                     </tr>
                   )) : (
@@ -322,12 +322,12 @@ const OrderTracking = () => {
                   }}
                 />
                 </div>
-                <div className="w-full grid grid-cols-2 gap-x-3 gap-y-2 text-[9px] font-bold uppercase tracking-wider text-zinc-500">
-                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#22c55e] shrink-0" /> Нагоёа</span>
-                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#EB0A1E] shrink-0" /> Улаанбаатар</span>
-                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#38bdf8] shrink-0" /> {t('orderTracking.legendWaypoint')}</span>
-                  <span className="flex items-center gap-1.5"><span className="w-3 h-[2px] bg-[#38bdf8] shrink-0" /> {t('orderTracking.legendSea')}</span>
-                  <span className="flex items-center gap-1.5 col-span-2 justify-center"><span className="w-3 h-[2px] bg-[#f59e0b] shrink-0" /> {t('orderTracking.legendRail')}</span>
+                <div className="w-full flex flex-nowrap items-center justify-center gap-2 md:gap-4 overflow-x-auto no-scrollbar text-[7px] md:text-[9px] font-bold uppercase tracking-wide md:tracking-wider text-zinc-500">
+                  <span className="flex items-center gap-1 shrink-0"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#22c55e] shrink-0" /> Нагоёа</span>
+                  <span className="flex items-center gap-1 shrink-0"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#EB0A1E] shrink-0" /> Улаанбаатар</span>
+                  <span className="flex items-center gap-1 shrink-0"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#38bdf8] shrink-0" /> {t('orderTracking.legendWaypoint')}</span>
+                  <span className="flex items-center gap-1 shrink-0"><span className="w-3 h-[2px] bg-[#38bdf8] shrink-0" /> {t('orderTracking.legendSea')}</span>
+                  <span className="flex items-center gap-1 shrink-0"><span className="w-3 h-[2px] bg-[#f59e0b] shrink-0" /> {t('orderTracking.legendRail')}</span>
                 </div>
               </div>
 
