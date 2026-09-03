@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { clsx } from 'clsx';
 import Home from './pages/Home';
@@ -25,6 +25,7 @@ import NewsDetail from './pages/NewsDetail';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import Viewer360 from './pages/Viewer360';
+const OrderTracking = lazy(() => import('./pages/OrderTracking'));
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -88,6 +89,11 @@ function AppContent() {
           <Route path="/news" element={<News />} />
           <Route path="/news/:id" element={<NewsDetail />} />
           <Route path="/360" element={<Viewer360 />} />
+          <Route path="/order-tracking" element={
+            <Suspense fallback={<div className="pt-40 pb-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Уншиж байна...</div>}>
+              <OrderTracking />
+            </Suspense>
+          } />
 
           {/* Admin Routes */}
           <Route path="/admin-login" element={<AdminLogin />} />

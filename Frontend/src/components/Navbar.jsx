@@ -58,6 +58,7 @@ const Navbar = () => {
         { name: t('nav.serviceMaintenance'), path: '/service' },
         { name: t('nav.parts'), path: '/parts' },
         { name: t('nav.products'), path: '/products' },
+        { name: t('nav.orderTracking'), path: '/order-tracking' },
       ]
     },
 

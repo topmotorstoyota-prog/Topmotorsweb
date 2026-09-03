@@ -20,6 +20,7 @@
     "serviceMaintenance": "Service & Maintenance",
     "parts": "Parts",
     "products": "Products",
+    "orderTracking": "Track Order",
     "home": "Home",
     "homeShort": "Home",
     "vehiclesShort": "Vehicles",
@@ -66,6 +67,11 @@
       "tires": "Tires",
       "wheels": "Wheels",
       "merch": "GR Merch"
+    },
+    "orderTracking": {
+      "title": "Track Your Order",
+      "desc": "Enter the last 5 digits of your VIN to check your vehicle's shipping progress.",
+      "cta": "Track Order"
     },
     "service": {
       "title": "Professional Support",

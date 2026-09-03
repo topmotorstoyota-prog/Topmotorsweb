@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ShieldCheck, Cog, Award, MapPin, Zap, ChevronDown, Calendar } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Cog, Award, MapPin, Zap, ChevronDown, Calendar, Truck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -271,6 +271,29 @@ const Home = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Order Tracking Banner */}
+      <section className="py-8 md:py-12 bg-zinc-950 border-t border-white/5">
+        <div className="container-custom px-4 md:px-0">
+          <Link
+            to="/order-tracking"
+            className="group flex flex-col md:flex-row items-center justify-between gap-5 md:gap-8 text-center md:text-left"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-11 h-11 md:w-12 md:h-12 rounded-full bg-toyota-red/10 flex items-center justify-center shrink-0">
+                <Truck className="text-toyota-red" size={20} />
+              </div>
+              <div>
+                <h3 className="text-white text-sm md:text-base font-black uppercase tracking-tight">{t('home.orderTracking.title')}</h3>
+                <p className="text-zinc-500 text-[11px] md:text-xs mt-0.5">{t('home.orderTracking.desc')}</p>
+              </div>
+            </div>
+            <span className="flex items-center gap-2 text-[10px] md:text-xs font-black uppercase tracking-widest text-toyota-red shrink-0">
+              {t('home.orderTracking.cta')} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Link>
         </div>
       </section>
 

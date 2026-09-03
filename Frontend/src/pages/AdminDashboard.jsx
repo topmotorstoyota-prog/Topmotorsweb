@@ -4,7 +4,7 @@ import {
   Trash2, Edit, Plus, X, Upload, LogOut, LayoutDashboard, Car,
   Newspaper, Box, Package, UserCircle, MessageSquare, Info, ChevronRight, ChevronLeft,
   ChevronDown, Settings, Fuel, Palette, SlidersHorizontal, Image as ImageIcon,
-  Layers, PlusCircle, Phone, Mail, Calendar, Clock, MapPin, User, Star, Users, RotateCcw, Lock
+  Layers, PlusCircle, Phone, Mail, Calendar, Clock, MapPin, User, Star, Users, RotateCcw, Lock, FileSpreadsheet
 } from 'lucide-react';
 import API_BASE_URL from '../config';
 import logo from '../assets/home/logo-1.png';
@@ -43,6 +43,7 @@ export default function AdminDashboard() {
   }, [token, activeTab]);
 
   const fetchData = async () => {
+    if (activeTab === 'shipment') return;
     try {
       const res = await fetch(`${API_BASE_URL}/api/${apiPath(activeTab)}`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -95,7 +96,8 @@ export default function AdminDashboard() {
     users: <UserCircle size={18} />,
     'sales-bookings': <MessageSquare size={18} />,
     'service-bookings': <Settings size={18} />,
-    'activity-logs': <Clock size={18} />
+    'activity-logs': <Clock size={18} />,
+    shipment: <FileSpreadsheet size={18} />
   };
 
   const tabLabels = {
@@ -111,7 +113,8 @@ export default function AdminDashboard() {
     'sales-bookings': 'Шинэ машин & Тест драйв',
     'service-bookings': 'CRM',
     bookings: 'Захиалга & Хүсэлт',
-    'activity-logs': 'Үйл ажиллагааны түүх'
+    'activity-logs': 'Үйл ажиллагааны түүх',
+    shipment: 'Тээвэрлэлт хянах'
   };
 
   const tabs = TAB_ORDER.filter(hasTabAccess);
@@ -146,6 +149,11 @@ export default function AdminDashboard() {
               {tabIcons['activity-logs']} <span className="uppercase tracking-widest text-[10px]">Үйл ажиллагааны түүх</span>
             </button>
           )}
+          {(userRole === 'SUPER_ADMIN' || userRole === 'ADMIN') && (
+            <button onClick={() => { setActiveTab('shipment'); setShowForm(false); setEditingItem(null); }} className={`flex items-center gap-3 w-full text-left p-4 rounded-sm font-bold transition-all ${activeTab === 'shipment' ? 'bg-blue-600 text-white' : 'text-zinc-400 hover:text-white'}`}>
+              {tabIcons.shipment} <span className="uppercase tracking-widest text-[10px]">Тээвэрлэлт хянах</span>
+            </button>
+          )}
         </nav>
         <div className="p-6 mt-auto space-y-1">
           <button onClick={() => setShowPasswordModal(true)} className="flex items-center gap-3 w-full p-4 text-zinc-500 hover:text-white transition-all"><Lock size={18} /> <span className="uppercase tracking-widest text-[10px] font-bold">Нууц үг солих</span></button>
@@ -156,7 +164,7 @@ export default function AdminDashboard() {
       <div className="flex-1 ml-72">
         <header className="bg-white border-b h-24 flex items-center justify-between px-10 sticky top-0 z-10 shadow-sm">
            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-800">{tabLabels[activeTab]} <span className="text-toyota-red">удирдах</span></h2>
-           {!showForm && !editingItem && activeTab !== 'sales-bookings' && activeTab !== 'service-bookings' && activeTab !== 'activity-logs' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
+           {!showForm && !editingItem && activeTab !== 'sales-bookings' && activeTab !== 'service-bookings' && activeTab !== 'activity-logs' && activeTab !== 'shipment' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
         </header>
 
         <div className="p-10">
@@ -288,6 +296,8 @@ export default function AdminDashboard() {
                       </tbody>
                     </table>
                   </div>
+                ) : activeTab === 'shipment' ? (
+                  <ShipmentUploadPanel token={token} />
                 ) : activeTab === 'activity-logs' ? (
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
@@ -552,6 +562,55 @@ export default function AdminDashboard() {
 
       {showPasswordModal && (
         <ChangePasswordModal token={token} onClose={() => setShowPasswordModal(false)} />
+      )}
+    </div>
+  );
+}
+
+function ShipmentUploadPanel({ token }) {
+  const [uploading, setUploading] = useState(false);
+  const [result, setResult] = useState(null); // { ok, message }
+
+  const handleFile = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    setResult(null);
+    const data = new FormData();
+    data.append('file', file);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/shipment/upload`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: data
+      });
+      const json = await res.json();
+      setResult({ ok: res.ok, message: json.detail ? `${json.message}\n${json.detail}` : (json.message || 'Алдаа гарлаа') });
+    } catch (err) {
+      setResult({ ok: false, message: 'Файл илгээхэд алдаа гарлаа.' });
+    }
+    setUploading(false);
+    e.target.value = '';
+  };
+
+  return (
+    <div className="p-10 max-w-2xl mx-auto">
+      <p className="text-[12px] text-zinc-500 mb-8 leading-relaxed">
+        "TM Shipment Status" загварын Excel файлыг оруулна уу. VIN дугаараар тулгаж (upsert) шинэчилнэ — өмнө орсон машин дахин орвол мэдээлэл нь дарагдаж шинэчлэгдэнэ.
+        Захиалгаа хянах хуудсанд хэрэглэгч VIN-ий сvvлийн 5 оронгоор хайна.
+      </p>
+      <label className={`flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-sm p-16 cursor-pointer transition-colors ${uploading ? 'opacity-50 pointer-events-none' : 'hover:border-toyota-red hover:bg-red-50/30'}`}>
+        <FileSpreadsheet size={40} className="text-zinc-300" />
+        <span className="text-[11px] font-black uppercase tracking-widest text-zinc-500">
+          {uploading ? 'Уншиж байна...' : 'Excel файл сонгох (.xlsx)'}
+        </span>
+        <input type="file" accept=".xlsx,.xls" className="hidden" onChange={handleFile} />
+      </label>
+
+      {result && (
+        <div className={`mt-6 p-5 rounded-sm text-[12px] font-bold whitespace-pre-wrap ${result.ok ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+          {result.message}
+        </div>
       )}
     </div>
   );

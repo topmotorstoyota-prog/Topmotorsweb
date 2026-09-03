@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const path = require('path');
+const XLSX = require('xlsx');
 const rateLimit = require('express-rate-limit');
 const compression = require('compression'); // Нэмэх
 const helmet = require('helmet');
@@ -151,6 +152,212 @@ app.post('/api/upload-multiple', authenticateToken, (req, res) => {
       res.status(500).json({ message: "Зураг боловсруулахад алдаа гарлаа." });
     }
   });
+});
+
+// --- SHIPMENT TRACKING (Excel upload -> байршил хайх) ---
+// Status текст дэх байршлын түлхүүр үгсийг бодит координатруу хөрвүүлэх толь бичиг.
+// Шинэ боомт/цэг гарвал энд нэг мөр нэмэхэд хангалттай.
+// Дараалал чухал: Array.find нь эхний тохирсныг авдаг тул илvv тодорхой
+// (жишээ нь тухайн зогсоолын нэр) заалтуудыг ерөнхий заалтуудаас (Erlian гэх мэт
+// зайн лавлагаанд гардаг үг) өмнө байрлуулна. "ATD Nagoya via Tianjin" мэтийн үед
+// Нагояг эхний тохирол болгож, одоогийн байршил гэж vзнэ (хөдлөх цэг нь тэндээс).
+const SHIPMENT_LOCATIONS = [
+  { match: /nagoya/i, name: 'Нагоёа боомт, Япон', lat: 35.1815, lng: 136.9066,
+    arrived: (d) => `${d}-нд Нагоёа боомт дээр ирсэн`,
+    departed: (d) => `${d}-нд Нагоёа боомтоос хөдөлсөн` },
+  { match: /saihantala/i, name: 'Сайхантал зогсоол, БНХАУ', lat: 42.7481, lng: 112.6600,
+    arrived: () => `Эрээнээс 295 км зайд байрлах Сайхантал зогсоол дээр ирсэн`,
+    departed: (d) => `${d}-нд Сайхантал зогсоолоос хөдөлсөн` },
+  { match: /lujiacun/i, name: 'Люжяцун зогсоол, БНХАУ', lat: 43.2560, lng: 112.1470,
+    arrived: () => `Эрээнээс 284 км зайд байрлах Люжяцун зогсоол дээр ирсэн`,
+    departed: (d) => `${d}-нд Люжяцун зогсоолоос хөдөлсөн` },
+  { match: /qisumu/i, name: 'Жинин (Цисvму) зогсоол, БНХАУ', lat: 41.0283, lng: 113.0922,
+    arrived: () => `Эрээнээс 320 км зайд байрлах Цисvму зогсоол дээр ирсэн`,
+    departed: (d) => `${d}-нд Цисvму зогсоолоос хөдөлсөн` },
+  { match: /wuhan/i, name: 'Вухан боомт, БНХАУ', lat: 30.5928, lng: 114.3055,
+    arrived: (d) => `${d}-нд Вухан боомт дээр ирсэн`,
+    departed: (d) => `${d}-нд Вухан боомтоос хөдөлсөн` },
+  { match: /tianjin/i, name: 'Тяньжин боомт, БНХАУ', lat: 39.0842, lng: 117.2009,
+    arrived: (d) => `${d}-нд Тяньжин боомт дээр ирсэн`,
+    departed: (d) => `${d}-нд Тяньжин боомтоос хөдөлсөн` },
+  { match: /erlian/i, name: 'Эрээн боомт, БНХАУ', lat: 43.6550, lng: 111.9770,
+    arrived: (d) => `${d}-нд БНХАУ - Эрээн боомт дээр ирсэн`,
+    departed: (d) => `${d}-нд БНХАУ - Эрээн боомтоос хөдөлсөн` },
+  { match: /\bzu\b|zamiin/i, name: 'Замын-Үүд, Монгол', lat: 43.6561, lng: 111.8956,
+    arrived: (d) => `${d}-нд Замын-Үүд боомт дээр ирсэн`,
+    departed: (d) => `${d}-нд Замын-Үүд боомтоос хөдөлсөн` },
+  { match: /ub station|ulaanbaatar/i, name: 'Улаанбаатар', lat: 47.9184, lng: 106.9177,
+    arrived: (d) => `${d}-нд Улаанбаатар хотод ирсэн, задрагvй хvлээгдэж байна`,
+    departed: (d) => `${d}-нд Улаанбаатараас хөдөлсөн` },
+];
+
+const parseShipmentStatus = (rawStatus) => {
+  if (!rawStatus) return { locationName: null, lat: null, lng: null, dateLabel: null, sentence: null };
+  const text = String(rawStatus).trim();
+  const dateMatch = text.match(/(\d{1,2})\/(\d{1,2})/);
+  const dateLabel = dateMatch ? `${dateMatch[1]}/${dateMatch[2]}` : null;
+  const withoutStagePrefix = text.replace(/^\d+_/, '');
+  const withoutDate = dateMatch ? withoutStagePrefix.replace(dateMatch[0], '') : withoutStagePrefix;
+  const locationText = withoutDate.trim();
+  const found = SHIPMENT_LOCATIONS.find(loc => loc.match.test(locationText));
+
+  const isDeparted = /ATD/i.test(text); // Анхаар: \b нь "_" тэмдэгтийн дараа ажилладаггvй (_ нь мөн \w-д багтдаг)
+  const dateStr = dateLabel || '';
+
+  // "ATD Nagoya via Tianjin/Wuhan" гэх мэт Нагояас хаашаа хөдөлсөнийг зааж буй хосолсон өгүүлбэр
+  let sentence = null;
+  const viaMatch = locationText.match(/via\s+([A-Za-z]+)/i);
+  if (/nagoya/i.test(locationText) && viaMatch) {
+    const viaTarget = SHIPMENT_LOCATIONS.find(loc => loc.match.test(viaMatch[1]));
+    const viaName = viaTarget ? viaTarget.name.split(',')[0] : viaMatch[1];
+    sentence = `${dateStr}-нд Япон улс Нагоёа боомтоос БНХАУ - ${viaName} уруу хөдөлсөн`;
+  } else if (found) {
+    sentence = isDeparted ? found.departed(dateStr) : found.arrived(dateStr);
+  }
+
+  return {
+    locationName: found ? found.name : (locationText || null),
+    lat: found ? found.lat : null,
+    lng: found ? found.lng : null,
+    dateLabel,
+    sentence
+  };
+};
+
+// "TMON2606" -> сүүлийн 4 орон "2606" -> "2026-06"
+const parseOcsYearMonth = (ocsNumber) => {
+  if (!ocsNumber) return null;
+  const last4 = String(ocsNumber).trim().slice(-4);
+  if (!/^\d{4}$/.test(last4)) return null;
+  return `20${last4.slice(0, 2)}-${last4.slice(2, 4)}`;
+};
+
+const shipmentExcelFilter = (req, file, cb) => {
+  const allowed = /xlsx|xls/;
+  if (allowed.test(path.extname(file.originalname).toLowerCase())) return cb(null, true);
+  cb(new Error('Зөвхөн Excel файл (.xlsx, .xls) хуулах боломжтой!'));
+};
+const uploadShipmentExcel = multer({ storage: multer.memoryStorage(), fileFilter: shipmentExcelFilter, limits: { fileSize: 20 * 1024 * 1024 } });
+
+const adminOnly = (req, res, next) => {
+  if (req.user.role === 'SUPER_ADMIN' || req.user.role === 'ADMIN') return next();
+  return res.status(403).json({ message: "Танд энэ хэсгийг удирдах эрх байхгүй байна." });
+};
+
+app.post('/api/shipment/upload', authenticateToken, adminOnly, (req, res) => {
+  uploadShipmentExcel.single('file')(req, res, async (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    if (!req.file) return res.status(400).json({ message: 'Файл сонгоогүй байна.' });
+    try {
+      const wb = XLSX.read(req.file.buffer, { type: 'buffer' });
+      const sheet = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+
+      const parsed = [];
+      for (const row of rows.slice(1)) {
+        const vin = String(row[0] || '').trim();
+        if (vin.length < 10) continue; // толгой мөр/хоосон/pivot table-ийн хог мөрүүдийг алгасна
+
+        const ocsNumber = String(row[1] || '').trim() || null;
+        parsed.push({
+          vin,
+          vinLast5: vin.slice(-5).toUpperCase(),
+          ocsNumber,
+          manufactureYearMonth: parseOcsYearMonth(ocsNumber),
+          shipmentNumber: String(row[2] || '').trim() || null,
+          modelName: String(row[3] || '').trim() || null,
+          exteriorColor: String(row[6] || '').trim() || null,
+          interiorColor: String(row[7] || '').trim() || null,
+          status: String(row[10] || '').trim() || null
+        });
+      }
+
+      // Шинэ файл бvрийг сүүлчийн, бүрэн жагсаалт гэж vзэж, хуучин өгөгдлийг бvгдийг нь цэвэрлээд дахин бөглөнө
+      // (ингэснээр аль хэдийн хvргэгдсэн/жагсаалтаас хасагдсан машин хуучирсан өгөгдөл болж vлдэхгvй)
+      await prisma.shipmentVehicle.deleteMany({});
+      if (parsed.length > 0) {
+        await prisma.shipmentVehicle.createMany({ data: parsed });
+      }
+
+      await logActivity(req, 'UPLOAD', 'shipment', 'excel', `${parsed.length} машины мэдээлэл шинэчлэгдлээ`);
+      res.json({ message: `${parsed.length} машины мэдээлэл амжилттай шинэчлэгдлээ.`, count: parsed.length });
+    } catch (error) {
+      console.error('Shipment Excel upload error:', error);
+      res.status(500).json({ message: 'Excel файл боловсруулахад алдаа гарлаа.', detail: formatErrorDetail(error) });
+    }
+  });
+});
+
+// Нэвтрэлт шаардахгүй, VIN-ий сүүлийн 5 оронгоор хайна
+app.get('/api/shipment/track/:last5', async (req, res) => {
+  try {
+    const last5 = String(req.params.last5 || '').trim().toUpperCase();
+    if (!/^[A-Z0-9]{5}$/.test(last5)) {
+      return res.status(400).json({ message: 'VIN-ий сүүлийн 5 оронг зөв оруулна уу.' });
+    }
+    const matches = await prisma.shipmentVehicle.findMany({ where: { vinLast5: last5 } });
+    const results = matches.map(m => {
+      const parsed = parseShipmentStatus(m.status);
+      return {
+        vin: m.vin,
+        modelName: m.modelName,
+        exteriorColor: m.exteriorColor,
+        interiorColor: m.interiorColor,
+        shipmentNumber: m.shipmentNumber,
+        manufactureYearMonth: m.manufactureYearMonth,
+        status: m.status,
+        locationName: parsed.locationName,
+        lat: parsed.lat,
+        lng: parsed.lng,
+        dateLabel: parsed.dateLabel,
+        sentence: parsed.sentence,
+        updatedAt: m.updatedAt
+      };
+    });
+    res.json(results);
+  } catch (error) {
+    console.error('Shipment track error:', error);
+    res.status(500).json({ message: 'Мэдээлэл авахад алдаа гарлаа.' });
+  }
+});
+
+// Нэвтрэлт шаардахгүй - тээврийн дугаар (Shipment Number) бүрээр давхардалгүй нэгтгэж, одоо байгаа байршлыг харуулна
+app.get('/api/shipment/summary', async (req, res) => {
+  try {
+    const all = await prisma.shipmentVehicle.findMany();
+    const groups = new Map();
+    all.forEach(v => {
+      const key = v.shipmentNumber || 'Тодорхойгүй';
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(v);
+    });
+
+    const summary = [...groups.entries()].map(([shipmentNumber, vehicles]) => {
+      // Нэг тээврийн дугаарын дор статус зөрвөл хамгийн олон давтагдсан статусыг (mode) авна
+      const statusCounts = new Map();
+      vehicles.forEach(v => {
+        const s = v.status || '';
+        statusCounts.set(s, (statusCounts.get(s) || 0) + 1);
+      });
+      const [modeStatus] = [...statusCounts.entries()].sort((a, b) => b[1] - a[1])[0];
+      const parsed = parseShipmentStatus(modeStatus);
+      return {
+        shipmentNumber,
+        vehicleCount: vehicles.length,
+        locationName: parsed.locationName,
+        dateLabel: parsed.dateLabel,
+        sentence: parsed.sentence,
+        lat: parsed.lat,
+        lng: parsed.lng
+      };
+    });
+
+    summary.sort((a, b) => a.shipmentNumber.localeCompare(b.shipmentNumber));
+    res.json(summary);
+  } catch (error) {
+    console.error('Shipment summary error:', error);
+    res.status(500).json({ message: 'Мэдээлэл авахад алдаа гарлаа.' });
+  }
 });
 
 // --- AUTH ---

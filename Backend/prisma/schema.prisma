@@ -75,6 +75,21 @@ model Product {
   purpose     String?  // Дугуй: зориулалт (Зун, Өвөл, Бүх улирал)
 }
 
+// Захиалгын тээвэрлэлт хянах - admin-аас Excel файлаар upload хийж бөглөнө
+model ShipmentVehicle {
+  id             Int      @id @default(autoincrement())
+  vin            String   @unique
+  vinLast5       String   // хайлтад ашиглана (VIN-ий сүүлийн 5 орон)
+  ocsNumber      String?  // жишээ: TMON2606
+  manufactureYearMonth String? // OCS number-ий сүүлийн 4 оронгоос гаргасан "2026-06"
+  shipmentNumber String?  // жишээ: VH-TM0364
+  modelName      String?  // жишээ: LC300, LC300HEV
+  exteriorColor  String?
+  interiorColor  String?
+  status         String?  // Excel-ийн түүхий status текст, жишээ: "1_UB station 9/1"
+  updatedAt      DateTime @updatedAt
+}
+
 model ToyotaQ {
   id          Int      @id @default(autoincrement())
   name        String
