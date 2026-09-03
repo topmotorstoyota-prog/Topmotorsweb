@@ -190,7 +190,7 @@ const OrderTracking = () => {
               </div>
               {error && <p className="text-toyota-red text-xs font-bold mt-3 text-center">{error}</p>}
             </form>
-            <h3 className="text-sm md:text-lg font-black uppercase tracking-tight text-toyota-black px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4 text-center">{t('orderTracking.summaryTitle')}</h3>
+            <h3 className="text-sm md:text-lg font-black uppercase tracking-tight text-toyota-black px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4 text-center border-b-2 border-zinc-300">{t('orderTracking.summaryTitle')}</h3>
             <div className="flex-1">
               <table className="w-full text-left">
                 <thead>
