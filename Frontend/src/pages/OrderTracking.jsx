@@ -190,12 +190,12 @@ const OrderTracking = () => {
               </div>
               {error && <p className="text-toyota-red text-xs font-bold mt-3 text-center">{error}</p>}
             </form>
-            <h3 className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.12em] md:tracking-[0.2em] text-zinc-600 px-4 pt-4 md:px-6 md:pt-6">{t('orderTracking.summaryTitle')}</h3>
+            <h3 className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.12em] md:tracking-[0.2em] text-zinc-600 px-4 pt-4 md:px-6 md:pt-6 text-center">{t('orderTracking.summaryTitle')}</h3>
             <div className="flex-1">
               <table className="w-full text-left">
                 <thead>
                   <tr className="border-b border-zinc-200">
-                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600 text-center">{t('orderTracking.shipmentNumberCol')}</th>
+                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600 text-center border-r border-zinc-200">{t('orderTracking.shipmentNumberCol')}</th>
                     <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600 text-center">{t('orderTracking.detailCol')}</th>
                   </tr>
                 </thead>
@@ -204,8 +204,8 @@ const OrderTracking = () => {
                     <tr><td colSpan="2" className="p-10 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">{t('orderTracking.loading')}</td></tr>
                   ) : summary.length > 0 ? summary.map((s) => (
                     <tr key={s.shipmentNumber} className="border-b border-zinc-200/70 last:border-0">
-                      <td className="p-4 text-xs font-bold tracking-wider align-top whitespace-nowrap text-center">{shortShipment(s.shipmentNumber)}</td>
-                      <td className="p-4 text-[11px] font-medium text-zinc-700 leading-relaxed">{s.sentence || s.locationName || t('orderTracking.unknown')}</td>
+                      <td className="p-4 text-xs font-bold tracking-wider align-top whitespace-nowrap text-center border-r border-zinc-200">{shortShipment(s.shipmentNumber)}</td>
+                      <td className="p-4 text-[11px] font-medium text-zinc-700 leading-relaxed text-center">{s.sentence || s.locationName || t('orderTracking.unknown')}</td>
                     </tr>
                   )) : (
                     <tr><td colSpan="2" className="p-10 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">{t('orderTracking.noData')}</td></tr>
