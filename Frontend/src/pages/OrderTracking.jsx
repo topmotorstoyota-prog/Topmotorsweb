@@ -167,9 +167,9 @@ const OrderTracking = () => {
 
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 max-w-6xl mx-auto items-stretch">
           {/* Зvvн тал: бvх тээврийн дугаарын одоогийн байршлыг харуулах хvснэгт (mobile дээр хайлттай нэг карт болно) */}
-          <div className="bg-zinc-50 border border-zinc-200 rounded-sm overflow-hidden flex flex-col">
+          <div className="bg-zinc-50 border-2 border-zinc-300 rounded-sm overflow-hidden flex flex-col">
             {/* Mobile-д зориулсан компакт хайлт - гарчгаас дээгvvр, зөвхөн lg-ээс доош харагдана */}
-            <form onSubmit={handleSearch} className="lg:hidden p-4 border-b border-zinc-200">
+            <form onSubmit={handleSearch} className="lg:hidden p-4 border-b border-zinc-300">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
                 <input
@@ -190,12 +190,12 @@ const OrderTracking = () => {
               </div>
               {error && <p className="text-toyota-red text-xs font-bold mt-3 text-center">{error}</p>}
             </form>
-            <h3 className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.12em] md:tracking-[0.2em] text-zinc-600 px-4 pt-4 md:px-6 md:pt-6 text-center">{t('orderTracking.summaryTitle')}</h3>
+            <h3 className="text-sm md:text-lg font-black uppercase tracking-tight text-toyota-black px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4">{t('orderTracking.summaryTitle')}</h3>
             <div className="flex-1">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-zinc-200">
-                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600 text-center border-r border-zinc-200">{t('orderTracking.shipmentNumberCol')}</th>
+                  <tr className="border-b-2 border-zinc-300">
+                    <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600 text-center border-r-2 border-zinc-300">{t('orderTracking.shipmentNumberCol')}</th>
                     <th className="p-4 text-[9px] font-black uppercase tracking-widest text-zinc-600 text-center">{t('orderTracking.detailCol')}</th>
                   </tr>
                 </thead>
@@ -203,8 +203,8 @@ const OrderTracking = () => {
                   {summaryLoading ? (
                     <tr><td colSpan="2" className="p-10 text-center text-zinc-600 text-[11px] font-bold uppercase tracking-widest">{t('orderTracking.loading')}</td></tr>
                   ) : summary.length > 0 ? summary.map((s) => (
-                    <tr key={s.shipmentNumber} className="border-b border-zinc-200/70 last:border-0">
-                      <td className="p-4 text-xs font-bold tracking-wider align-top whitespace-nowrap text-center border-r border-zinc-200">{shortShipment(s.shipmentNumber)}</td>
+                    <tr key={s.shipmentNumber} className="border-b border-zinc-300 last:border-0">
+                      <td className="p-4 text-xs font-bold tracking-wider align-top whitespace-nowrap text-center border-r-2 border-zinc-300">{shortShipment(s.shipmentNumber)}</td>
                       <td className="p-4 text-[11px] font-medium text-zinc-700 leading-relaxed text-center">{s.sentence || s.locationName || t('orderTracking.unknown')}</td>
                     </tr>
                   )) : (
