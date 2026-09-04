@@ -381,6 +381,10 @@ const VehicleDetail = () => {
                    )}
                 </div>
               </div>
+              <p className="text-[7px] md:text-[9px] text-zinc-400 leading-relaxed mb-6 md:mb-8 -mt-3 md:-mt-5">
+                Зурагт vзvvлсэн автомашины загвар, тоноглол нь бодит автомашинаас ялгаатай байх боломжтой.<br />
+                The model and equipment of the vehicle shown in the image may differ from the actual vehicle.
+              </p>
 
                     {selectedVariant.colors?.length > 0 && (
                       <div className="mb-8 md:mb-10 flex flex-col items-center">
@@ -529,12 +533,18 @@ const VehicleDetail = () => {
                 <div className="w-12 md:w-20 h-1 bg-toyota-red mt-3 md:mt-6" />
             </div>
             {galleryImages.length > 0 ? (
-              <div className="space-y-4 md:space-y-12 max-w-5xl mx-auto">
+              <div className="max-w-5xl mx-auto">
+                <div className="space-y-4 md:space-y-12">
                   {galleryImages.map((img, idx) => (
                       <motion.div key={idx} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="w-full aspect-video relative overflow-hidden shadow-lg md:shadow-2xl rounded-sm bg-white border border-zinc-200">
                           <img src={img} alt="" className="w-full h-full object-cover" />
                       </motion.div>
                   ))}
+                </div>
+                <p className="text-[7px] md:text-[9px] text-zinc-400 leading-relaxed mt-3 md:mt-4">
+                  Зурагт vзvvлсэн автомашины загвар, тоноглол нь бодит автомашинаас ялгаатай байх боломжтой.<br />
+                  The model and equipment of the vehicle shown in the image may differ from the actual vehicle.
+                </p>
               </div>
             ) : (
               <div className="text-center py-12 md:py-20 bg-white border-2 border-dashed border-zinc-100 rounded-sm">
