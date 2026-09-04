@@ -96,7 +96,7 @@
     "types": {
       "newCar": { "title": "Order a New Vehicle", "desc": "Place an order by choosing from our latest models." },
       "testDrive": { "title": "Test Drive", "desc": "Take the latest models for a drive yourself." },
-      "service": { "title": "Service & Repair", "desc": "Professional repair and diagnostics." }
+      "service": { "title": "Service & Repair", "desc": "Professional repair and diagnostics.", "unavailable": "Improvements in progress" }
     },
     "contactSalesLink": "Talk to a Sales Representative",
     "services": {

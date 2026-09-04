@@ -238,12 +238,13 @@ const Booking = () => {
                       <p className="hidden md:block text-[11px] text-zinc-800 mt-2 leading-relaxed">{t('booking.types.testDrive.desc')}</p>
                     </button>
                     <button
-                      onClick={() => setFormData({...formData, type: 'service'})}
-                      className={`p-3 md:p-8 border-2 transition-all text-center flex flex-col items-center h-full rounded-sm ${formData.type === 'service' ? "border-toyota-red bg-toyota-red/5" : "border-zinc-100 hover:border-zinc-200"}`}
+                      type="button"
+                      disabled
+                      className="p-3 md:p-8 border-2 border-zinc-100 text-center flex flex-col items-center h-full rounded-sm opacity-40 grayscale cursor-not-allowed"
                     >
-                      <Clock className={formData.type === 'service' ? "text-toyota-red" : "text-zinc-300 md:text-toyota-black"} size={20} md:size={40} />
-                      <h4 className={`font-black uppercase tracking-tighter md:tracking-widest mt-2 md:mt-6 text-[7px] md:text-sm leading-tight ${formData.type === 'service' ? "text-toyota-red" : "text-toyota-black"}`}>{t('booking.types.service.title')}</h4>
-                      <p className="hidden md:block text-[11px] text-zinc-800 mt-2 leading-relaxed">{t('booking.types.service.desc')}</p>
+                      <Clock className="text-zinc-300 md:text-toyota-black" size={20} md:size={40} />
+                      <h4 className="font-black uppercase tracking-tighter md:tracking-widest mt-2 md:mt-6 text-[7px] md:text-sm leading-tight text-toyota-black">{t('booking.types.service.title')}</h4>
+                      <p className="hidden md:block text-[11px] text-zinc-800 mt-2 leading-relaxed">{t('booking.types.service.unavailable')}</p>
                     </button>
                   </div>
 
