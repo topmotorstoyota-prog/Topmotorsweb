@@ -239,6 +239,7 @@
       "galleryTitlePlain": "Photo",
       "galleryTitleRed": "Gallery",
       "galleryEmpty": "Gallery is empty",
+      "imageDisclaimer": "The model and equipment of the vehicle shown in the image may differ from the actual vehicle.",
       "compareDesc": "Compare the {{name}} {{series}} side by side with other Toyota models and find the trim that best fits your needs."
     }
   },
