@@ -381,7 +381,8 @@ const VehicleDetail = () => {
                    )}
                 </div>
               </div>
-              <p className="text-[7px] md:text-[9px] text-zinc-400 leading-relaxed mb-6 md:mb-8 -mt-3 md:-mt-5">
+              <p className="flex items-start gap-1 text-[7px] md:text-[9px] text-zinc-400 leading-relaxed mb-6 md:mb-8 -mt-3 md:-mt-5">
+                <Info size={10} className="shrink-0 mt-px" />
                 {t('vehicles.detail.imageDisclaimer')}
               </p>
 
@@ -538,7 +539,8 @@ const VehicleDetail = () => {
                         <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="w-full aspect-video relative overflow-hidden shadow-lg md:shadow-2xl rounded-sm bg-white border border-zinc-200">
                             <img src={img} alt="" className="w-full h-full object-cover" />
                         </motion.div>
-                        <p className="text-[7px] md:text-[9px] text-zinc-400 leading-relaxed mt-2 md:mt-3">
+                        <p className="flex items-start gap-1 text-[7px] md:text-[9px] text-zinc-400 leading-relaxed mt-2 md:mt-3">
+                          <Info size={10} className="shrink-0 mt-px" />
                           {t('vehicles.detail.imageDisclaimer')}
                         </p>
                       </div>
