@@ -11,7 +11,7 @@ import placeholderImage from '../assets/vehicles/hero.jpg';
 const News = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
-  useDocumentTitle('Мэдээ, мэдээлэл', 'Toyota Top Motors-ийн сүүлийн үеийн мэдээ, зар, урамшуулал.');
+  useDocumentTitle(t('news.meta.title'), t('news.meta.description'));
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
 

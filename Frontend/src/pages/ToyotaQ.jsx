@@ -27,7 +27,7 @@ import inspection150 from '../assets/toyota-q/150.jpg';
 const ToyotaQ = () => {
   const { t } = useTranslation();
   const { loc, fuelType } = useLocale();
-  useDocumentTitle('Toyota-Q баталгаат хэрэглэсэн машин', 'Toyota-гийн албан ёсны дилерээс 150 цэгийн шалгалт хийгдсэн, баталгаат чанарын гэрчилгээтэй хэрэглэсэн Toyota, Lexus автомашин.');
+  useDocumentTitle(t('toyotaQ.meta.title'), t('toyotaQ.meta.description'));
   const [qVehicles, setQVehicles] = useState([]);
   const [filters, setFilters] = useState({
     name: '',
@@ -161,7 +161,7 @@ const ToyotaQ = () => {
         <div className="w-full md:w-[60%] h-full relative order-1 md:order-2 pt-[80px] md:pt-0 bg-toyota-black">
           <img
             src={toyotaQHero}
-            alt="Toyota Q Certified Pre-owned"
+            alt={t('toyotaQ.heroImageAlt')}
             className="w-full h-full object-contain object-left"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-toyota-black via-transparent to-transparent hidden md:block" />
@@ -182,7 +182,7 @@ const ToyotaQ = () => {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-4">
                 {[
-                    { icon: RefreshCcw, title: "Trade-in", desc: t('toyotaQ.cards.tradeIn') },
+                    { icon: RefreshCcw, title: t('toyotaQ.cards.tradeInTitle'), desc: t('toyotaQ.cards.tradeIn') },
                     { icon: Search, title: t('toyotaQ.cards.buyTitle'), desc: t('toyotaQ.cards.buyDesc') },
                     { icon: Award, title: t('toyotaQ.cards.consignTitle'), desc: t('toyotaQ.cards.consignDesc') },
                     { icon: FileCheck, title: t('toyotaQ.cards.points150Title'), desc: t('toyotaQ.cards.points150Desc') }
@@ -355,7 +355,7 @@ const ToyotaQ = () => {
         <div className="container-custom px-4">
             <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-20">
                 <div className="w-full lg:w-1/2 relative">
-                    <img src={inspection150} alt="150 Points Inspection" className="w-full h-40 md:h-auto object-cover shadow-lg md:shadow-2xl" />
+                    <img src={inspection150} alt={t('toyotaQ.inspectionImageAlt')} className="w-full h-40 md:h-auto object-cover shadow-lg md:shadow-2xl" />
                     <div className="absolute -top-4 md:-top-10 -right-4 md:-right-10 bg-toyota-red p-4 md:p-12 text-white">
                         <span className="text-2xl md:text-6xl font-black block leading-none">150</span>
                         <span className="text-[7px] md:text-xs font-bold uppercase tracking-widest">{t('toyotaQ.inspection.badge')}</span>

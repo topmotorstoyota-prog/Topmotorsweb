@@ -23,7 +23,7 @@ import API_BASE_URL from '../config';
 
 const ProductDetail = () => {
   const { t } = useTranslation();
-  const { loc } = useLocale();
+  const { loc, stockStatus } = useLocale();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -92,7 +92,7 @@ const ProductDetail = () => {
 
   const categoryName = (product.category === 'Дугуй' || product.category === 'GR Tyres') ? t('products.tires.title') :
                        product.category === 'Обуд' ? t('products.wheels.title') :
-                       product.category === 'GR Merch' ? 'GR Merch' : t('nav.products');
+                       product.category === 'GR Merch' ? t('products.merch.title') : t('nav.products');
 
   const allImages = [product.image, ...getImages()].filter(Boolean);
 
@@ -209,7 +209,7 @@ const ProductDetail = () => {
                 )}
 
                 <div className="space-y-4 mb-8 lg:mb-10">
-                  <div className={`px-3 py-1.5 text-[9px] lg:text-[10px] font-black uppercase tracking-widest inline-block rounded-sm ${product.stock === 'Дууссан' ? 'bg-red-900/30 text-red-400' : 'bg-green-900/30 text-green-400'}`}>{product.stock || 'Бэлэн байгаа'}</div>
+                  <div className={`px-3 py-1.5 text-[9px] lg:text-[10px] font-black uppercase tracking-widest inline-block rounded-sm ${product.stock === 'Дууссан' ? 'bg-red-900/30 text-red-400' : 'bg-green-900/30 text-green-400'}`}>{stockStatus(product.stock || 'Бэлэн байгаа')}</div>
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 bg-zinc-900 flex items-center justify-center rounded-sm shrink-0 text-toyota-red"><ShieldCheck size={20}/></div>
                     <p className="text-[11px] lg:text-xs text-zinc-400 leading-relaxed font-medium">{t('productDetail.warrantyNote')}</p>

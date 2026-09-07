@@ -10,7 +10,7 @@ import API_BASE_URL from '../config';
 const Compare = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
-  useDocumentTitle('Автомашин харьцуулах', 'Toyota-гийн загваруудыг үзүүлэлт, үнэ, тоноглолоор нь харьцуулж, өөрт тохирсныг сонгоорой.');
+  useDocumentTitle(t('compare.meta.title'), t('compare.meta.description'));
   const [searchParams] = useSearchParams();
   const [selectedVariants, setSelectedVariants] = useState([]);
   const [loading, setLoading] = useState(true);

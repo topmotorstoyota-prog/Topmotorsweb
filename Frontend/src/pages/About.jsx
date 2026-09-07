@@ -19,8 +19,8 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import aboutImage from '../assets/common/about.jpg';
 
 const About = () => {
-  useDocumentTitle('Бидний тухай', 'Toyota Top Motors LLC 2021 оноос хойш Toyota-гийн албан ёсны дилерийн хувиар үйл ажиллагаа явуулж байна. Манай түүх, эрхэм зорилго, үнэт зүйлс.');
   const { t } = useTranslation();
+  useDocumentTitle(t('about.meta.title'), t('about.meta.description'));
   const stats = [
     { label: t('about.stats.branches.label'), value: "2", icon: MapPin, desc: t('about.stats.branches.desc') },
     { label: t('about.stats.staff.label'), value: "150+", icon: Users, desc: t('about.stats.staff.desc') },
@@ -36,10 +36,10 @@ const About = () => {
   ];
 
   const values = [
-    { title: t('about.values.vision.title'), desc: "Mobility Lifestyle Partner", icon: Compass },
-    { title: t('about.values.mission.title'), desc: "Together To The Top - Top service, Top spare parts, Top sales, Top company", icon: Target },
-    { title: t('about.values.slogan.title'), desc: "TOYOTA IS TOP MOTORS", icon: Award },
-    { title: t('about.values.principles.title'), desc: "MASTERY, TEAM SPIRIT, LEADERSHIP, MCS SPIRIT, CREATIVITY, INTEGRITY, SUSTAINABLE DEVELOPMENT", icon: Shield }
+    { title: t('about.values.vision.title'), desc: t('about.values.vision.desc'), icon: Compass },
+    { title: t('about.values.mission.title'), desc: t('about.values.mission.desc'), icon: Target },
+    { title: t('about.values.slogan.title'), desc: t('about.values.slogan.desc'), icon: Award },
+    { title: t('about.values.principles.title'), desc: t('about.values.principles.desc'), icon: Shield }
   ];
 
   return (
@@ -77,7 +77,7 @@ const About = () => {
             >
               <img
                 src={aboutImage}
-                alt="Toyota Top Motors Team"
+                alt={t('about.heroImageAlt')}
                 className="w-full h-auto"
               />
             </motion.div>

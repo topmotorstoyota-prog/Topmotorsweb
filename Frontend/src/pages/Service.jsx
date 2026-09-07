@@ -30,7 +30,7 @@ import serviceHeroImg from '../assets/service/service.jpg';
 
 const Service = () => {
   const { t } = useTranslation();
-  useDocumentTitle('Засвар үйлчилгээ', 'Toyota болон Lexus моделийн албан ёсны засвар, оношилгоо, эх сэлбэгийн үйлчилгээ. Орчин үеийн тоног төхөөрөмж, мэргэшсэн инженерүүд.');
+  useDocumentTitle(t('service.pageTitle'), t('service.pageDescription'));
   const servicesRef = useRef(null);
 
   const scrollToServices = () => {
@@ -99,7 +99,7 @@ const Service = () => {
               <div className="relative aspect-video md:aspect-[4/3] rounded-sm overflow-hidden shadow-xl md:shadow-2xl z-10">
                 <img
                   src={serviceHeroImg}
-                  alt="Toyota Service Center"
+                  alt={t('service.heroImageAlt')}
                   className="w-full h-full object-cover"
                 />
               </div>

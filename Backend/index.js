@@ -162,9 +162,9 @@ app.post('/api/upload-multiple', authenticateToken, (req, res) => {
 // зайн лавлагаанд гардаг үг) өмнө байрлуулна. "ATD Nagoya via Tianjin" мэтийн үед
 // Нагояг эхний тохирол болгож, одоогийн байршил гэж vзнэ (хөдлөх цэг нь тэндээс).
 const SHIPMENT_LOCATIONS = [
-  { match: /nagoya/i, name: 'Нагоёа боомт, Япон', lat: 35.1815, lng: 136.9066,
-    arrived: (d) => `${d}-нд Нагоёа боомт дээр ирсэн`,
-    departed: (d) => `${d}-нд Нагоёа боомтоос хөдөлсөн` },
+  { match: /nagoya/i, name: 'Нагояа боомт, Япон', lat: 35.1815, lng: 136.9066,
+    arrived: (d) => `${d}-нд Нагояа боомт дээр ирсэн`,
+    departed: (d) => `${d}-нд Нагояа боомтоос хөдөлсөн` },
   { match: /saihantala/i, name: 'Сайхантал зогсоол, БНХАУ', lat: 42.7481, lng: 112.6600,
     arrived: () => `Эрээнээс 295 км зайд байрлах Сайхантал зогсоол дээр ирсэн`,
     departed: (d) => `${d}-нд Сайхантал зогсоолоос хөдөлсөн` },
@@ -210,7 +210,7 @@ const parseShipmentStatus = (rawStatus) => {
   if (/nagoya/i.test(locationText) && viaMatch) {
     const viaTarget = SHIPMENT_LOCATIONS.find(loc => loc.match.test(viaMatch[1]));
     const viaName = viaTarget ? viaTarget.name.split(',')[0] : viaMatch[1];
-    sentence = `${dateStr}-нд Япон улс Нагоёа боомтоос БНХАУ - ${viaName} уруу хөдөлсөн`;
+    sentence = `${dateStr}-нд Япон улс Нагояа боомтоос БНХАУ - ${viaName} уруу хөдөлсөн`;
   } else if (found) {
     sentence = isDeparted ? found.departed(dateStr) : found.arrived(dateStr);
   }

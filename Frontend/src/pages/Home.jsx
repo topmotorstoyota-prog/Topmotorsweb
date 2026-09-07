@@ -20,7 +20,7 @@ import merchImage from '../assets/acc/GR Gallery.webp';
 
 const Home = () => {
   const { t } = useTranslation();
-  useDocumentTitle(null, 'Toyota Top Motors LLC - Монгол дахь Тоёотагийн албан ёсны дилер. Шинэ Toyota автомашин, Toyota-Q баталгаат хэрэглэсэн машин, засвар үйлчилгээ, эх сэлбэг.');
+  useDocumentTitle(null, t('home.meta.description'));
   const { loc } = useLocale();
   const slides = [
     { id: 1, image: background1, title: t('home.hero.slide1.title'), titleRed: t('home.hero.slide1.titleRed'), desc: t('home.hero.slide1.desc') },
@@ -198,7 +198,7 @@ const Home = () => {
              <img
                src={homeBanner || serviceImage}
                className="w-full h-auto block"
-               alt="Toyota Banner"
+               alt={t('home.banner.alt')}
              />
           </div>
         </div>
@@ -264,7 +264,7 @@ const Home = () => {
                     <div className="w-5 md:w-8 h-[2px] md:h-[3px] bg-toyota-red mb-1.5 md:mb-3 transition-all duration-300 group-hover:w-8 md:group-hover:w-14" />
                     <h3 className="text-white text-[10px] md:text-2xl font-black uppercase tracking-tight leading-none">{item.label}</h3>
                     <span className="hidden md:flex items-center gap-1.5 text-white/60 text-[10px] font-bold uppercase tracking-widest mt-3 group-hover:text-toyota-red transition-colors">
-                      Дэлгэрэнгүй <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                      {t('home.products.viewMore')} <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                     </span>
                   </div>
                 </Link>
@@ -324,7 +324,7 @@ const Home = () => {
           <div className="lg:w-[60%] h-[180px] md:h-[400px] lg:h-auto relative overflow-hidden">
             <img
               src={chiglelImage}
-              alt="Toyota Showroom"
+              alt={t('home.visit.imageAlt')}
               className="w-full h-full object-cover"
             />
           </div>

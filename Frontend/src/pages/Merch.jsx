@@ -21,7 +21,7 @@ const numericPrice = (p) => parseInt(String(p || '').replace(/[^0-9]/g, ''), 10)
 const Merch = () => {
   const { t } = useTranslation();
   const { loc, stockStatus } = useLocale();
-  useDocumentTitle('GR Merch', 'Toyota Gazoo Racing-ийн албан ёсны хувцас, хэрэглэл болон аксессуарууд.');
+  useDocumentTitle(t('products.merch.title'), t('products.merch.desc'));
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -55,7 +55,7 @@ const Merch = () => {
         <section className="relative h-[62vh] md:h-[75vh] min-h-[440px] w-full overflow-hidden">
           <img
             src={grHero}
-            alt="Toyota Gazoo Racing"
+            alt={t('products.merch.brandAlt')}
             className="absolute inset-0 w-full h-full object-cover object-[30%_center] md:object-center"
           />
 
@@ -69,7 +69,7 @@ const Merch = () => {
               >
                 <div className="flex items-center gap-4 md:gap-5 mb-6 md:mb-8">
                   <div className="h-9 md:h-12 w-fit shrink-0 drop-shadow-lg">
-                    <img src={grLogo} alt="Toyota Gazoo Racing" className="h-full object-contain" />
+                    <img src={grLogo} alt={t('products.merch.brandAlt')} className="h-full object-contain" />
                   </div>
                   <p className="text-white/90 text-sm md:text-lg leading-relaxed font-medium drop-shadow-lg">
                     {t('products.merch.longDesc')}

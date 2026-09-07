@@ -193,7 +193,7 @@ const Navbar = () => {
             className={clsx("p-2 flex flex-col items-center gap-0.5", isWhiteNav ? "text-toyota-black" : "text-white")}
           >
             <WheelIcon className="w-6 h-6 animate-spin-slow" />
-            <span className="text-[7px] font-black uppercase tracking-tight">Build</span>
+            <span className="text-[7px] font-black uppercase tracking-tight">{t('nav.mobileBuildLabel')}</span>
           </a>
 
           {/* Mobile Calculator Link */}
@@ -204,7 +204,7 @@ const Navbar = () => {
             className={clsx("p-2 flex flex-col items-center gap-0.5", isWhiteNav ? "text-toyota-black" : "text-white")}
           >
             <Calculator size={24} />
-            <span className="text-[7px] font-black uppercase tracking-tight">Calculator</span>
+            <span className="text-[7px] font-black uppercase tracking-tight">{t('calculator.buttonLabel2')}</span>
           </button>
         </div>
       </div>

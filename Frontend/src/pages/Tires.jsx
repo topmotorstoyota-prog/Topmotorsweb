@@ -129,7 +129,7 @@ const TireRow = ({ name, items, onPreview, t }) => {
 const Tires = () => {
   const { t } = useTranslation();
   const { loc, tirePurpose } = useLocale();
-  useDocumentTitle('Yokohama дугуй', 'Японы алдарт Yokohama брэндийн бүх төрлийн замын нөхцөлд тохирсон өндөр чанартай дугуйнууд.');
+  useDocumentTitle(t('products.tires.pageTitle'), t('products.tires.desc'));
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeDiameter, setActiveDiameter] = useState('all');
@@ -172,7 +172,7 @@ const Tires = () => {
         image: item.image,
         size: item.size,
         price: item.price,
-        purpose: item.purpose,
+        purpose: tirePurpose(item.purpose),
         stock: item.stock
       }];
     });
@@ -221,7 +221,7 @@ const Tires = () => {
             >
               <img
                 src={yokohamaLogo}
-                alt="Yokohama Tires"
+                alt={t('products.tires.brandAlt')}
                 className="h-full object-contain"
               />
             </motion.div>

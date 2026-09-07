@@ -7,7 +7,7 @@ import Button from '../components/Button';
 
 const Finance = () => {
   const { t } = useTranslation();
-  useDocumentTitle('Санхүүжилт', 'Автомашины зээл, урьдчилгаа төлбөрийн тооцоолуур. Хувь хүн болон байгууллагад зориулсан санхүүжилтийн нөхцөл.');
+  useDocumentTitle(t('finance.pageTitle'), t('finance.pageDescription'));
   const personalDocs = t('finance.personalDocs', { returnObjects: true });
   const orgDocs = t('finance.orgDocs', { returnObjects: true });
   const [price, setPrice] = useState(150000000);

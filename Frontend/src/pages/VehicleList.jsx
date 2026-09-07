@@ -23,7 +23,7 @@ const categories = [
 const VehicleList = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
-  useDocumentTitle('Автомашины загварууд', 'Toyota-гийн албан ёсны дилерээс борлуулагдаж буй бүх автомашины загварыг үзээрэй — RAV4, Land Cruiser, Hilux, Hiace болон бусад.');
+  useDocumentTitle(t('vehicles.list.meta.title'), t('vehicles.list.meta.description'));
   const [activeCategory, setActiveCategory] = useState('Бүх загварууд');
   const [searchQuery, setSearchQuery] = useState('');
   const [isCompareOpen, setIsCompareOpen] = useState(false);
@@ -209,7 +209,7 @@ const VehicleList = () => {
       <section className="container-custom px-4 md:px-6 pb-24">
         <div className="bg-toyota-black p-8 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10 relative overflow-hidden group shadow-2xl">
             <div className="absolute right-0 top-0 w-1/2 h-full opacity-30 grayscale group-hover:grayscale-0 transition-all duration-1000 hidden md:block pointer-events-none">
-              <img src={hiluxImage} alt="Comparison" className="w-full h-full object-contain object-right translate-x-12 scale-125" />
+              <img src={hiluxImage} alt={t('vehicles.list.compareBannerImageAlt')} className="w-full h-full object-contain object-right translate-x-12 scale-125" />
             </div>
             <div className="text-white relative z-10 max-w-lg text-center md:text-left">
                 <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-4 leading-tight">{t('vehicles.list.ctaTitleLine1')} <br />{t('vehicles.list.ctaTitleLine2')}</h3>

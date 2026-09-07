@@ -141,7 +141,7 @@ const Footer = () => {
         {/* Footer Bottom */}
         <div className="mt-12 pt-6 border-t border-zinc-900 flex justify-center items-center">
           <span className="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-600">
-            © 2026 TOP MOTORS LLC
+            {t('footer.copyright')}
           </span>
         </div>
       </div>

@@ -8,7 +8,7 @@ import API_BASE_URL from '../config';
 
 const Contact = () => {
   const { t } = useTranslation();
-  useDocumentTitle('Холбоо барих', 'Toyota Top Motors-той холбогдох утас, и-мэйл, салбаруудын хаяг байршил.');
+  useDocumentTitle(t('contact.meta.title'), t('contact.meta.description'));
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -233,7 +233,7 @@ const Contact = () => {
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Top Motors Toyota Center Location"
+                  title={t('contact.mapTitleBranch1')}
                 ></iframe>
               </div>
             </div>
@@ -250,7 +250,7 @@ const Contact = () => {
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Top Motors Tsogttsetsii Branch Location"
+                  title={t('contact.mapTitleBranch2')}
                 ></iframe>
               </div>
             </div>

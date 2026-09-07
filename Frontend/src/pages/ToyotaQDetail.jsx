@@ -29,7 +29,7 @@ const ToyotaQDetail = () => {
   const [loading, setLoading] = useState(true);
   useDocumentTitle(
     vehicle ? loc(vehicle.name, vehicle.nameEn) : null,
-    vehicle ? `Toyota-Q баталгаат хэрэглэсэн машин: ${loc(vehicle.name, vehicle.nameEn)}. ${vehicle.year || ''} он, ${vehicle.mileage || ''} км.` : undefined
+    vehicle ? t('toyotaQ.detail.meta.description', { name: loc(vehicle.name, vehicle.nameEn), year: vehicle.year || '', mileage: vehicle.mileage || '' }) : undefined
   );
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
@@ -235,7 +235,7 @@ const ToyotaQDetail = () => {
 
             {/* Mobile Only Description - Stays in old position for mobile flow */}
             <div className="lg:hidden lg:col-span-8 order-3 mt-4">
-              <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-4 border-l-4 border-toyota-red pl-3 md:pl-4">Тайлбар</h3>
+              <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-4 border-l-4 border-toyota-red pl-3 md:pl-4">{t('toyotaQ.detail.descriptionTitle')}</h3>
               <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-base font-medium">
                 {loc(vehicle.description, vehicle.descriptionEn) || t('toyotaQ.detail.defaultDescription')}
               </div>

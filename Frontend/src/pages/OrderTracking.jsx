@@ -17,7 +17,7 @@ const UB = { lat: 47.9184, lng: 106.9177 };
 
 // Тээврийн замын эхлэл/төгсгөл/завсрын цэг - хайлтын vр дvнгээс vл хамааран globe дээр байнга харагдана
 const FIXED_POINTS = [
-  { kind: 'origin', ...NAGOYA, locationName: 'Нагоёа', shortName: 'Нагоёа' },
+  { kind: 'origin', ...NAGOYA, locationName: 'Нагояа', shortName: 'Нагояа' },
   { kind: 'destination', ...UB, locationName: 'Улаанбаатар', shortName: 'Улаанбаатар' },
   { kind: 'waypoint', ...WUHAN, locationName: 'Вухан боомт, БНХАУ', shortName: 'Вухан' },
   { kind: 'waypoint', ...TIANJIN, locationName: 'Тяньжин боомт, БНХАУ', shortName: 'Тяньжин' },
@@ -71,7 +71,7 @@ const shortShipment = (num) => {
 
 const OrderTracking = () => {
   const { t } = useTranslation();
-  useDocumentTitle('Захиалга хянах', 'Шинэ машины захиалгынхаа тээвэрлэлтийн явцыг VIN дугаараар хянана уу.');
+  useDocumentTitle(t('nav.orderTracking'), t('orderTracking.metaDescription'));
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -323,7 +323,7 @@ const OrderTracking = () => {
                 />
                 </div>
                 <div className="w-full flex flex-nowrap items-center justify-center gap-2 md:gap-4 overflow-x-auto no-scrollbar text-[7px] md:text-[9px] font-bold uppercase tracking-wide md:tracking-wider text-zinc-500">
-                  <span className="flex items-center gap-1 shrink-0"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#22c55e] shrink-0" /> Нагоёа</span>
+                  <span className="flex items-center gap-1 shrink-0"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#22c55e] shrink-0" /> Нагояа</span>
                   <span className="flex items-center gap-1 shrink-0"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#EB0A1E] shrink-0" /> Улаанбаатар</span>
                   <span className="flex items-center gap-1 shrink-0"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#38bdf8] shrink-0" /> {t('orderTracking.legendWaypoint')}</span>
                   <span className="flex items-center gap-1 shrink-0"><span className="w-3 h-[2px] bg-[#38bdf8] shrink-0" /> {t('orderTracking.legendSea')}</span>

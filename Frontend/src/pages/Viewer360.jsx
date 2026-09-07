@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import panoramaImage from '../assets/360/360.jpg';
 
 const Viewer360 = () => {
+  const { t } = useTranslation();
   const viewerRef = useRef(null);
 
   useEffect(() => {
@@ -51,8 +53,8 @@ const Viewer360 = () => {
       <div className="absolute top-8 left-8 z-30 flex items-center gap-4">
         <div className="w-1.5 h-10 bg-toyota-red" />
         <div>
-          <h1 className="text-3xl font-black uppercase tracking-tighter text-white leading-none">Toyota VR Studio</h1>
-          <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.4em] mt-1">Powered by Pannellum</p>
+          <h1 className="text-3xl font-black uppercase tracking-tighter text-white leading-none">{t('viewer360.title')}</h1>
+          <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.4em] mt-1">{t('viewer360.poweredBy')}</p>
         </div>
       </div>
 
@@ -72,7 +74,7 @@ const Viewer360 = () => {
       {/* Footer Info */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 bg-black/40 px-8 py-3 rounded-full backdrop-blur-xl border border-white/10 pointer-events-none">
         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/80">
-          Scroll to zoom • Drag to explore
+          {t('viewer360.scrollHint')}
         </span>
       </div>
     </div>

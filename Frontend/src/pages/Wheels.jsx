@@ -11,7 +11,7 @@ import placeholderImage from '../assets/vehicles/hero.jpg';
 const Wheels = () => {
   const { t } = useTranslation();
   const { loc } = useLocale();
-  useDocumentTitle('BRAID обуд', 'Бартаат замын уралдааны дэлхийн шилдэг BRAID брэндийн хөнгөн цагаан хайлшин обуднууд.');
+  useDocumentTitle(t('products.wheels.pageTitle'), t('products.wheels.desc'));
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [previewImage, setPreviewImage] = useState(null);
@@ -44,7 +44,7 @@ const Wheels = () => {
             >
               <img
                 src={braidLogo}
-                alt="BRAID Wheels"
+                alt={t('products.wheels.brandAlt')}
                 className="h-full object-contain brightness-0 invert"
               />
             </motion.div>

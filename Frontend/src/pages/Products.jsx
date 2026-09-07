@@ -34,7 +34,7 @@ const AccordionGallery = () => {
       path: '/wheels'
     },
     {
-      title: 'GR MERCH',
+      title: t('products.merch.title'),
       subtitle: 'GAZOO RACING',
       desc: t('products.merch.desc'),
       img: grGallery,
@@ -137,7 +137,8 @@ const AccordionGallery = () => {
 };
 
 const Products = () => {
-  useDocumentTitle('Аксесуар, хэрэгсэл', 'Yokohama дугуй, BRAID обуд, Toyota Gazoo Racing албан ёсны хувцас, хэрэгсэл.');
+  const { t } = useTranslation();
+  useDocumentTitle(t('products.pageTitle'), t('products.pageDescription'));
   return (
     <div className="pt-20 md:pt-28 pb-0 bg-black">
       {/* Horizontal Accordion Gallery */}

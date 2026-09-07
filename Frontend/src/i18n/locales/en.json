@@ -26,9 +26,11 @@
     "vehiclesShort": "Vehicles",
     "locationShort": "Location",
     "menu": "Menu",
-    "orderButton": "Order Now"
+    "orderButton": "Order Now",
+    "mobileBuildLabel": "Build"
   },
   "footer": {
+    "copyright": "© 2026 TOP MOTORS LLC",
     "showroomOpen": "Showroom Open",
     "showroomClosed": "Showroom Closed",
     "menuTitle": "Quick Links",
@@ -66,8 +68,10 @@
       "titleRed": "Products",
       "tires": "Tires",
       "wheels": "Wheels",
-      "merch": "GR Merch"
+      "merch": "GR Merch",
+      "viewMore": "View Details"
     },
+    "banner": { "alt": "Toyota Banner" },
     "orderTracking": {
       "title": "Track Your Order",
       "desc": "Enter the last 5 digits of your VIN to check your vehicle's shipping progress.",
@@ -83,10 +87,18 @@
       "titleLine1": "Visit Our",
       "titleLine2": "Showroom",
       "desc": "Come visit our showroom to explore Toyota's latest models and take them for a test drive.",
-      "directionsBtn": "Get Directions"
+      "directionsBtn": "Get Directions",
+      "imageAlt": "Toyota Showroom"
+    },
+    "meta": {
+      "description": "Toyota Top Motors LLC - Toyota's official dealer in Mongolia. New Toyota vehicles, Toyota-Q certified used cars, service & repair, and genuine parts."
     }
   },
   "booking": {
+    "meta": {
+      "title": "Book an Appointment",
+      "description": "Book a test drive, service appointment, or new vehicle order."
+    },
     "headerPlain": "Which service",
     "headerRed": "would you like?",
     "errors": {
@@ -141,6 +153,12 @@
     }
   },
   "contact": {
+    "meta": {
+      "title": "Contact Us",
+      "description": "Phone numbers, email, and branch locations for contacting Toyota Top Motors."
+    },
+    "mapTitleBranch1": "Top Motors Toyota Center Location",
+    "mapTitleBranch2": "Top Motors Tsogttsetsii Branch Location",
     "errors": {
       "generic": "Something went wrong.",
       "server": "Could not connect to the server."
@@ -160,6 +178,11 @@
     }
   },
   "about": {
+    "meta": {
+      "title": "About Us",
+      "description": "Toyota Top Motors LLC has been operating as Toyota's official dealer since 2021. Our history, mission, and values."
+    },
+    "heroImageAlt": "Toyota Top Motors Team",
     "stats": {
       "branches": { "label": "Branches", "desc": "Official branches located in Ulaanbaatar and Umnugovi province." },
       "staff": { "label": "Staff", "desc": "A skilled team certified to Toyota's international standards." },
@@ -173,10 +196,10 @@
       "maintenance": { "title": "Service & Maintenance", "desc": "Professional diagnostics and repair service." }
     },
     "values": {
-      "vision": { "title": "Vision" },
-      "mission": { "title": "Mission" },
-      "slogan": { "title": "Company Slogan" },
-      "principles": { "title": "Core Values" }
+      "vision": { "title": "Vision", "desc": "Mobility Lifestyle Partner" },
+      "mission": { "title": "Mission", "desc": "Together To The Top - Top service, Top spare parts, Top sales, Top company" },
+      "slogan": { "title": "Company Slogan", "desc": "TOYOTA IS TOP MOTORS" },
+      "principles": { "title": "Core Values", "desc": "MASTERY, TEAM SPIRIT, LEADERSHIP, MCS SPIRIT, CREATIVITY, INTEGRITY, SUSTAINABLE DEVELOPMENT" }
     },
     "hero": {
       "tagline": "\"Top Motors\" LLC has been operating since 2021 and is the official dealer of \"TOYOTA\"."
@@ -197,6 +220,11 @@
       "pickup": "Pickup"
     },
     "list": {
+      "meta": {
+        "title": "Vehicle Models",
+        "description": "Browse all vehicle models sold by Toyota's official dealer — RAV4, Land Cruiser, Hilux, Hiace and more."
+      },
+      "compareBannerImageAlt": "Comparison",
       "titlePlain": "Our",
       "titleRed": "Model Lineup",
       "compareBtn": "Compare Vehicle Models",
@@ -224,7 +252,12 @@
         "safety": "SAFETY",
         "performance": "PERFORMANCE",
         "dimensions": "DIMENSIONS",
-        "wheels": "WHEELS & TIRES"
+        "wheels": "WHEELS & TIRES",
+        "other": "OTHER"
+      },
+      "interiorEyebrow": "Interior",
+      "meta": {
+        "description": "Toyota {{name}} - price, specifications, and color options. Order from the official dealer."
       },
       "view360": "View 360°",
       "defaultColor": "Standard",
@@ -244,6 +277,9 @@
     }
   },
   "service": {
+    "pageTitle": "Service & Maintenance",
+    "pageDescription": "Official Toyota and Lexus service, diagnostics, and genuine parts. Modern equipment and certified engineers.",
+    "heroImageAlt": "Toyota Service Center",
     "heroTitle": "Service & Maintenance",
     "heroPara1": "Every Toyota is renowned worldwide for its high engineering standards, durability, and reliability. The best way to preserve that quality throughout its lifetime is professional maintenance carried out to the manufacturer's standards.",
     "heroPara2": "As the official dealer of Toyota, Toyota Top Motors provides service for all Toyota and Lexus models to international standards. Our center is fully equipped with modern diagnostic and repair equipment, with the capacity to service up to 20 vehicles at once.",
@@ -289,6 +325,9 @@
     "bookNowBtn": "Book Now"
   },
   "parts": {
+    "pageTitle": "Genuine Parts",
+    "pageDescription": "Toyota genuine parts, authenticity seals, and quality assurance. Products from AISIN and other OEM suppliers.",
+    "heroImageAlt": "Toyota Genuine Parts",
     "heroTitleLine1": "Why Choose",
     "heroTitleLine2": "Genuine Parts?",
     "heroPara1": "Counterfeit parts may look identical to genuine ones, but the materials used in their manufacture can't match genuine parts under demanding driving and weather conditions — creating a risk to your vehicle's core components down the line.",
@@ -308,6 +347,7 @@
       "injectorCleaner": "Injector Cleaner"
     },
     "aisin": {
+      "imageAlt": "AISIN Manufacturing",
       "para1": "AISIN is a world-renowned Japanese auto parts manufacturer and a member of the Toyota Group. It is a trusted OEM supplier for the Toyota and Lexus brands and ranks among the world's top 10 automotive suppliers.",
       "para2": "One in five vehicles used worldwide runs on an AISIN transmission, and under a \"Quality First\" principle, AISIN manufactures more than 10,000 product types including water pumps, clutches, and brake systems."
     },
@@ -325,6 +365,8 @@
     "ctaTitle": "Need Some Help?"
   },
   "sales": {
+    "pageTitle": "Sales Team",
+    "pageDescription": "Meet Toyota Top Motors' experienced sales professionals and get in touch directly.",
     "sendRequest": "Send Order Request",
     "teamTitlePlain": "Our",
     "teamTitleRed": "Team",
@@ -332,6 +374,8 @@
     "noStaff": "No staff information available yet."
   },
   "finance": {
+    "pageTitle": "Financing",
+    "pageDescription": "Auto loan and down payment calculator. Financing terms for individuals and organizations.",
     "calcTitle": "Payment Calculator",
     "priceLabel": "Vehicle Price (₮)",
     "downPaymentLabel": "Down Payment (%)",
@@ -355,6 +399,12 @@
     "tipDesc": "Get in touch with our sales consultants for the latest interest rate information from banks and NBFIs."
   },
   "toyotaQ": {
+    "meta": {
+      "title": "Toyota-Q Certified Used Vehicles",
+      "description": "150-point inspected, certified pre-owned Toyota and Lexus vehicles from an official dealer."
+    },
+    "heroImageAlt": "Toyota Q Certified Pre-owned",
+    "inspectionImageAlt": "150 Points Inspection",
     "yearSuffix": "",
     "kmSuffix": "km",
     "heroSubtitle": "Certified Pre-Owned (CPO)",
@@ -364,6 +414,7 @@
     "whatIsTitle": "What is Toyota-Q?",
     "whatIsDesc": "Toyota-Q is a service in which vehicles sold by official Toyota dealers, aged within 7 years or 100,000 km, undergo a full inspection, diagnostics, and appraisal by Toyota's professional team, receive any necessary repairs, are certified with a \"Quality Certificate,\" and are resold with a warranty.",
     "cards": {
+      "tradeInTitle": "Trade-in",
       "tradeIn": "Apply toward a new vehicle down payment",
       "buyTitle": "Buy",
       "buyDesc": "Certified pre-owned vehicle",
@@ -409,6 +460,9 @@
     },
     "detail": {
       "notFound": "Vehicle Not Found",
+      "meta": {
+        "description": "Toyota-Q certified pre-owned vehicle: {{name}}. {{year}}, {{mileage}} km."
+      },
       "descriptionTitle": "Description",
       "defaultDescription": "This vehicle is part of the Toyota-Q certified pre-owned program, has undergone a full 150-point inspection, and comes with a quality certificate.",
       "leaseCalculator": "Lease Calculator",
@@ -423,6 +477,10 @@
     }
   },
   "faq": {
+    "meta": {
+      "title": "Frequently Asked Questions",
+      "description": "Answers to common questions about buying a vehicle, service, warranty, and financing."
+    },
     "helpLabel": "Help",
     "titlePlain": "Frequently Asked",
     "titleRed": "Questions",
@@ -475,6 +533,10 @@
     }
   },
   "compare": {
+    "meta": {
+      "title": "Compare Vehicles",
+      "description": "Compare Toyota models by specifications, price, and equipment to find the one that suits you."
+    },
     "titlePlain": "Detailed",
     "titleRed": "Comparison",
     "tableHeader": "Comparison",
@@ -491,6 +553,7 @@
     }
   },
   "orderTracking": {
+    "metaDescription": "Track your new vehicle order's shipping progress using its VIN number.",
     "heroText": "Enter the last 5 digits of your VIN to check your vehicle's shipping progress.",
     "summaryTitle": "Shipment Overview",
     "shipmentNumberCol": "Shipment #",
@@ -535,8 +598,12 @@
     "purposeLabel": "Purpose",
     "swipeHint": "Swipe",
     "previewAlt": "Preview",
+    "pageTitle": "Accessories & Gear",
+    "pageDescription": "Yokohama tires, BRAID wheels, and official Toyota Gazoo Racing apparel and gear.",
     "tires": {
       "title": "TIRES",
+      "pageTitle": "Yokohama Tires",
+      "brandAlt": "Yokohama Tires",
       "desc": "High-quality tires from the renowned Japanese Yokohama brand, suited to every road condition.",
       "longDesc": "High-quality tires from the renowned Japanese Yokohama brand, suited to every road condition. A perfect blend of safety, comfort, and durability.",
       "searchPlaceholder": "Search by tire name...",
@@ -547,11 +614,15 @@
     },
     "wheels": {
       "title": "WHEELS",
+      "pageTitle": "BRAID Wheels",
+      "brandAlt": "BRAID Wheels",
       "desc": "Lightweight alloy wheels from BRAID, the world's top brand in off-road racing.",
       "longDesc": "Lightweight alloy wheels from BRAID, the world's top brand in off-road racing. Durable in any harsh condition, light yet strong.",
       "ctaLabel": "Talk to a Wheel Sales Consultant"
     },
     "merch": {
+      "title": "GR Merch",
+      "brandAlt": "Toyota Gazoo Racing",
       "desc": "Official Toyota Gazoo Racing apparel, gear, and accessories.",
       "longDesc": "Official Toyota Gazoo Racing apparel, gear, and accessories. Stylish, high-quality products for motorsport enthusiasts.",
       "itemCount": "{{count}} products total",
@@ -561,6 +632,11 @@
       "ctaTitleRed": "touch",
       "ctaDesc": "Want more details on GR products or want to place an order? Give us a call."
     }
+  },
+  "viewer360": {
+    "title": "Toyota VR Studio",
+    "poweredBy": "Powered by Pannellum",
+    "scrollHint": "Scroll to zoom • Drag to explore"
   },
   "productDetail": {
     "priceLabel": "Price",
@@ -572,6 +648,10 @@
     "noDescription": "No description provided."
   },
   "news": {
+    "meta": {
+      "title": "News & Updates",
+      "description": "The latest news, announcements, and promotions from Toyota Top Motors."
+    },
     "readMore": "Read More",
     "more": "More",
     "noNews": "No news available yet.",

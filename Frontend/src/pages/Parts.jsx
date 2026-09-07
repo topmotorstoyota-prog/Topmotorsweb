@@ -26,7 +26,7 @@ import aisinImage from '../assets/parts/aisin.webp';
 
 const Parts = () => {
   const { t } = useTranslation();
-  useDocumentTitle('Эх сэлбэг', 'Toyota-гийн эх сэлбэг, лац наалт, чанарын баталгаа. AISIN болон бусад OEM нийлүүлэгчдийн бүтээгдэхүүн.');
+  useDocumentTitle(t('parts.pageTitle'), t('parts.pageDescription'));
   const responsibilities = [
     { title: t('parts.responsibilities.usage.title'), desc: t('parts.responsibilities.usage.desc'), icon: FileText },
     { title: t('parts.responsibilities.dealer.title'), desc: t('parts.responsibilities.dealer.desc'), icon: MapPin },
@@ -88,7 +88,7 @@ const Parts = () => {
               <div className="aspect-[4/3] rounded-sm overflow-hidden shadow-2xl relative z-10">
                 <img
                   src={filterImage}
-                  alt="Toyota Genuine Parts"
+                  alt={t('parts.heroImageAlt')}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -155,7 +155,7 @@ const Parts = () => {
                     <div className="aspect-video bg-zinc-100 rounded-sm overflow-hidden border border-zinc-200 shadow-lg lg:shadow-xl group mb-4 lg:mb-6">
                        <img
                           src={aisinImage}
-                          alt="AISIN Manufacturing"
+                          alt={t('parts.aisin.imageAlt')}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                        />
                     </div>

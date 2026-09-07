@@ -22,7 +22,7 @@ const VehicleDetail = () => {
   const [loading, setLoading] = useState(true);
   useDocumentTitle(
     vehicleModel ? loc(vehicleModel.name, vehicleModel.nameEn) : null,
-    vehicleModel ? `Toyota ${loc(vehicleModel.name, vehicleModel.nameEn)} - үнэ, үзүүлэлт, өнгө сонголт. Албан ёсны дилерээс захиалаарай.` : undefined
+    vehicleModel ? t('vehicles.detail.meta.description', { name: loc(vehicleModel.name, vehicleModel.nameEn) }) : undefined
   );
 
   const [selectedEngine, setSelectedEngine] = useState(null);
@@ -258,11 +258,12 @@ const VehicleDetail = () => {
       'SAFETY': t('vehicles.detail.featureCategories.safety'),
       'PERFORMANCE': t('vehicles.detail.featureCategories.performance'),
       'DIMENSIONS': t('vehicles.detail.featureCategories.dimensions'),
-      'WHEELS': t('vehicles.detail.featureCategories.wheels')
+      'WHEELS': t('vehicles.detail.featureCategories.wheels'),
+      'OTHER': t('vehicles.detail.featureCategories.other')
     };
 
     rawFeatures.forEach(feat => {
-      let catKey = feat.category?.toUpperCase() || 'БУСАД';
+      let catKey = feat.category?.toUpperCase() || 'OTHER';
       const catLabel = categoryTranslations[catKey] || catKey;
 
       if (!merged[catLabel]) {
@@ -503,7 +504,7 @@ const VehicleDetail = () => {
         <section className="py-12 md:py-20 bg-black overflow-hidden relative border-t border-white/5">
            <div className="container-custom px-4 mb-8 md:mb-12">
               <div className="flex flex-col items-center text-center">
-                  <span className="text-toyota-red font-black text-[9px] md:text-xs uppercase tracking-[0.4em] mb-3 md:mb-4 block leading-none">Interior</span>
+                  <span className="text-toyota-red font-black text-[9px] md:text-xs uppercase tracking-[0.4em] mb-3 md:mb-4 block leading-none">{t('vehicles.detail.interiorEyebrow')}</span>
                   <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tighter mb-3 md:mb-4 text-white leading-none">{t('vehicles.detail.salon')} <span className="text-toyota-red text-shadow-glow">360°</span></h2>
                   <div className="w-12 md:w-20 h-1 bg-toyota-red mt-3 md:mt-6" />
               </div>

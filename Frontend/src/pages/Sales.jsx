@@ -11,7 +11,7 @@ import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const Sales = () => {
   const { t } = useTranslation();
-  useDocumentTitle('Борлуулалтын ажилчид', 'Toyota Top Motors-ийн туршлагатай борлуулалтын мэргэжилтнүүдтэй танилцаж, шууд холбогдоорой.');
+  useDocumentTitle(t('sales.pageTitle'), t('sales.pageDescription'));
   const [salesStaff, setSalesStaff] = useState([]);
   const [loading, setLoading] = useState(true);
 

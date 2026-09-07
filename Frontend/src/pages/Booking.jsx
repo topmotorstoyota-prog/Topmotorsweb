@@ -9,7 +9,7 @@ import API_BASE_URL from '../config';
 
 const Booking = () => {
   const { t } = useTranslation();
-  useDocumentTitle('Цаг захиалга', 'Тест драйв, засвар үйлчилгээ, шинэ автомашины захиалгын цаг авах.');
+  useDocumentTitle(t('booking.meta.title'), t('booking.meta.description'));
   const location = useLocation();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);

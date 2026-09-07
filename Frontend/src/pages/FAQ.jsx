@@ -15,7 +15,7 @@ const categoryIcons = {
 
 const FAQ = () => {
   const { t } = useTranslation();
-  useDocumentTitle('Түгээмэл асуулт хариулт', 'Автомашин худалдан авах, засвар үйлчилгээ, баталгаа, санхүүжилтийн талаарх түгээмэл асуултын хариулт.');
+  useDocumentTitle(t('faq.meta.title'), t('faq.meta.description'));
   const faqCategories = ['sales', 'service', 'parts', 'finance', 'warranty', 'toyotaq'].map(id => ({
     id,
     title: t(`faq.categories.${id}.title`),
