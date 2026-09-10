@@ -536,12 +536,12 @@ const VehicleDetail = () => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -24 }}
                             transition={{ duration: 0.35, ease: 'easeOut' }}
-                            className="grid grid-cols-2 md:grid-cols-3 gap-x-4 md:gap-x-8 gap-y-5 md:gap-y-7"
+                            className="grid grid-cols-2 md:grid-cols-3 gap-x-6 md:gap-x-10 gap-y-6 md:gap-y-8"
                           >
                             {currentSpecTab.items.map((item, idx) => (
-                              <div key={idx} className="flex flex-col gap-1.5">
-                                <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-wider text-zinc-400">{loc(item.label, item.labelEn)}</span>
-                                <span className="inline-block w-fit bg-toyota-black text-white text-[10px] md:text-xs font-black px-2.5 py-1 rounded-sm">{loc(item.value, item.valueEn)}</span>
+                              <div key={idx} className="border-l-2 border-toyota-red/40 pl-3 md:pl-4">
+                                <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1 md:mb-1.5">{loc(item.label, item.labelEn)}</p>
+                                <p className="text-[13px] md:text-lg font-black text-toyota-black leading-tight">{loc(item.value, item.valueEn)}</p>
                               </div>
                             ))}
                           </motion.div>
