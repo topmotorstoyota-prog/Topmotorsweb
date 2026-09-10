@@ -711,10 +711,11 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
       const merged = {
         'INTERIOR': { category: 'INTERIOR', items: [] },
         'EXTERIOR': { category: 'EXTERIOR', items: [] },
-        'SAFETY': { category: 'SAFETY', items: [] }
+        'SAFETY': { category: 'SAFETY', items: [] },
+        'PERFORMANCE': { category: 'PERFORMANCE', items: [] }
       };
 
-      // Бүх хуучин үзүүлэлтүүдийг 3 ангилалд нэгтгэх
+      // Бүх хуучин үзүүлэлтүүдийг 4 ангилалд нэгтгэх
       (v.features || []).forEach(f => {
         const catName = f.category?.toUpperCase().trim();
         const targetCat = merged[catName] || merged['INTERIOR']; // Мэдэгдэхгүй бол Interior-т хийнэ
@@ -728,7 +729,9 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
           if (!exists && item.label) {
             targetCat.items.push({
               label: item.label.toUpperCase().trim(),
-              value: item.value
+              labelEn: (item.labelEn || item.label).toUpperCase().trim(),
+              value: item.value,
+              valueEn: item.valueEn || item.value
             });
           }
         });
@@ -764,10 +767,11 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
       nv[vIdx].features = [
         { category: 'INTERIOR', items: [] },
         { category: 'EXTERIOR', items: [] },
-        { category: 'SAFETY', items: [] }
+        { category: 'SAFETY', items: [] },
+        { category: 'PERFORMANCE', items: [] }
       ];
     }
-    nv[vIdx].features[catIdx].items.push({ label: '', value: '' });
+    nv[vIdx].features[catIdx].items.push({ label: '', labelEn: '', value: '', valueEn: '' });
     setFormData({ ...formData, variants: nv });
   };
 
@@ -1237,12 +1241,13 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                     <div className="border-t pt-8">
                        <h4 className="font-black uppercase text-[11px] mb-6 flex items-center gap-2 text-toyota-red"><Layers size={14}/> Тоноглол & Үзүүлэлтүүд</h4>
 
-                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          {['INTERIOR', 'EXTERIOR', 'SAFETY'].map((catName) => {
+                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {['INTERIOR', 'EXTERIOR', 'SAFETY', 'PERFORMANCE'].map((catName) => {
                             if (!v.features) v.features = [
                               { category: 'INTERIOR', items: [] },
                               { category: 'EXTERIOR', items: [] },
-                              { category: 'SAFETY', items: [] }
+                              { category: 'SAFETY', items: [] },
+                              { category: 'PERFORMANCE', items: [] }
                             ];
                             let currentCat = v.features.find(f => f.category === catName);
                             if (!currentCat) {
@@ -1261,9 +1266,9 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                                 </div>
                                 <div className="space-y-2">
                                   {(currentCat.items || []).map((item, itemIdx) => (
-                                    <div key={itemIdx} className="flex flex-col gap-1 p-2 bg-white border border-zinc-100 rounded-sm relative group">
+                                    <div key={itemIdx} className="grid grid-cols-2 gap-1 p-2 bg-white border border-zinc-100 rounded-sm relative group">
                                        <input
-                                         placeholder="Үзүүлэлт"
+                                         placeholder="Үзүүлэлт (MN)"
                                          value={item.label}
                                          onChange={e => {
                                            let nv = [...formData.variants];
@@ -1273,7 +1278,17 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                                          className="w-full p-1 text-[9px] font-bold border-none focus:ring-0 uppercase"
                                        />
                                        <input
-                                         placeholder="Утга"
+                                         placeholder="Feature (EN)"
+                                         value={item.labelEn || ''}
+                                         onChange={e => {
+                                           let nv = [...formData.variants];
+                                           nv[vIdx].features[realIdx].items[itemIdx].labelEn = e.target.value.toUpperCase();
+                                           setFormData({ ...formData, variants: nv });
+                                         }}
+                                         className="w-full p-1 text-[9px] font-bold border-none focus:ring-0 uppercase text-zinc-500"
+                                       />
+                                       <input
+                                         placeholder="Утга (MN)"
                                          value={item.value}
                                          onChange={e => {
                                            let nv = [...formData.variants];
@@ -1281,6 +1296,16 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
                                            setFormData({ ...formData, variants: nv });
                                          }}
                                          className="w-full p-1 text-[10px] font-black text-toyota-red border-none focus:ring-0"
+                                       />
+                                       <input
+                                         placeholder="Value (EN)"
+                                         value={item.valueEn || ''}
+                                         onChange={e => {
+                                           let nv = [...formData.variants];
+                                           nv[vIdx].features[realIdx].items[itemIdx].valueEn = e.target.value;
+                                           setFormData({ ...formData, variants: nv });
+                                         }}
+                                         className="w-full p-1 text-[10px] font-black text-zinc-500 border-none focus:ring-0"
                                        />
                                        <button type="button" onClick={() => {
                                          let nv = [...formData.variants];
@@ -1607,7 +1632,7 @@ function AdminForm({ type, presetCategory, token, initialData, onSuccess }) {
             )}
         </div>
 
-        {type === 'products' && formData.category !== 'Обуд' && formData.category !== 'Дугуй' && (
+        {type === 'products' && formData.category !== 'Обуд' && formData.category !== 'Дугуй' && formData.category !== 'GR Merch' && (
           <div>
             <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">
               Хэмжээ (Size) - Олон бол зай эсвэл таслалаар тусгаарлаарай

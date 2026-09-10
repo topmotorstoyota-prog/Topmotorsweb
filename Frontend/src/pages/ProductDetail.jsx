@@ -193,7 +193,7 @@ const ProductDetail = () => {
                   </div>
                 )}
 
-                {productVariants.length === 0 && sizes.length > 0 && (
+                {productVariants.length === 0 && sizes.length > 0 && product.category !== 'GR Merch' && (
                   <div className="mb-6 lg:mb-8">
                     <p className="text-[10px] font-black uppercase text-zinc-500 mb-3 tracking-widest flex items-center gap-2">
                       <Layers size={12}/>

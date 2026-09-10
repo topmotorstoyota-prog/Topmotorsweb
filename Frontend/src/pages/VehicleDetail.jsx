@@ -494,6 +494,42 @@ const VehicleDetail = () => {
               </div>
             </motion.div>
           )}
+
+          {/* Full Specifications Section */}
+          {selectedVariant && (
+            <motion.div
+              key={`specs-${selectedVariant?.id}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="mt-10 md:mt-24 pt-8 border-t border-zinc-100"
+            >
+              <div className="max-w-7xl mx-auto">
+                <h3 className="text-xl md:text-3xl font-black uppercase tracking-tighter mb-6 md:mb-8 text-toyota-black text-center">{t('vehicles.detail.specsTitlePlain')} <span className="text-toyota-red">{t('vehicles.detail.specsTitleRed')}</span></h3>
+                {featureCategories.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    {featureCategories.map((cat) => (
+                      <div key={cat.category} className="bg-[#F9F9F9] border border-zinc-100 rounded-sm overflow-hidden">
+                        <div className="px-4 md:px-6 py-3 md:py-4 bg-toyota-black">
+                          <h4 className="text-[10px] md:text-xs font-black uppercase tracking-[0.25em] text-white">{cat.category}</h4>
+                        </div>
+                        <div className="px-4 md:px-6 divide-y divide-zinc-200">
+                          {cat.items.map((item, idx) => (
+                            <div key={idx} className="flex items-start justify-between gap-4 py-2.5 md:py-3">
+                              <span className="text-[9px] md:text-[11px] font-bold uppercase tracking-wider text-zinc-400 shrink-0 max-w-[45%]">{loc(item.label, item.labelEn)}</span>
+                              <span className="text-[10px] md:text-xs font-black text-toyota-black text-right">{loc(item.value, item.valueEn)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-center text-zinc-400 text-[11px] md:text-sm italic py-8">{t('vehicles.detail.specsEmpty')}</p>
+                )}
+              </div>
+            </motion.div>
+          )}
         </div>
       </section>
 
