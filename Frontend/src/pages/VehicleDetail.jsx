@@ -539,8 +539,8 @@ const VehicleDetail = () => {
                             className="grid grid-cols-2 md:grid-cols-3 gap-x-6 md:gap-x-10 gap-y-6 md:gap-y-8"
                           >
                             {currentSpecTab.items.map((item, idx) => (
-                              <div key={idx} className="border-l-2 border-toyota-red/40 pl-3 md:pl-4">
-                                <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1 md:mb-1.5">{loc(item.label, item.labelEn)}</p>
+                              <div key={idx} className="border-l-2 border-toyota-red pl-3 md:pl-4">
+                                <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1 md:mb-1.5">{loc(item.label, item.labelEn)}</p>
                                 <p className="text-[13px] md:text-lg font-black text-toyota-black leading-tight">{loc(item.value, item.valueEn)}</p>
                               </div>
                             ))}
