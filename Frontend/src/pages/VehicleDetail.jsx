@@ -33,6 +33,8 @@ const VehicleDetail = () => {
   const [selectedVehicles, setSelectedVehicles] = useState([]);
   const [allVehicles, setAllVehicles] = useState([]);
 
+  const [activeSpecTab, setActiveSpecTab] = useState(null);
+
   // 360 Rotation State
   const [rotationIndex, setRotationIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -266,7 +268,7 @@ const VehicleDetail = () => {
       let catKey = feat.category?.toUpperCase() || 'OTHER';
 
       if (!merged[catKey]) {
-        merged[catKey] = { category: categoryTranslations[catKey] || catKey, items: [] };
+        merged[catKey] = { key: catKey, category: categoryTranslations[catKey] || catKey, items: [] };
       }
       merged[catKey].items = [...merged[catKey].items, ...(feat.items || [])];
     });
@@ -509,27 +511,45 @@ const VehicleDetail = () => {
               transition={{ duration: 0.6 }}
               className="mt-10 md:mt-24 pt-8 border-t border-zinc-100"
             >
-              <div className="max-w-7xl mx-auto">
+              <div className="max-w-6xl mx-auto">
                 <h3 className="text-xl md:text-3xl font-black uppercase tracking-tighter mb-6 md:mb-8 text-toyota-black text-center">{t('vehicles.detail.specsTitlePlain')} <span className="text-toyota-red">{t('vehicles.detail.specsTitleRed')}</span></h3>
-                {featureCategories.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                    {featureCategories.map((cat) => (
-                      <div key={cat.category} className="bg-[#F9F9F9] border border-zinc-100 rounded-sm overflow-hidden">
-                        <div className="px-4 md:px-6 py-3 md:py-4 bg-toyota-black">
-                          <h4 className="text-[10px] md:text-xs font-black uppercase tracking-[0.25em] text-white">{cat.category}</h4>
-                        </div>
-                        <div className="px-4 md:px-6 divide-y divide-zinc-200">
-                          {cat.items.map((item, idx) => (
-                            <div key={idx} className="flex flex-col gap-1.5 py-2.5 md:py-3">
-                              <span className="text-[9px] md:text-[11px] font-bold uppercase tracking-wider text-zinc-400">{loc(item.label, item.labelEn)}</span>
-                              <span className="inline-block w-fit bg-toyota-black text-white text-[10px] md:text-xs font-black px-2.5 py-1 rounded-sm">{loc(item.value, item.valueEn)}</span>
-                            </div>
-                          ))}
-                        </div>
+                {featureCategories.length > 0 ? (() => {
+                  const currentSpecTab = featureCategories.find(c => c.key === activeSpecTab) || featureCategories[0];
+                  return (
+                    <div className="bg-[#F9F9F9] border border-zinc-100 rounded-sm overflow-hidden">
+                      <div className="flex flex-wrap justify-center gap-2 md:gap-3 p-3 md:p-5 border-b border-zinc-200 bg-white">
+                        {featureCategories.map((cat) => (
+                          <button
+                            key={cat.key}
+                            onClick={() => setActiveSpecTab(cat.key)}
+                            className={`px-5 md:px-8 py-2 md:py-3 rounded-full text-[8px] md:text-[11px] font-black uppercase tracking-[0.15em] md:tracking-[0.2em] transition-all duration-300 ${currentSpecTab.key === cat.key ? "bg-toyota-black text-white shadow-lg scale-[1.03]" : "text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100"}`}
+                          >
+                            {cat.category}
+                          </button>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                ) : (
+                      <div className="p-5 md:p-10 min-h-[220px]">
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={currentSpecTab.key}
+                            initial={{ opacity: 0, x: 24 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -24 }}
+                            transition={{ duration: 0.35, ease: 'easeOut' }}
+                            className="grid grid-cols-2 md:grid-cols-3 gap-x-4 md:gap-x-8 gap-y-5 md:gap-y-7"
+                          >
+                            {currentSpecTab.items.map((item, idx) => (
+                              <div key={idx} className="flex flex-col gap-1.5">
+                                <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-wider text-zinc-400">{loc(item.label, item.labelEn)}</span>
+                                <span className="inline-block w-fit bg-toyota-black text-white text-[10px] md:text-xs font-black px-2.5 py-1 rounded-sm">{loc(item.value, item.valueEn)}</span>
+                              </div>
+                            ))}
+                          </motion.div>
+                        </AnimatePresence>
+                      </div>
+                    </div>
+                  );
+                })() : (
                   <p className="text-center text-zinc-400 text-[11px] md:text-sm italic py-8">{t('vehicles.detail.specsEmpty')}</p>
                 )}
               </div>
