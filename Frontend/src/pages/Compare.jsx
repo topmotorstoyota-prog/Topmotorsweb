@@ -96,7 +96,14 @@ const Compare = () => {
     { label: t('compare.basicSpecs.horsepower'), key: 'hp_spec' },
     { label: t('compare.basicSpecs.torque'), key: 'torque_spec' },
     { label: t('compare.basicSpecs.fuelTank'), key: 'fuel_spec' },
-    { label: t('compare.basicSpecs.extra'), key: 'extra_spec' },
+  ];
+
+  // Эдгээр нь дээрх basicSpecs-тэй давхцах тул PERFORMANCE ангиллын
+  // динамик жагсаалтаас хасна (Хөдөлгүүр/Хурдны хайрцаг/Морины хүч/Мушгих
+  // хүч/Шатахууны сав, Хөтлөх механизм аль хэдийн дээр харагдаж байгаа)
+  const PERFORMANCE_DUPLICATE_LABELS = [
+    'Хөдөлгүүрийн төрөл', 'Хөдөлгүүр', 'Дээд хүч kW @ RPM (min)', 'Морины хүч',
+    'Мушгих хүч n.M @ RPM (min)', 'Хурдны хайрцаг', 'Хөтлөх механизм', 'Шатахууны сав',
   ];
 
   if (loading) return <div className="pt-40 text-center font-black uppercase tracking-widest text-zinc-300">{t('vehicles.list.loading')}</div>;
@@ -151,10 +158,11 @@ const Compare = () => {
               <tbody className="relative z-10">
                 {CATEGORIES.map((cat, cIdx) => {
                   const isOpen = openSections[cat.id];
-                  const itemsToRender = cat.id === 'PERFORMANCE' ? basicSpecs :
-                    [...new Set(selectedVariants.flatMap(v => (v.features || []).find(f => f.category === cat.id)?.items.map(i => i.label) || []))];
+                  const dynamicLabels = [...new Set(selectedVariants.flatMap(v => (v.features || []).find(f => f.category === cat.id)?.items.map(i => i.label) || []))]
+                    .filter(label => cat.id !== 'PERFORMANCE' || !PERFORMANCE_DUPLICATE_LABELS.includes(label));
+                  const itemsToRender = cat.id === 'PERFORMANCE' ? [...basicSpecs, ...dynamicLabels] : dynamicLabels;
 
-                  if (itemsToRender.length === 0 && cat.id !== 'PERFORMANCE') return null;
+                  if (itemsToRender.length === 0) return null;
 
                   return (
                     <React.Fragment key={cat.id}>
@@ -175,8 +183,9 @@ const Compare = () => {
 
                       {/* Content Rows */}
                       {isOpen && itemsToRender.map((rowOrLabel, idx) => {
-                        const label = cat.id === 'PERFORMANCE' ? rowOrLabel.label : rowOrLabel;
-                        const key = cat.id === 'PERFORMANCE' ? rowOrLabel.key : null;
+                        const isFixedSpec = cat.id === 'PERFORMANCE' && typeof rowOrLabel === 'object';
+                        const label = isFixedSpec ? rowOrLabel.label : rowOrLabel;
+                        const key = isFixedSpec ? rowOrLabel.key : null;
 
                         return (
                           <tr key={`${cat.id}-${idx}`} className="hover:bg-zinc-50 transition-colors border-l-4 md:border-l-[10px] border-black group">
@@ -184,7 +193,7 @@ const Compare = () => {
                               <span className="text-[7px] md:text-[10px] font-black uppercase tracking-widest text-zinc-600 group-hover:text-black transition-colors">{label}</span>
                             </td>
                             {selectedVariants.map(variant => {
-                              if (cat.id === 'PERFORMANCE') {
+                              if (isFixedSpec) {
                                 return (
                                   <td key={`${variant.id}-${key}`} className="p-2 md:p-5 text-center border-b border-zinc-200 min-w-[80px] md:min-w-[300px]">
                                     <span className="text-[8px] md:text-[11px] font-black uppercase text-black">{loc(variant[key], variant[`${key}_en`]) || '-'}</span>
