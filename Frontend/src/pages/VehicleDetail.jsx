@@ -264,15 +264,20 @@ const VehicleDetail = () => {
 
     rawFeatures.forEach(feat => {
       let catKey = feat.category?.toUpperCase() || 'OTHER';
-      const catLabel = categoryTranslations[catKey] || catKey;
 
-      if (!merged[catLabel]) {
-        merged[catLabel] = { category: catLabel, items: [] };
+      if (!merged[catKey]) {
+        merged[catKey] = { category: categoryTranslations[catKey] || catKey, items: [] };
       }
-      merged[catLabel].items = [...merged[catLabel].items, ...(feat.items || [])];
+      merged[catKey].items = [...merged[catKey].items, ...(feat.items || [])];
     });
 
-    return Object.values(merged);
+    const CATEGORY_ORDER = ['PERFORMANCE', 'INTERIOR', 'EXTERIOR', 'SAFETY', 'DIMENSIONS', 'WHEELS', 'OTHER'];
+    return Object.keys(merged)
+      .sort((a, b) => {
+        const ai = CATEGORY_ORDER.indexOf(a); const bi = CATEGORY_ORDER.indexOf(b);
+        return (ai === -1 ? CATEGORY_ORDER.length : ai) - (bi === -1 ? CATEGORY_ORDER.length : bi);
+      })
+      .map(key => merged[key]);
   };
 
   const featureCategories = getMergedFeatures();

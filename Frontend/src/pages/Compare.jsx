@@ -204,22 +204,15 @@ const Compare = () => {
                                   .find(f => f.category === cat.id)
                                   ?.items.find(i => i.label === label);
 
-                                const val = featureItem?.value?.toLowerCase();
-                                const isYes = val === 'тийм' || val === 'yes' || val === 'бэлэн';
-                                const isNo = val === 'үгүй' || val === 'no' || val === 'байхгүй' || val === 'n/a';
-
                                 return (
                                   <td key={`${variant.id}-${label}`} className="p-2 md:p-5 text-center border-b border-zinc-200 min-w-[80px] md:min-w-[300px]">
                                     {featureItem ? (
-                                      <div className="flex flex-col items-center gap-1">
-                                        <span className={`text-[8px] md:text-[10px] font-black uppercase ${isYes ? 'text-green-600' : isNo ? 'text-red-500' : 'text-black'}`}>
-                                          {featureItem.value}
-                                        </span>
-                                        {isYes && <CheckCircle2 size={12} className="md:w-4 md:h-4 text-green-600" strokeWidth={3} />}
-                                        {isNo && <XCircle size={12} className="md:w-4 md:h-4 text-red-500" strokeWidth={3} />}
+                                      <div className="flex items-center justify-center gap-1.5">
+                                        <CheckCircle2 size={12} className="md:w-4 md:h-4 text-green-600 shrink-0" strokeWidth={3} />
+                                        <span className="text-[8px] md:text-[10px] font-black uppercase text-black">{featureItem.value}</span>
                                       </div>
                                     ) : (
-                                      <span className="text-zinc-300 font-bold">-</span>
+                                      <XCircle size={14} className="md:w-5 md:h-5 text-red-500 mx-auto" strokeWidth={3} />
                                     )}
                                   </td>
                                 );
