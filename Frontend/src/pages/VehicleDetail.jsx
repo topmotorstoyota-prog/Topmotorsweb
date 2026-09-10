@@ -520,9 +520,9 @@ const VehicleDetail = () => {
                         </div>
                         <div className="px-4 md:px-6 divide-y divide-zinc-200">
                           {cat.items.map((item, idx) => (
-                            <div key={idx} className="flex flex-col gap-0.5 py-2.5 md:py-3">
+                            <div key={idx} className="flex flex-col gap-1.5 py-2.5 md:py-3">
                               <span className="text-[9px] md:text-[11px] font-bold uppercase tracking-wider text-zinc-400">{loc(item.label, item.labelEn)}</span>
-                              <span className="text-[11px] md:text-sm font-black text-toyota-red">{loc(item.value, item.valueEn)}</span>
+                              <span className="inline-block w-fit bg-toyota-black text-white text-[10px] md:text-xs font-black px-2.5 py-1 rounded-sm">{loc(item.value, item.valueEn)}</span>
                             </div>
                           ))}
                         </div>
