@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ChevronRight, Shield, Wrench, Fuel, Users, Settings, Zap, CheckCircle2, SlidersHorizontal, Calendar, ArrowRight, ImageIcon, RotateCcw, Gauge, Droplets, Info, ChevronDown, Calculator, Rocket, RefreshCcw
+  ChevronRight, ChevronLeft, Shield, Wrench, Fuel, Users, Settings, Zap, CheckCircle2, SlidersHorizontal, Calendar, ArrowRight, ImageIcon, RotateCcw, Gauge, Droplets, Info, ChevronDown, Calculator, Rocket, RefreshCcw
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
@@ -34,6 +34,7 @@ const VehicleDetail = () => {
   const [allVehicles, setAllVehicles] = useState([]);
 
   const [activeSpecTab, setActiveSpecTab] = useState(null);
+  const [galleryIndex, setGalleryIndex] = useState(0);
 
   // 360 Rotation State
   const [rotationIndex, setRotationIndex] = useState(0);
@@ -594,21 +595,63 @@ const VehicleDetail = () => {
                 <h2 className="text-2xl md:text-5xl font-black uppercase tracking-tighter mb-3 md:mb-4 text-toyota-black leading-none">{t('vehicles.detail.galleryTitlePlain')} <span className="text-toyota-red">{t('vehicles.detail.galleryTitleRed')}</span></h2>
                 <div className="w-12 md:w-20 h-1 bg-toyota-red mt-3 md:mt-6" />
             </div>
-            {galleryImages.length > 0 ? (
-              <div className="space-y-8 md:space-y-16 max-w-5xl mx-auto">
-                  {galleryImages.map((img, idx) => (
-                      <div key={idx}>
-                        <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="w-full aspect-video relative overflow-hidden shadow-lg md:shadow-2xl rounded-sm bg-white border border-zinc-200">
+            {galleryImages.length > 0 ? (() => {
+                const safeIdx = Math.min(galleryIndex, galleryImages.length - 1);
+                return (
+                  <div className="max-w-5xl mx-auto">
+                    <div className="relative w-full aspect-video overflow-hidden shadow-lg md:shadow-2xl rounded-sm bg-white border border-zinc-200 group">
+                      <AnimatePresence mode="wait">
+                        <motion.img
+                          key={safeIdx}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.35 }}
+                          src={galleryImages[safeIdx]}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+                      </AnimatePresence>
+                      {galleryImages.length > 1 && (
+                        <>
+                          <button
+                            onClick={() => setGalleryIndex((safeIdx - 1 + galleryImages.length) % galleryImages.length)}
+                            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 bg-white/90 rounded-full shadow-lg flex items-center justify-center"
+                          >
+                            <ChevronLeft size={20} />
+                          </button>
+                          <button
+                            onClick={() => setGalleryIndex((safeIdx + 1) % galleryImages.length)}
+                            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 bg-white/90 rounded-full shadow-lg flex items-center justify-center"
+                          >
+                            <ChevronRight size={20} />
+                          </button>
+                          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/60 text-white text-[10px] font-bold px-3 py-1 rounded-full backdrop-blur-sm">
+                            {safeIdx + 1} / {galleryImages.length}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <p className="flex items-start gap-1 text-[7px] md:text-[9px] text-zinc-400 leading-relaxed mt-2 md:mt-3">
+                      <Info size={10} className="shrink-0 mt-px" />
+                      {t('vehicles.detail.imageDisclaimer')}
+                    </p>
+                    {galleryImages.length > 1 && (
+                      <div className="flex gap-2 md:gap-3 mt-4 md:mt-6 overflow-x-auto no-scrollbar pb-1">
+                        {galleryImages.map((img, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => setGalleryIndex(idx)}
+                            className={`w-16 md:w-24 aspect-video shrink-0 rounded-sm overflow-hidden border-2 transition-all ${safeIdx === idx ? 'border-toyota-red' : 'border-transparent opacity-50 hover:opacity-80'}`}
+                          >
                             <img src={img} alt="" className="w-full h-full object-cover" />
-                        </motion.div>
-                        <p className="flex items-start gap-1 text-[7px] md:text-[9px] text-zinc-400 leading-relaxed mt-2 md:mt-3">
-                          <Info size={10} className="shrink-0 mt-px" />
-                          {t('vehicles.detail.imageDisclaimer')}
-                        </p>
+                          </button>
+                        ))}
                       </div>
-                  ))}
-              </div>
-            ) : (
+                    )}
+                  </div>
+                );
+              })() : (
               <div className="text-center py-12 md:py-20 bg-white border-2 border-dashed border-zinc-100 rounded-sm">
                 <ImageIcon size={32} className="mx-auto text-zinc-200 mb-2 md:mb-4" />
                 <p className="font-black uppercase tracking-widest text-zinc-300 text-[8px] md:text-[10px]">{t('vehicles.detail.galleryEmpty')}</p>
