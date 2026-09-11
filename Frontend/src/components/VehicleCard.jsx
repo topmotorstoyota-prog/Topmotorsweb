@@ -15,7 +15,7 @@ const VehicleCard = ({ id, name, series, price, image, specs, isFixedPrice, link
   return (
     <Link to={detailLink} className="group bg-white border border-zinc-100 hover:border-transparent hover:shadow-2xl transition-all duration-500 rounded-none overflow-hidden flex flex-col h-full">
       {/* Image Container */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100">
+      <div className="relative aspect-[16/10] overflow-hidden bg-white">
         <img
           src={image}
           alt={name}
