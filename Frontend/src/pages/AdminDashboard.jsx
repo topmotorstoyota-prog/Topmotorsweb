@@ -827,6 +827,16 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
     const method = initialData ? 'PUT' : 'POST';
     const url = `${API_BASE_URL}/api/vehicles${initialData ? `/${initialData.id}` : ''}`;
 
+    // Монгол утга (label болон value) хоёул хоосон vлдсэн vзvvлэлтийг устгана -
+    // MN-only сайт дээр ийм item зөвхөн хоосон мөр болж харагддаг
+    const cleanedVariants = (formData.variants || []).map(v => ({
+      ...v,
+      features: (v.features || []).map(f => ({
+        ...f,
+        items: (f.items || []).filter(i => i.label?.trim() || i.value?.trim())
+      }))
+    }));
+
     // Create clean body
     const body = {
       id: formData.id,
@@ -842,7 +852,7 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
       images: JSON.stringify(formData.images || []),
       images360: JSON.stringify(formData.images360 || []),
       colors: JSON.stringify(formData.colors || []),
-      variants: JSON.stringify(formData.variants || [])
+      variants: JSON.stringify(cleanedVariants)
     };
 
     const res = await fetch(url, {
