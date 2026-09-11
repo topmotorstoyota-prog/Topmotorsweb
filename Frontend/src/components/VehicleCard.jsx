@@ -54,14 +54,15 @@ const VehicleCard = ({ id, name, series, price, image, specs, isFixedPrice, link
           </div>
         )}
 
-        <div className="mt-auto flex items-center justify-between pt-3 md:pt-5 border-t border-zinc-100">
-          <span className="text-[8px] md:text-[10px] font-black uppercase tracking-wider md:tracking-[0.25em] text-toyota-black group-hover:text-toyota-red transition-colors duration-300">
-            <span className="hidden sm:inline">{t('products.viewDetails')}</span>
-            <span className="sm:hidden">{t('news.more')}</span>
-          </span>
-          <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full border border-zinc-200 flex items-center justify-center group-hover:bg-toyota-red group-hover:border-toyota-red transition-all duration-300">
-            <ChevronRight size={14} className="text-toyota-black group-hover:text-white group-hover:translate-x-0.5 transition-all duration-300" />
-          </div>
+      </div>
+
+      <div className="flex items-center justify-between px-3 md:px-6 py-3 md:py-5 bg-toyota-black">
+        <span className="text-[8px] md:text-[10px] font-black uppercase tracking-wider md:tracking-[0.25em] text-white group-hover:text-toyota-red transition-colors duration-300">
+          <span className="hidden sm:inline">{t('products.viewDetails')}</span>
+          <span className="sm:hidden">{t('news.more')}</span>
+        </span>
+        <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full border border-white/25 flex items-center justify-center group-hover:bg-toyota-red group-hover:border-toyota-red transition-all duration-300">
+          <ChevronRight size={14} className="text-white group-hover:translate-x-0.5 transition-all duration-300" />
         </div>
       </div>
     </Link>
