@@ -96,20 +96,16 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white p-6 md:p-10 border border-zinc-100 shadow-lg flex flex-col items-start text-left group hover:border-toyota-red transition-all duration-500"
+                className="p-6 md:p-10 border border-zinc-100 bg-white hover:shadow-xl transition-all flex flex-col items-center text-center group"
               >
-                <div className="w-8 h-8 md:w-12 md:h-12 bg-toyota-gray-100 flex items-center justify-center mb-4 md:mb-6 group-hover:bg-toyota-red transition-colors">
-                  <stat.icon className="text-toyota-red group-hover:text-white transition-colors" size={16} md:size={24} />
+                <div className="mb-4 md:mb-6 text-toyota-red group-hover:scale-110 transition-transform">
+                  <stat.icon size={32} md:size={40} strokeWidth={1.5} />
                 </div>
-                <div className="flex flex-col">
-                  <div className="flex items-baseline gap-1 mb-1">
-                    <span className="text-2xl md:text-5xl font-black text-toyota-black tracking-tighter">{stat.value}</span>
-                  </div>
-                  <span className="text-[8px] md:text-xs font-black uppercase tracking-widest text-toyota-black mb-2 md:mb-4">{stat.label}</span>
-                  <p className="text-[10px] md:text-xs text-zinc-500 leading-relaxed font-medium hidden md:block">
-                    {stat.desc}
-                  </p>
-                </div>
+                <span className="text-2xl md:text-5xl font-black text-toyota-black tracking-tighter mb-1">{stat.value}</span>
+                <span className="text-[8px] md:text-xs font-black uppercase tracking-widest text-toyota-black mb-2 md:mb-4">{stat.label}</span>
+                <p className="text-[10px] md:text-xs text-zinc-800 font-bold leading-relaxed hidden md:block">
+                  {stat.desc}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -158,13 +154,13 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white p-5 md:p-8 border border-zinc-200 hover:border-toyota-red transition-all group shadow-sm"
+                className="p-6 md:p-10 border border-zinc-100 bg-white hover:shadow-xl transition-all flex flex-col items-center text-center group"
               >
-                <div className="w-10 h-10 md:w-14 md:h-14 bg-toyota-gray-100 flex items-center justify-center mb-4 md:mb-6 group-hover:bg-toyota-red transition-colors">
-                  <service.icon className="text-toyota-red group-hover:text-white transition-colors" size={20} md:size={28} />
+                <div className="mb-4 md:mb-6 text-toyota-red group-hover:scale-110 transition-transform">
+                  <service.icon size={32} md:size={40} strokeWidth={1.5} />
                 </div>
-                <h4 className="text-[11px] md:text-lg font-black uppercase tracking-tight mb-2 md:mb-3">{service.title}</h4>
-                <p className="text-[9px] md:text-xs text-zinc-500 leading-relaxed line-clamp-3 md:line-clamp-none">{service.desc}</p>
+                <h4 className="text-base md:text-xl font-black uppercase tracking-tight mb-2 md:mb-4 text-toyota-black">{service.title}</h4>
+                <p className="text-[11px] md:text-sm text-zinc-800 font-bold leading-relaxed">{service.desc}</p>
               </motion.div>
             ))}
           </div>
