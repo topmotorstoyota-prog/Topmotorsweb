@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
-import aboutImage from '../assets/common/about.jpg';
+import aboutImage from '../assets/common/All.jpg';
 
 const About = () => {
   const { t } = useTranslation();
