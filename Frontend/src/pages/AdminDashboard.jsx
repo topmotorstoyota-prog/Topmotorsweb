@@ -66,6 +66,15 @@ export default function AdminDashboard() {
     fetchData();
   };
 
+  const handleClearLogs = async () => {
+    if (!window.confirm('Vйл ажиллагааны бvх түvхийг бvрмөсөн устгахдаа итгэлтэй байна уу?')) return;
+    await fetch(`${API_BASE_URL}/api/activity-logs`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    fetchData();
+  };
+
   const handleToggleContacted = async (booking) => {
     const contacted = !booking.contacted;
     const res = await fetch(`${API_BASE_URL}/api/bookings/${booking.id}`, {
@@ -165,6 +174,11 @@ export default function AdminDashboard() {
         <header className="bg-white border-b h-24 flex items-center justify-between px-10 sticky top-0 z-10 shadow-sm">
            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-800">{tabLabels[activeTab]} <span className="text-toyota-red">удирдах</span></h2>
            {!showForm && !editingItem && activeTab !== 'sales-bookings' && activeTab !== 'service-bookings' && activeTab !== 'activity-logs' && activeTab !== 'shipment' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
+           {activeTab === 'activity-logs' && items.length > 0 && (
+             <button onClick={handleClearLogs} className="bg-red-600 text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-red-600/10">
+               <Trash2 size={16} /> Бvгдийг цэвэрлэх
+             </button>
+           )}
         </header>
 
         <div className="p-10">
@@ -308,6 +322,7 @@ export default function AdminDashboard() {
                           <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Үйлдэл</th>
                           <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Хэсэг</th>
                           <th className="p-5 px-8 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Юу</th>
+                          <th className="p-5 px-8 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400"></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -331,9 +346,14 @@ export default function AdminDashboard() {
                             </td>
                             <td className="p-5 text-[11px] font-bold text-zinc-600 uppercase">{tabLabels[log.entity] || log.entity}</td>
                             <td className="p-5 px-8 text-[12px] font-bold text-slate-800">{log.entityName || '-'}</td>
+                            <td className="p-5 px-8 text-right">
+                              <button onClick={() => handleDelete(log.id)} className="text-zinc-300 hover:text-toyota-red transition-colors">
+                                <Trash2 size={16} />
+                              </button>
+                            </td>
                           </tr>
                         )) : (
-                          <tr><td colSpan="5" className="p-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Түүх алга байна</td></tr>
+                          <tr><td colSpan="6" className="p-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Түүх алга байна</td></tr>
                         )}
                       </tbody>
                     </table>

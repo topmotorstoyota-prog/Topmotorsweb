@@ -725,6 +725,28 @@ app.get('/api/activity-logs', authenticateToken, async (req, res) => {
   }
 });
 
+app.delete('/api/activity-logs/:id', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'SUPER_ADMIN') return res.sendStatus(403);
+  try {
+    await prisma.activityLog.delete({ where: { id: Number(req.params.id) } });
+    res.sendStatus(204);
+  } catch (err) {
+    console.error('DELETE /api/activity-logs/:id Error:', err);
+    res.status(500).json({ message: "Устгахад алдаа гарлаа." });
+  }
+});
+
+app.delete('/api/activity-logs', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'SUPER_ADMIN') return res.sendStatus(403);
+  try {
+    await prisma.activityLog.deleteMany({});
+    res.sendStatus(204);
+  } catch (err) {
+    console.error('DELETE /api/activity-logs Error:', err);
+    res.status(500).json({ message: "Цэвэрлэхэд алдаа гарлаа." });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, '0.0.0.0', () => console.log(`Server running on ${PORT}`));
