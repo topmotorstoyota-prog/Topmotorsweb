@@ -17,7 +17,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import aboutImage from '../assets/common/All.jpg';
-import redBanner from '../assets/common/red banner.png';
+import redBanner from '../assets/common/red-banner.jpg';
 
 const About = () => {
   const { t } = useTranslation();
