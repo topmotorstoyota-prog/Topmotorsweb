@@ -26,7 +26,7 @@ const VehicleCard = ({ id, name, series, price, image, specs, isFixedPrice, link
       {/* Content */}
       <div className="p-3 md:p-6 flex flex-col">
         <div className="mb-2 md:mb-4">
-          <h3 className="text-[13px] md:text-[17px] font-black uppercase tracking-tight leading-tight mb-1.5 md:mb-2 text-toyota-black line-clamp-2 h-8 md:h-auto group-hover:text-toyota-red transition-colors duration-300">{name}</h3>
+          <h3 className="text-[13px] md:text-[17px] font-black uppercase tracking-tight leading-tight mb-1.5 md:mb-2 text-toyota-black line-clamp-2 h-8 md:h-11 group-hover:text-toyota-red transition-colors duration-300">{name}</h3>
           <div className="w-6 md:w-8 h-[3px] bg-toyota-red" />
           {isToyotaQ && (
             <p className="text-[12px] md:text-xl font-black text-toyota-red mt-2 md:mt-3">
