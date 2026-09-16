@@ -56,8 +56,8 @@ const About = () => {
               className="relative z-10 py-6 md:py-12 lg:py-0 lg:w-[35%] lg:pr-10"
             >
               <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-toyota-black uppercase tracking-tighter leading-[0.9] mb-6 md:mb-10 text-center lg:text-left">
-                TOYOTA<br />
-                <span className="text-toyota-red">TOP MOTORS</span>
+                <span className="text-toyota-red">TOYOTA</span><br />
+                TOP MOTORS
               </h1>
 
               <div className="max-w-lg relative mx-auto lg:mx-0">
