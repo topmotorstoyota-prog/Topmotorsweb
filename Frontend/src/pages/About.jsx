@@ -17,6 +17,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import aboutImage from '../assets/common/All.jpg';
+import redBanner from '../assets/common/red banner.png';
 
 const About = () => {
   const { t } = useTranslation();
@@ -84,6 +85,9 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      {/* Red Banner */}
+      <img src={redBanner} alt="" className="w-full h-auto block" />
 
       {/* Stats Section */}
       <section className="py-12 md:py-24 bg-toyota-gray-100">
