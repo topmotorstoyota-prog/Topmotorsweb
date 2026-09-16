@@ -105,7 +105,7 @@ const ToyotaQDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             {/* Gallery / Image Slider */}
             <div className="lg:col-span-8 order-1">
-              <div className="relative aspect-square bg-zinc-100 overflow-hidden shadow-sm group rounded-sm">
+              <div className="relative aspect-[4/3] bg-zinc-100 overflow-hidden shadow-sm group rounded-sm">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={currentImgIndex}
