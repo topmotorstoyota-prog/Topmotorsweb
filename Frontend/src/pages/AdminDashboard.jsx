@@ -1625,7 +1625,7 @@ function AdminForm({ type, presetCategory, token, initialData, onSuccess }) {
           </>
         )}
 
-        {type !== 'staff' && formData.category !== 'Обуд' && (
+        {type !== 'staff' && type !== 'toyota-q' && formData.category !== 'Обуд' && (
           <>
             <label className="block text-[10px] font-black uppercase text-toyota-red">Нэр (Англи)</label>
             <input name="nameEn" value={formData.nameEn || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" placeholder="English name (хоосон бол монгол нэрийг ашиглана)" />
@@ -1787,7 +1787,7 @@ function AdminForm({ type, presetCategory, token, initialData, onSuccess }) {
         {formData.category !== 'Обуд' && formData.category !== 'Дугуй' && (
           <textarea name="description" placeholder="Тайлбар..." value={formData.description || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-32 resize-none font-medium" />
         )}
-        {type !== 'staff' && formData.category !== 'Обуд' && formData.category !== 'Дугуй' && (
+        {type !== 'staff' && type !== 'toyota-q' && formData.category !== 'Обуд' && formData.category !== 'Дугуй' && (
           <>
             <label className="block text-[10px] font-black uppercase text-toyota-red">Тайлбар (Англи)</label>
             <textarea name="descriptionEn" placeholder="English description... (хоосон бол монгол тайлбарыг ашиглана)" value={formData.descriptionEn || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-32 resize-none font-medium" />
