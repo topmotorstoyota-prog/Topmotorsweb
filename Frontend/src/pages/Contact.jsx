@@ -72,10 +72,6 @@ const Contact = () => {
                       </div>
                       <div className="pl-11 md:pl-13 space-y-1 md:space-y-2 text-zinc-600">
                         <p className="text-xs md:text-sm leading-relaxed">{t('contact.branch1AddressDetailed')}</p>
-                        <a href="tel:77778090" className="flex items-center gap-2 text-toyota-red font-bold text-xs md:text-sm hover:underline">
-                          <Phone size={14} />
-                          <span>7777 8090</span>
-                        </a>
                       </div>
                     </div>
 
@@ -89,10 +85,18 @@ const Contact = () => {
                       </div>
                       <div className="pl-11 md:pl-13 space-y-1 md:space-y-2 text-zinc-600">
                         <p className="text-xs md:text-sm leading-relaxed">{t('footer.branch2Address')}</p>
-                        <a href="tel:77778090" className="flex items-center gap-2 text-toyota-red font-bold text-xs md:text-sm hover:underline">
-                          <Phone size={14} />
-                          <span>7777 8090</span>
-                        </a>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 md:pt-6 border-t border-zinc-100">
+                      <div className="flex items-center gap-3 mb-2 md:mb-4">
+                        <div className="w-8 h-8 md:w-10 md:h-10 bg-toyota-gray-100 flex items-center justify-center">
+                          <Phone size={16} md:size={18} className="text-toyota-red" />
+                        </div>
+                        <h4 className="font-bold uppercase tracking-tight text-base md:text-lg">{t('footer.phoneLabel')}</h4>
+                      </div>
+                      <div className="pl-11 md:pl-13">
+                        <a href="tel:77778090" className="font-black text-toyota-red text-lg md:text-xl hover:underline">7777 8090</a>
                       </div>
                     </div>
 

@@ -92,9 +92,6 @@ const Footer = () => {
                   <MapPin size={14} className="shrink-0 mt-0.5 text-toyota-red hidden md:block" />
                   <p className="text-[11px] font-medium leading-relaxed">{t('footer.branch1Address')}</p>
                 </div>
-                <a href="tel:77778090" className="inline-flex items-center gap-2 text-xs font-black text-white hover:text-toyota-red transition-colors">
-                  <Phone size={12} className="text-toyota-red hidden md:block" /> 7777 8090
-                </a>
               </div>
 
               <div className="hidden md:block space-y-2 pt-4 border-t border-zinc-900">
@@ -103,9 +100,6 @@ const Footer = () => {
                   <MapPin size={14} className="shrink-0 mt-0.5 text-toyota-red" />
                   <p className="text-[11px] font-medium leading-relaxed">{t('footer.branch2Address')}</p>
                 </div>
-                <a href="tel:77778090" className="inline-flex items-center gap-2 text-xs font-black text-white hover:text-toyota-red transition-colors">
-                  <Phone size={12} className="text-toyota-red" /> 7777 8090
-                </a>
               </div>
             </div>
           </div>
