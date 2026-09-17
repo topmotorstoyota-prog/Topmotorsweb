@@ -104,7 +104,7 @@ const Compare = () => {
   const PERFORMANCE_DUPLICATE_LABELS = [
     'Хөдөлгүүрийн төрөл', 'Хөдөлгүүр', 'Дээд хүч kW @ RPM (min)', 'Морины хүч',
     'Мушгих хүч n.M @ RPM (min)', 'Хурдны хайрцаг', 'Хөтлөх механизм', 'Шатахууны сав',
-  ];
+  ].map(l => l.toUpperCase());
 
   if (loading) return <div className="pt-40 text-center font-black uppercase tracking-widest text-zinc-300">{t('vehicles.list.loading')}</div>;
 
@@ -159,7 +159,7 @@ const Compare = () => {
                 {CATEGORIES.map((cat, cIdx) => {
                   const isOpen = openSections[cat.id];
                   const dynamicLabels = [...new Set(selectedVariants.flatMap(v => (v.features || []).find(f => f.category === cat.id)?.items.map(i => i.label) || []))]
-                    .filter(label => cat.id !== 'PERFORMANCE' || !PERFORMANCE_DUPLICATE_LABELS.includes(label));
+                    .filter(label => cat.id !== 'PERFORMANCE' || !PERFORMANCE_DUPLICATE_LABELS.includes(label.toUpperCase()));
                   const itemsToRender = cat.id === 'PERFORMANCE' ? [...basicSpecs, ...dynamicLabels] : dynamicLabels;
 
                   if (itemsToRender.length === 0) return null;
