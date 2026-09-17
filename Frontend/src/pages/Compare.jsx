@@ -100,10 +100,12 @@ const Compare = () => {
 
   // Эдгээр нь дээрх basicSpecs-тэй давхцах тул PERFORMANCE ангиллын
   // динамик жагсаалтаас хасна (Хөдөлгүүр/Хурдны хайрцаг/Морины хүч/Мушгих
-  // хүч/Шатахууны сав, Хөтлөх механизм аль хэдийн дээр харагдаж байгаа)
-  const PERFORMANCE_DUPLICATE_LABELS = [
-    'Хөдөлгүүрийн төрөл', 'Хөдөлгүүр', 'Дээд хүч kW @ RPM (min)', 'Морины хүч',
-    'Мушгих хүч n.M @ RPM (min)', 'Хурдны хайрцаг', 'Хөтлөх механизм', 'Шатахууны сав',
+  // хүч/Шатахууны сав, Хөтлөх механизм аль хэдийн дээр харагдаж байгаа).
+  // labelEn-ээр тааруулна (Монгол label-ийг admin-аас хэдийд ч засаж болно, харин
+  // labelEn нь эх Excel-ийн гарчиг тул тогтвортой хэвээр байдаг).
+  const PERFORMANCE_DUPLICATE_LABELS_EN = [
+    'Engine type', 'Engine', 'Max Output kW @ RPM (min)', 'Max Output HP',
+    'Max Torque n.M @ RPM (min)', 'Transmission', 'Drive train', 'Fuel tank',
   ].map(l => l.toUpperCase());
 
   if (loading) return <div className="pt-40 text-center font-black uppercase tracking-widest text-zinc-300">{t('vehicles.list.loading')}</div>;
@@ -158,8 +160,12 @@ const Compare = () => {
               <tbody className="relative z-10">
                 {CATEGORIES.map((cat, cIdx) => {
                   const isOpen = openSections[cat.id];
-                  const dynamicLabels = [...new Set(selectedVariants.flatMap(v => (v.features || []).find(f => f.category === cat.id)?.items.map(i => i.label) || []))]
-                    .filter(label => cat.id !== 'PERFORMANCE' || !PERFORMANCE_DUPLICATE_LABELS.includes(label.toUpperCase()));
+                  const catItems = selectedVariants.flatMap(v => (v.features || []).find(f => f.category === cat.id)?.items || []);
+                  const dynamicLabels = [...new Set(
+                    catItems
+                      .filter(i => cat.id !== 'PERFORMANCE' || !PERFORMANCE_DUPLICATE_LABELS_EN.includes((i.labelEn || '').toUpperCase()))
+                      .map(i => i.label)
+                  )];
                   const itemsToRender = cat.id === 'PERFORMANCE' ? [...basicSpecs, ...dynamicLabels] : dynamicLabels;
 
                   if (itemsToRender.length === 0) return null;
