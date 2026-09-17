@@ -116,6 +116,16 @@ const Footer = () => {
             <div className="space-y-6">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2 text-zinc-500">
+                  <Phone size={14} className="text-toyota-red" />
+                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">{t('footer.phoneLabel')}</p>
+                </div>
+                <a href="tel:77778090" className="block text-sm font-black text-white hover:text-toyota-red transition-colors">
+                  7777 8090
+                </a>
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2 text-zinc-500">
                   <Mail size={14} className="text-toyota-red" />
                   <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">{t('footer.emailLabel')}</p>
                 </div>
