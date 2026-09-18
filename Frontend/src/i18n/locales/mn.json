@@ -217,8 +217,8 @@
   "vehicles": {
     "categories": {
       "all": "Бүх загварууд",
-      "sedan": "Седан",
-      "pickup": "Пикап"
+      "sedan": "Sedan",
+      "pickup": "Pickup"
     },
     "list": {
       "meta": {

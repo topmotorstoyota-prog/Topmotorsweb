@@ -10,12 +10,12 @@ import API_BASE_URL from '../config';
 import { Link } from 'react-router-dom';
 import hiluxImage from '../assets/vehicles/hilux.jpg';
 
-// id нь vehicle.category-той тохирдог өгөгдлийн утга тул монгол хэвээр байлгав; labelKey нь зөвхөн харуулах орчуулга
+// id нь vehicle.category-той тохирдог өгөгдлийн утга (бүгд Англи нэршилтэй); labelKey нь зөвхөн харуулах орчуулга
 const categories = [
   { id: 'Бүх загварууд', labelKey: 'vehicles.categories.all' },
   { id: 'SUV', labelKey: null },
-  { id: 'Седан', labelKey: 'vehicles.categories.sedan' },
-  { id: 'Пикап', labelKey: 'vehicles.categories.pickup' },
+  { id: 'Sedan', labelKey: 'vehicles.categories.sedan' },
+  { id: 'Pickup', labelKey: 'vehicles.categories.pickup' },
   { id: 'VAN', labelKey: null },
   { id: 'MPV', labelKey: null }
 ];
