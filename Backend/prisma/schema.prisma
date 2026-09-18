@@ -120,6 +120,7 @@ model Booking {
   phone       String
   email       String?
   description String?  // Зурвасын агуулга хадгалах
+  images      String?  // Toyota Q зуучлалын хvсэлтийн машины 4 зураг - JSON string [{url, isCover}]
   status      String   @default("Шинэ") // Шинэ, Баталгаажсан, Цуцлагдсан
   contacted   Boolean  @default(false) // Админ холбогдсон эсэх
   contactedBy String?  // Холбогдсон гэж тэмдэглэсэн админы нэр

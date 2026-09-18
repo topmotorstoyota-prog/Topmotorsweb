@@ -154,6 +154,35 @@ app.post('/api/upload-multiple', authenticateToken, (req, res) => {
   });
 });
 
+// Нэвтрээгvй хэрэглэгчид зориулсан зураг оруулах (Toyota Q зуучлалын хvсэлт гэх мэт нийтийн форм) -
+// урвуулан ашиглахаас сэргийлж тусдаа, чанга rate limit-тэй
+const publicUploadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { message: "Хэт олон удаа зураг оруулсан байна. 15 минут хvлээгээд дахин оролдоно уу." }
+});
+
+app.post('/api/upload-public', publicUploadLimiter, (req, res) => {
+  upload.array('images', 4)(req, res, async (err) => {
+    if (err instanceof multer.MulterError) {
+      console.error('Multer Error:', err);
+      return res.status(400).json({ message: `Файлын хэмжээ хэтэрсэн эсвэл хэт олон файл байна: ${err.code}` });
+    } else if (err) {
+      console.error('Unknown Upload Error:', err);
+      return res.status(400).json({ message: err.message || 'Зураг хуулахад алдаа гарлаа' });
+    }
+
+    try {
+      if (!req.files || req.files.length === 0) return res.status(400).json({ message: 'Зураг сонгоогүй байна.' });
+      const imageUrls = await Promise.all(req.files.map(uploadToSupabase));
+      res.json({ imageUrls });
+    } catch (error) {
+      console.error('Supabase upload error:', error);
+      res.status(500).json({ message: "Зураг боловсруулахад алдаа гарлаа." });
+    }
+  });
+});
+
 // --- SHIPMENT TRACKING (Excel upload -> байршил хайх) ---
 // Status текст дэх байршлын түлхүүр үгсийг бодит координатруу хөрвүүлэх толь бичиг.
 // Шинэ боомт/цэг гарвал энд нэг мөр нэмэхэд хангалттай.
@@ -471,7 +500,11 @@ const getProductPermissionKey = (category) => {
 };
 
 // Захиалгын төрлөөс хамаарч аль эрхэд харьяалагдахыг тодорхойлох
-const getBookingPermissionKey = (type) => (type === 'service' || type === 'message' ? 'service-bookings' : 'sales-bookings');
+const getBookingPermissionKey = (type) => {
+  if (type === 'service' || type === 'message') return 'service-bookings';
+  if (type === 'toyota_q_request') return 'toyota-q-requests';
+  return 'sales-bookings';
+};
 
 // Админ хэрэглэгчдийн CREATE/UPDATE/DELETE үйлдлийг бүртгэх
 const logActivity = async (req, action, entity, entityId, entityName) => {
@@ -547,7 +580,7 @@ const setupRoutes = (routePath, model, options = {}) => {
           try {
               const decoded = jwt.verify(token, JWT_SECRET);
               if (routePath === 'users' && decoded.role !== 'SUPER_ADMIN') return res.sendStatus(403);
-              if (routePath === 'bookings' && decoded.role === 'EDITOR' && !decoded.permissions['sales-bookings'] && !decoded.permissions['service-bookings']) return res.sendStatus(403);
+              if (routePath === 'bookings' && decoded.role === 'EDITOR' && !decoded.permissions['sales-bookings'] && !decoded.permissions['service-bookings'] && !decoded.permissions['toyota-q-requests']) return res.sendStatus(403);
               req.user = decoded;
           } catch (e) { return res.sendStatus(403); }
       }

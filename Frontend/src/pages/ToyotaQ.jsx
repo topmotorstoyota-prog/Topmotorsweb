@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocale } from '../hooks/useLocale';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import VehicleCard from '../components/VehicleCard';
+import ConsignVehicleModal from '../components/ConsignVehicleModal';
 import API_BASE_URL from '../config';
 import toyotaQHero from '../assets/toyota-q/q.jpg';
 import inspection150 from '../assets/toyota-q/150.jpg';
@@ -28,6 +29,7 @@ const ToyotaQ = () => {
   const { t } = useTranslation();
   const { loc, fuelType } = useLocale();
   useDocumentTitle(t('toyotaQ.meta.title'), t('toyotaQ.meta.description'));
+  const [isConsignOpen, setIsConsignOpen] = useState(false);
   const [qVehicles, setQVehicles] = useState([]);
   const [filters, setFilters] = useState({
     name: '',
@@ -144,15 +146,14 @@ const ToyotaQ = () => {
                     <span>{t('toyotaQ.viewVehicles')} </span>
                     <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
                 </Button>
-                <Link to="/contact">
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="px-8 backdrop-blur-sm text-[10px] md:text-xs"
-                    >
-                      {t('toyotaQ.sellVehicle')}
-                    </Button>
-                </Link>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="px-8 backdrop-blur-sm text-[10px] md:text-xs"
+                  onClick={() => setIsConsignOpen(true)}
+                >
+                  {t('toyotaQ.sellVehicle')}
+                </Button>
             </div>
           </motion.div>
         </div>
@@ -411,6 +412,8 @@ const ToyotaQ = () => {
               </div>
           </div>
       </section>
+
+      <ConsignVehicleModal isOpen={isConsignOpen} onClose={() => setIsConsignOpen(false)} />
     </div>
   );
 };

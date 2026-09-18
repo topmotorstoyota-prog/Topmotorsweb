@@ -403,6 +403,31 @@
     "tipTitle": "Tip",
     "tipDesc": "Get in touch with our sales consultants for the latest interest rate information from banks and NBFIs."
   },
+  "consignModal": {
+    "titlePlain": "Consign a",
+    "titleRed": "Vehicle",
+    "desc": "Upload 4 photos of your vehicle, pick one as the cover photo, and leave your contact details. Our staff will reach out to you shortly.",
+    "photosLabel": "Vehicle Photos (4 sides)",
+    "sides": {
+      "front": "Front",
+      "back": "Back",
+      "left": "Left side",
+      "right": "Right side"
+    },
+    "setCover": "Set as cover",
+    "coverHint": "Click the star on a photo to set it as the cover photo.",
+    "namePlaceholder": "Name",
+    "phonePlaceholder": "Phone number",
+    "submit": "Send Request",
+    "successTitle": "Request Sent",
+    "successDesc": "We've received your request. Our staff will contact you shortly.",
+    "errors": {
+      "photos": "Please upload all 4 side photos.",
+      "cover": "Please select a cover photo.",
+      "contact": "Please fill in your name and phone number.",
+      "generic": "Something went wrong sending your request. Please try again."
+    }
+  },
   "toyotaQ": {
     "meta": {
       "title": "Toyota-Q Certified Used Vehicles",

@@ -4,15 +4,15 @@ import {
   Trash2, Edit, Plus, X, Upload, LogOut, LayoutDashboard, Car,
   Newspaper, Box, Package, UserCircle, MessageSquare, Info, ChevronRight, ChevronLeft,
   ChevronDown, Settings, Fuel, Palette, SlidersHorizontal, Image as ImageIcon,
-  Layers, PlusCircle, Phone, Mail, Calendar, Clock, MapPin, User, Star, Users, RotateCcw, Lock, FileSpreadsheet
+  Layers, PlusCircle, Phone, Mail, Calendar, Clock, MapPin, User, Star, Users, RotateCcw, Lock, FileSpreadsheet, Camera, CheckCircle2
 } from 'lucide-react';
 import API_BASE_URL from '../config';
 import logo from '../assets/home/logo-1.png';
 
-const TAB_ORDER = ['vehicles', 'news', 'tires', 'wheels', 'merch', 'toyota-q', 'home-banner', 'staff', 'sales-bookings', 'service-bookings'];
+const TAB_ORDER = ['vehicles', 'news', 'tires', 'wheels', 'merch', 'toyota-q', 'home-banner', 'staff', 'sales-bookings', 'service-bookings', 'toyota-q-requests'];
 const PRODUCT_CATEGORY = { tires: 'Дугуй', wheels: 'Обуд', merch: 'GR Merch' };
 const apiPath = (tab) => {
-  if (tab === 'sales-bookings' || tab === 'service-bookings') return 'bookings';
+  if (tab === 'sales-bookings' || tab === 'service-bookings' || tab === 'toyota-q-requests') return 'bookings';
   if (PRODUCT_CATEGORY[tab]) return 'products';
   return tab;
 };
@@ -105,6 +105,7 @@ export default function AdminDashboard() {
     users: <UserCircle size={18} />,
     'sales-bookings': <MessageSquare size={18} />,
     'service-bookings': <Settings size={18} />,
+    'toyota-q-requests': <Camera size={18} />,
     'activity-logs': <Clock size={18} />,
     shipment: <FileSpreadsheet size={18} />
   };
@@ -121,6 +122,7 @@ export default function AdminDashboard() {
     users: 'Хэрэглэгчид',
     'sales-bookings': 'Шинэ машин & Тест драйв',
     'service-bookings': 'CRM',
+    'toyota-q-requests': 'Toyota Q хvсэлт',
     bookings: 'Захиалга & Хүсэлт',
     'activity-logs': 'Үйл ажиллагааны түүх',
     shipment: 'Тээвэрлэлт хянах'
@@ -173,7 +175,7 @@ export default function AdminDashboard() {
       <div className="flex-1 ml-72">
         <header className="bg-white border-b h-24 flex items-center justify-between px-10 sticky top-0 z-10 shadow-sm">
            <h2 className="text-2xl font-black uppercase tracking-tight text-slate-800">{tabLabels[activeTab]} <span className="text-toyota-red">удирдах</span></h2>
-           {!showForm && !editingItem && activeTab !== 'sales-bookings' && activeTab !== 'service-bookings' && activeTab !== 'activity-logs' && activeTab !== 'shipment' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
+           {!showForm && !editingItem && activeTab !== 'sales-bookings' && activeTab !== 'service-bookings' && activeTab !== 'toyota-q-requests' && activeTab !== 'activity-logs' && activeTab !== 'shipment' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
            {activeTab === 'activity-logs' && items.length > 0 && (
              <button onClick={handleClearLogs} className="bg-red-600 text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-red-600/10">
                <Trash2 size={16} /> Бvгдийг цэвэрлэх
@@ -218,7 +220,7 @@ export default function AdminDashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {(() => { const bookingItems = items.filter(b => activeTab === 'service-bookings' ? (b.type === 'service' || b.type === 'message') : (b.type !== 'service' && b.type !== 'message')); return bookingItems.length > 0 ? bookingItems.map((item) => (
+                        {(() => { const bookingItems = items.filter(b => activeTab === 'service-bookings' ? (b.type === 'service' || b.type === 'message') : (b.type !== 'service' && b.type !== 'message' && b.type !== 'toyota_q_request')); return bookingItems.length > 0 ? bookingItems.map((item) => (
                           <tr key={item.id} className={`border-b hover:bg-zinc-50 transition-colors ${item.contacted ? 'bg-zinc-50/50' : ''}`}>
                             <td className="p-5 px-8">
                               <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-sm inline-block w-fit ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''} ${
@@ -307,6 +309,83 @@ export default function AdminDashboard() {
                         )) : (
                           <tr><td colSpan="5" className="p-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Хүсэлт ирээгүй байна</td></tr>
                         ); })()}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : activeTab === 'toyota-q-requests' ? (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-zinc-50 border-b">
+                          <th className="p-5 px-8 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Зураг</th>
+                          <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Vйлчлvvлэгч</th>
+                          <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Ирсэн огноо</th>
+                          <th className="p-5 px-8 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 text-right">Vйлдэл</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(() => {
+                          const requestItems = items.filter(b => b.type === 'toyota_q_request');
+                          return requestItems.length > 0 ? requestItems.map((item) => {
+                            let photos = [];
+                            try { photos = JSON.parse(item.images || '[]'); } catch (e) {}
+                            const cover = photos.find(p => p.isCover) || photos[0];
+                            const others = photos.filter(p => p !== cover);
+                            return (
+                              <tr key={item.id} className={`border-b hover:bg-zinc-50 transition-colors ${item.contacted ? 'bg-zinc-50/50' : ''}`}>
+                                <td className="p-5 px-8">
+                                  <div className="flex gap-2">
+                                    {cover && (
+                                      <a href={cover.url} target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 shrink-0 border-2 border-toyota-red rounded-sm overflow-hidden">
+                                        <img src={cover.url} alt="cover" className="w-full h-full object-cover" />
+                                        <Star size={10} className="absolute top-0.5 right-0.5 text-toyota-red" fill="currentColor" />
+                                      </a>
+                                    )}
+                                    {others.map((p, i) => (
+                                      <a key={i} href={p.url} target="_blank" rel="noopener noreferrer" className="w-16 h-16 shrink-0 border border-zinc-200 rounded-sm overflow-hidden">
+                                        <img src={p.url} alt="" className="w-full h-full object-cover" />
+                                      </a>
+                                    ))}
+                                  </div>
+                                </td>
+                                <td className="p-5">
+                                  <p className={`font-black uppercase text-[12px] text-slate-800 ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''}`}>{item.name}</p>
+                                  <p className={`text-[11px] font-bold text-slate-600 ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''}`}>{item.phone}</p>
+                                  {item.contacted && item.contactedBy && (
+                                    <span className="bg-green-100 text-green-700 text-[10px] font-black uppercase px-2 py-1 rounded-sm inline-flex items-center gap-1 mt-2">
+                                      Холбогдсон: {item.contactedBy}
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="p-5">
+                                  <span className={`text-[11px] font-bold text-zinc-400 ${item.contacted ? 'line-through decoration-toyota-red decoration-2 opacity-50' : ''}`}>
+                                    {item.createdAt ? new Date(item.createdAt).toLocaleString('mn-MN', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '-'}
+                                  </span>
+                                </td>
+                                <td className="p-5 px-8 text-right">
+                                  <div className="flex justify-end gap-2">
+                                    <button
+                                      onClick={() => handleToggleContacted(item)}
+                                      className={`w-10 h-10 flex items-center justify-center rounded-sm transition-all ${item.contacted ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-slate-600 hover:bg-black hover:text-white'}`}
+                                      title="Холбогдсон эсэх тэмдэглэх"
+                                    >
+                                      <CheckCircle2 size={16} />
+                                    </button>
+                                    <button
+                                      onClick={() => handleDelete(item.id)}
+                                      className="w-10 h-10 flex items-center justify-center bg-zinc-100 text-toyota-red rounded-sm hover:bg-toyota-red hover:text-white transition-all"
+                                      title="Устгах"
+                                    >
+                                      <Trash2 size={16} />
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          }) : (
+                            <tr><td colSpan="4" className="p-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Хvсэлт ирээгvй байна</td></tr>
+                          );
+                        })()}
                       </tbody>
                     </table>
                   </div>
