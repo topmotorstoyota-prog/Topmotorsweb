@@ -470,10 +470,15 @@ const VehicleDetail = () => {
                   </div>
                 )}
 
-                <div className="hidden lg:block">
+                <div className="hidden lg:block space-y-3">
                   <Link to="/booking?type=sales">
                     <Button variant="primary" className="w-full py-5 uppercase font-black tracking-[0.2em] text-[10px] md:text-xs shadow-xl shadow-toyota-red/10 hover:shadow-toyota-red/20 transition-all active:scale-[0.98]">
                       {t('nav.orderButton')}
+                    </Button>
+                  </Link>
+                  <Link to={`/compare?ids=${`${vehicleModel.id}-${selectedVariant?.series}-${selectedVariant?.engineType}`.replace(/\s+/g, '-').toLowerCase()}`}>
+                    <Button variant="secondary" className="w-full py-5 uppercase font-black tracking-[0.2em] text-[10px] md:text-xs transition-all active:scale-[0.98]">
+                      {t('vehicles.detail.compareButton')}
                     </Button>
                   </Link>
                 </div>
