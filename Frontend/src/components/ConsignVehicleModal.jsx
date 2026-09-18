@@ -126,7 +126,7 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
               <p className="text-xs md:text-sm text-zinc-500">{t('consignModal.desc')}</p>
 
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-3">{t('consignModal.photosLabel')}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-700 mb-3">{t('consignModal.photosLabel')}</p>
                 <div className="grid grid-cols-2 gap-3">
                   {SIDES.map(side => (
                     <label
@@ -138,8 +138,8 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
                         <img src={photos[side].preview} alt={side} className="w-full h-full object-cover" />
                       ) : (
                         <>
-                          <Camera size={22} className="text-zinc-300 mb-1" />
-                          <span className="text-[9px] font-black uppercase text-zinc-400">{t(`consignModal.sides.${side}`)}</span>
+                          <Camera size={22} className="text-zinc-500 mb-1" />
+                          <span className="text-[9px] font-black uppercase text-zinc-700">{t(`consignModal.sides.${side}`)}</span>
                         </>
                       )}
                       {photos[side] && (
@@ -164,7 +164,7 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
               </div>
 
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-3">{t('consignModal.dashboardLabel')}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-700 mb-3">{t('consignModal.dashboardLabel')}</p>
                 <label
                   className={`relative aspect-[16/9] border-2 rounded-sm overflow-hidden flex flex-col items-center justify-center cursor-pointer transition-all max-w-[220px] ${dashboardPhoto ? 'border-zinc-200' : 'border-dashed border-zinc-300 hover:border-toyota-red'}`}
                 >
@@ -173,8 +173,8 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
                     <img src={dashboardPhoto.preview} alt="dashboard" className="w-full h-full object-cover" />
                   ) : (
                     <>
-                      <Gauge size={22} className="text-zinc-300 mb-1" />
-                      <span className="text-[9px] font-black uppercase text-zinc-400 text-center px-2">{t('consignModal.dashboardLabel')}</span>
+                      <Gauge size={22} className="text-zinc-500 mb-1" />
+                      <span className="text-[9px] font-black uppercase text-zinc-700 text-center px-2">{t('consignModal.dashboardLabel')}</span>
                     </>
                   )}
                 </label>
