@@ -163,6 +163,7 @@ const ToyotaQDetail = () => {
                     <div className="flex items-baseline gap-1">
                       <span className="text-2xl md:text-3xl font-black text-toyota-red">₮{formatNum(vehicle.price)}</span>
                     </div>
+                    <span className="text-[9px] md:text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{t('toyotaQ.detail.vatExcluded')}</span>
                     <button
                       onClick={() => window.dispatchEvent(new CustomEvent('open-calculator', { detail: { price: vehicle.price } }))}
                       className="flex items-center gap-2 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-toyota-red transition-colors w-fit mt-1"

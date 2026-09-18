@@ -471,6 +471,7 @@
       "descriptionTitle": "Description",
       "defaultDescription": "This vehicle is part of the Toyota-Q certified pre-owned program, has undergone a full 150-point inspection, and comes with a quality certificate.",
       "leaseCalculator": "Lease Calculator",
+      "vatExcluded": "/VAT excluded/",
       "yearMade": "Year Made",
       "mileage": "Mileage",
       "engine": "Engine",
