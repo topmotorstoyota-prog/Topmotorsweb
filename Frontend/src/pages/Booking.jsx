@@ -174,7 +174,7 @@ const Booking = () => {
       subItems: ["Угаалга", "Хамгаалалтын хуулга", "Гадна өнгөлгөө"]
     },
     {
-      id: "Оригинал сэлбэг ба аксессуар",
+      id: "Оригинал сэлбэг ба тоноглол",
       title: t('booking.services.parts.title'),
       description: t('booking.services.parts.desc'),
       subItems: ["Сэлбэгийн худалдаа", "Аксессуар суурилуулалт", "Захиалгат сэлбэг"]

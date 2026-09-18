@@ -46,7 +46,7 @@ const Service = () => {
     { id: "Хөдөлгүүр ба агрегатын засвар", title: t('booking.services.engine.title'), desc: t('service.categories.engine.desc'), icon: Settings, items: t('service.categories.engine.items', { returnObjects: true }) },
     { id: "Дугуй ба явах эд ангийн үйлчилгээ", title: t('booking.services.wheels.title'), desc: t('service.categories.wheels.desc'), icon: Disc, items: t('service.categories.wheels.items', { returnObjects: true }) },
     { id: "Автомашины арчилгаа, хамгаалалт", title: t('booking.services.care.title'), desc: t('service.categories.care.desc'), icon: Shield, items: t('service.categories.care.items', { returnObjects: true }) },
-    { id: "Оригинал сэлбэг ба аксессуар", title: t('booking.services.parts.title'), desc: t('service.categories.parts.desc'), icon: Layers, items: t('service.categories.parts.items', { returnObjects: true }) }
+    { id: "Оригинал сэлбэг ба тоноглол", title: t('booking.services.parts.title'), desc: t('service.categories.parts.desc'), icon: Layers, items: t('service.categories.parts.items', { returnObjects: true }) }
   ];
 
   const facilityFeatures = [
