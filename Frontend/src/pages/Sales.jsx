@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Phone, Mail, MessageSquare, User, PhoneCall, ChevronRight, FileText, CheckCircle2 } from 'lucide-react';
+import { Phone, Mail, MessageSquare, User, PhoneCall, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
-import Button from '../components/Button';
 import API_BASE_URL from '../config';
-import reqImage from '../assets/sales/req.png';
 import placeholderImage from '../assets/vehicles/hero.jpg';
 
 const Sales = () => {
@@ -30,38 +27,6 @@ const Sales = () => {
 
   return (
     <div className="pt-16 lg:pt-20 font-sans bg-white min-h-screen">
-
-      {/* New Vehicle Request Section - Compact Version */}
-      <section className="py-6 md:py-9 bg-toyota-gray-100">
-        <div className="container-custom px-4">
-          <div className="bg-white border-2 border-toyota-red/10 p-5 md:p-10 relative overflow-hidden flex flex-col items-center text-center">
-
-             {/* Background Decoration - Smaller */}
-             <div className="absolute -top-10 -right-10 text-toyota-red/5">
-                <FileText size={150} md:size={200} strokeWidth={1} />
-             </div>
-
-             <div className="relative z-10 w-full max-w-xl mx-auto flex flex-col items-center">
-                <div className="w-full mb-6 md:mb-8 shadow-lg md:shadow-xl rounded-sm overflow-hidden">
-                   <img
-                     src={reqImage}
-                     alt="Toyota Sales Request"
-                     className="w-full h-auto"
-                   />
-                </div>
-                <Link
-                  to="/booking?type=new_car_order"
-                  className="w-full sm:w-auto"
-                >
-                  <Button variant="primary" size="lg" className="px-10 h-12 md:h-14 uppercase font-black tracking-widest text-[9px] md:text-[10px] shadow-xl shadow-toyota-red/20 group w-full sm:w-auto">
-                     <span>{t('sales.sendRequest')}</span>
-                     <ChevronRight className="ml-2 md:ml-3 group-hover:translate-x-1 transition-transform" size={14} md:size={16} />
-                  </Button>
-                </Link>
-             </div>
-          </div>
-        </div>
-      </section>
 
       {/* Sales Staff Grid */}
       <section className="py-12 md:py-24 bg-white">
