@@ -50,7 +50,6 @@ const Navbar = () => {
     },
     { name: t('nav.newVehicles'), path: '/vehicles' },
     { name: t('nav.toyotaQ'), path: '/toyota-q' },
-    { name: t('nav.faq'), path: '/faq' },
     {
       name: t('nav.services'),
       dropdown: [
@@ -60,6 +59,7 @@ const Navbar = () => {
         { name: t('nav.orderTracking'), path: '/order-tracking' },
       ]
     },
+    { name: t('nav.faq'), path: '/faq' },
 
   ];
 
