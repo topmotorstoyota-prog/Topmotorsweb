@@ -470,17 +470,36 @@ const VehicleDetail = () => {
                   </div>
                 )}
 
-                <div className="hidden lg:block space-y-3">
+                <div className="hidden lg:block">
                   <Link to="/booking?type=sales">
                     <Button variant="primary" className="w-full py-5 uppercase font-black tracking-[0.2em] text-[10px] md:text-xs shadow-xl shadow-toyota-red/10 hover:shadow-toyota-red/20 transition-all active:scale-[0.98]">
                       {t('nav.orderButton')}
                     </Button>
                   </Link>
-                  <Link to={`/compare?ids=${`${vehicleModel.id}-${selectedVariant?.series}-${selectedVariant?.engineType}`.replace(/\s+/g, '-').toLowerCase()}`}>
-                    <Button variant="secondary" className="w-full py-5 uppercase font-black tracking-[0.2em] text-[10px] md:text-xs transition-all active:scale-[0.98]">
-                      {t('vehicles.detail.compareButton')}
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      const variantId = `${vehicleModel.id}-${selectedVariant.series}-${selectedVariant.engineType}`.replace(/\s+/g, '-').toLowerCase();
+                      const variantColors = typeof selectedVariant.colors === 'string' ? JSON.parse(selectedVariant.colors || '[]') : (selectedVariant.colors || []);
+                      const colorWith360 = variantColors.find(c => c.images360 && c.images360.length > 0);
+                      const last360 = colorWith360?.images360[colorWith360.images360.length - 1];
+                      const localizedModelName = loc(vehicleModel.name, vehicleModel.nameEn);
+                      setSelectedVehicles([{
+                        ...selectedVariant,
+                        id: variantId,
+                        modelName: localizedModelName,
+                        modelId: vehicleModel.id,
+                        category: vehicleModel.category,
+                        fullName: `${localizedModelName} - ${selectedVariant.series} (${fuelType(selectedVariant.engineType)})`,
+                        displayImage: last360 || selectedVariant.image || vehicleModel.image,
+                        modelFeatures: vehicleModel.features || []
+                      }]);
+                      setIsCompareOpen(true);
+                    }}
+                    className="w-full mt-6 py-5 uppercase font-black tracking-[0.2em] text-[10px] md:text-xs transition-all active:scale-[0.98]"
+                  >
+                    {t('vehicles.detail.compareButton')}
+                  </Button>
                 </div>
             </div>
           </div>
