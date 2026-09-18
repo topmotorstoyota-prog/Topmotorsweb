@@ -114,9 +114,9 @@ const ToyotaQ = () => {
   return (
     <div className="pb-20 bg-white">
       {/* Hero Section - Background touches navbar, content is pushed down */}
-      <section className="relative h-[60vh] md:h-[85vh] flex flex-col md:flex-row overflow-hidden bg-toyota-black">
+      <section className="relative md:h-[85vh] flex flex-col md:flex-row overflow-hidden bg-toyota-black">
         {/* Left Side: Solid Background with Text */}
-        <div className="w-full md:w-[40%] h-full bg-toyota-black flex items-end justify-start p-6 md:p-16 lg:p-24 pb-12 md:pb-32 pt-[100px] relative order-2 md:order-1 z-10 hidden md:flex">
+        <div className="w-full md:w-[40%] md:h-full bg-toyota-black flex items-end justify-start p-6 md:p-16 lg:p-24 pb-12 md:pb-32 pt-[100px] relative order-2 md:order-1 z-10 hidden md:flex">
           {/* Decorative Red Accent */}
           <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-toyota-red hidden md:block" />
 
@@ -159,11 +159,11 @@ const ToyotaQ = () => {
         </div>
 
         {/* Right Side: Image - Pushed down to be fully visible under navbar */}
-        <div className="w-full md:w-[60%] h-full relative order-1 md:order-2 pt-[80px] md:pt-0 bg-toyota-black">
+        <div className="w-full md:w-[60%] md:h-full relative order-1 md:order-2 pt-[80px] md:pt-0 bg-toyota-black">
           <img
             src={toyotaQHero}
             alt={t('toyotaQ.heroImageAlt')}
-            className="w-full h-full object-contain object-left"
+            className="w-full h-auto md:h-full object-contain md:object-left"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-toyota-black via-transparent to-transparent hidden md:block" />
         </div>
