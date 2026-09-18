@@ -31,7 +31,7 @@ const About = () => {
 
   const services = [
     { title: t('about.services.vehicles.title'), desc: t('about.services.vehicles.desc'), icon: Car },
-    { title: t('about.services.warranty.title'), desc: t('about.services.warranty.desc'), icon: Settings },
+    { title: t('about.services.warranty.title'), desc: t('about.services.warranty.desc'), icon: CheckCircle2 },
     { title: t('about.services.parts.title'), desc: t('about.services.parts.desc'), icon: ShieldCheck },
     { title: t('about.services.maintenance.title'), desc: t('about.services.maintenance.desc'), icon: Award }
   ];

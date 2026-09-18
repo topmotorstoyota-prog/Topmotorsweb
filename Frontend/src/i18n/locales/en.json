@@ -192,7 +192,7 @@
     },
     "services": {
       "vehicles": { "title": "Vehicles", "desc": "Vehicle sales from Toyota's official dealer. A wide selection of models, colors, and trims." },
-      "warranty": { "title": "Warranty Repair", "desc": "Manufacturer-warrantied service, diagnostics, routine and scheduled maintenance." },
+      "warranty": { "title": "Toyota Q", "desc": "Certified used Toyota and Lexus vehicles that have passed a 150-point quality inspection." },
       "parts": { "title": "Genuine Parts", "desc": "Supply of genuine Toyota parts. Quality-guaranteed and fast." },
       "maintenance": { "title": "Service & Maintenance", "desc": "Professional diagnostics and repair service." }
     },
