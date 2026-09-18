@@ -416,6 +416,8 @@
     },
     "setCover": "Set as cover",
     "coverHint": "Click the star on a photo to set it as the cover photo.",
+    "dashboardLabel": "Dashboard (odometer reading)",
+    "dashboardHint": "Upload a photo of the dashboard showing the odometer reading.",
     "namePlaceholder": "Name",
     "phonePlaceholder": "Phone number",
     "submit": "Send Request",

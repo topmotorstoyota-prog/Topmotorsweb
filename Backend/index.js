@@ -163,7 +163,7 @@ const publicUploadLimiter = rateLimit({
 });
 
 app.post('/api/upload-public', publicUploadLimiter, (req, res) => {
-  upload.array('images', 4)(req, res, async (err) => {
+  upload.array('images', 5)(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
       console.error('Multer Error:', err);
       return res.status(400).json({ message: `Файлын хэмжээ хэтэрсэн эсвэл хэт олон файл байна: ${err.code}` });

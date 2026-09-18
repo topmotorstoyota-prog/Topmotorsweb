@@ -169,6 +169,27 @@ const ToyotaQ = () => {
         </div>
       </section>
 
+      {/* Mobile-only CTA row (desktop buttons live inside the hidden-on-mobile left panel above) */}
+      <div className="flex md:hidden gap-3 px-4 py-4 bg-toyota-black">
+        <Button
+          variant="white"
+          size="lg"
+          className="flex-1 group px-4 text-[10px]"
+          onClick={scrollToVehicles}
+        >
+          <span>{t('toyotaQ.viewVehicles')}</span>
+          <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={14} />
+        </Button>
+        <Button
+          variant="outline"
+          size="lg"
+          className="flex-1 px-4 text-[10px]"
+          onClick={() => setIsConsignOpen(true)}
+        >
+          {t('toyotaQ.sellVehicle')}
+        </Button>
+      </div>
+
       {/* Definition Section */}
       <section className="py-12 md:py-16 bg-white">
         <div className="container-custom px-4">

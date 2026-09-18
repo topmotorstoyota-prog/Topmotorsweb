@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Camera, CheckCircle2, Star } from 'lucide-react';
+import { X, Camera, CheckCircle2, Star, Gauge } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import API_BASE_URL from '../config';
 
@@ -10,6 +10,7 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const [photos, setPhotos] = useState({});
   const [coverSide, setCoverSide] = useState(null);
+  const [dashboardPhoto, setDashboardPhoto] = useState(null);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -24,7 +25,12 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
     if (!coverSide) setCoverSide(side);
   };
 
-  const allPhotosSelected = SIDES.every(side => photos[side]);
+  const handleDashboardChange = (file) => {
+    if (!file) return;
+    setDashboardPhoto({ file, preview: URL.createObjectURL(file) });
+  };
+
+  const allPhotosSelected = SIDES.every(side => photos[side]) && !!dashboardPhoto;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,12 +43,16 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
     try {
       const formData = new FormData();
       SIDES.forEach(side => formData.append('images', photos[side].file));
+      formData.append('images', dashboardPhoto.file);
 
       const uploadRes = await fetch(`${API_BASE_URL}/api/upload-public`, { method: 'POST', body: formData });
       const uploadData = await uploadRes.json();
       if (!uploadRes.ok) throw new Error(uploadData.message || 'upload failed');
 
-      const images = SIDES.map((side, idx) => ({ side, url: uploadData.imageUrls[idx], isCover: side === coverSide }));
+      const images = [
+        ...SIDES.map((side, idx) => ({ side, url: uploadData.imageUrls[idx], isCover: side === coverSide })),
+        { side: 'dashboard', url: uploadData.imageUrls[SIDES.length], isCover: false }
+      ];
 
       const res = await fetch(`${API_BASE_URL}/api/bookings`, {
         method: 'POST',
@@ -68,6 +78,7 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
   const handleClose = () => {
     setPhotos({});
     setCoverSide(null);
+    setDashboardPhoto(null);
     setName('');
     setPhone('');
     setIsSuccess(false);
@@ -150,6 +161,24 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
                   ))}
                 </div>
                 <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.coverHint')}</p>
+              </div>
+
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-3">{t('consignModal.dashboardLabel')}</p>
+                <label
+                  className={`relative aspect-[16/9] border-2 rounded-sm overflow-hidden flex flex-col items-center justify-center cursor-pointer transition-all max-w-[220px] ${dashboardPhoto ? 'border-zinc-200' : 'border-dashed border-zinc-300 hover:border-toyota-red'}`}
+                >
+                  <input type="file" accept="image/*" className="hidden" onChange={(e) => handleDashboardChange(e.target.files[0])} />
+                  {dashboardPhoto ? (
+                    <img src={dashboardPhoto.preview} alt="dashboard" className="w-full h-full object-cover" />
+                  ) : (
+                    <>
+                      <Gauge size={22} className="text-zinc-300 mb-1" />
+                      <span className="text-[9px] font-black uppercase text-zinc-400 text-center px-2">{t('consignModal.dashboardLabel')}</span>
+                    </>
+                  )}
+                </label>
+                <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.dashboardHint')}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
