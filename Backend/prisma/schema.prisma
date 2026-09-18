@@ -24,6 +24,7 @@ model User {
   canManageHomeBanner Boolean @default(false)
   canManageStaff     Boolean  @default(false) // Борлуулалтын ажилчид
   canManageShipment  Boolean  @default(false) // Тээвэрлэлт хянах
+  canManageToyotaQRequests Boolean @default(false) // Toyota Q зуучлалын хvсэлт
   createdAt         DateTime @default(now())
 }
 

@@ -1896,7 +1896,8 @@ function UserAdminForm({ token, initialData, onSuccess }) {
     canManageServiceBookings: false,
     canManageHomeBanner: false,
     canManageStaff: false,
-    canManageShipment: false
+    canManageShipment: false,
+    canManageToyotaQRequests: false
   });
 
   const handleSubmit = async (e) => {
@@ -1949,6 +1950,7 @@ function UserAdminForm({ token, initialData, onSuccess }) {
     { name: 'canManageHomeBanner', label: 'Нүүр хуудасны баннер удирдах' },
     { name: 'canManageStaff', label: 'Борлуулалтын ажилчид удирдах' },
     { name: 'canManageShipment', label: 'Тээвэрлэлт хянах' },
+    { name: 'canManageToyotaQRequests', label: 'Toyota Q хvсэлт удирдах' },
   ];
 
   return (
