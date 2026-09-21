@@ -84,7 +84,7 @@ const Sales = () => {
                            <img
                              src={staff.image || placeholderImage}
                              alt={staff.name}
-                             className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
+                             className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-out"
                            />
                         </div>
 
