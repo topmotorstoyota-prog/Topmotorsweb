@@ -38,6 +38,7 @@ export default function AdminDashboard() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [staffPositionFilter, setStaffPositionFilter] = useState(null);
   const [staffPositionRanks, setStaffPositionRanks] = useState([]);
+  const [lightbox, setLightbox] = useState(null);
 
   useEffect(() => {
     if (!token) navigate('/admin-login');
@@ -385,20 +386,21 @@ export default function AdminDashboard() {
                             try { photos = JSON.parse(item.images || '[]'); } catch (e) {}
                             const cover = photos.find(p => p.isCover) || photos[0];
                             const others = photos.filter(p => p !== cover);
+                            const orderedPhotos = cover ? [cover, ...others] : others;
                             return (
                               <tr key={item.id} className={`border-b hover:bg-zinc-50 transition-colors ${item.contacted ? 'bg-zinc-50/50' : ''}`}>
                                 <td className="p-5 px-8">
                                   <div className="flex gap-2">
                                     {cover && (
-                                      <a href={cover.url} target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 shrink-0 border-2 border-toyota-red rounded-sm overflow-hidden">
+                                      <button type="button" onClick={() => setLightbox({ photos: orderedPhotos, index: 0 })} className="relative w-16 h-16 shrink-0 border-2 border-toyota-red rounded-sm overflow-hidden">
                                         <img src={cover.url} alt="cover" className="w-full h-full object-cover" />
                                         <Star size={10} className="absolute top-0.5 right-0.5 text-toyota-red" fill="currentColor" />
-                                      </a>
+                                      </button>
                                     )}
                                     {others.map((p, i) => (
-                                      <a key={i} href={p.url} target="_blank" rel="noopener noreferrer" className="w-16 h-16 shrink-0 border border-zinc-200 rounded-sm overflow-hidden">
+                                      <button type="button" key={i} onClick={() => setLightbox({ photos: orderedPhotos, index: i + 1 })} className="w-16 h-16 shrink-0 border border-zinc-200 rounded-sm overflow-hidden">
                                         <img src={p.url} alt="" className="w-full h-full object-cover" />
-                                      </a>
+                                      </button>
                                     ))}
                                   </div>
                                 </td>
@@ -792,6 +794,48 @@ export default function AdminDashboard() {
 
       {showPasswordModal && (
         <ChangePasswordModal token={token} onClose={() => setShowPasswordModal(false)} />
+      )}
+
+      {lightbox && (
+        <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4" onClick={() => setLightbox(null)}>
+          <button
+            onClick={() => setLightbox(null)}
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white transition-colors z-10"
+          >
+            <X size={32} />
+          </button>
+
+          {lightbox.photos.length > 1 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); setLightbox(prev => ({ ...prev, index: (prev.index - 1 + prev.photos.length) % prev.photos.length })); }}
+              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors z-10 p-2"
+            >
+              <ChevronLeft size={40} />
+            </button>
+          )}
+
+          <img
+            src={lightbox.photos[lightbox.index]?.url}
+            alt=""
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-full max-h-full object-contain"
+          />
+
+          {lightbox.photos.length > 1 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); setLightbox(prev => ({ ...prev, index: (prev.index + 1) % prev.photos.length })); }}
+              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors z-10 p-2"
+            >
+              <ChevronRight size={40} />
+            </button>
+          )}
+
+          {lightbox.photos.length > 1 && (
+            <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-xs font-black uppercase tracking-widest">
+              {lightbox.index + 1} / {lightbox.photos.length}
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

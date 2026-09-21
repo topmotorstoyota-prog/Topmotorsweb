@@ -1,10 +1,112 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Camera, CheckCircle2, Star, Gauge } from 'lucide-react';
+import { X, Camera, Image as ImageIcon, CheckCircle2, Star, Gauge } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import API_BASE_URL from '../config';
 
 const SIDES = ['front', 'back', 'left', 'right'];
+const TARGET_KB = 500;
+const MAX_DIM = 1600;
+
+// Зургийг canvas ашиглан ойролцоогоор TARGET_KB хэмжээ хvртэл шахна (chanar шат шатаар бууруулж)
+function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const objectUrl = URL.createObjectURL(file);
+    const img = new window.Image();
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > MAX_DIM || height > MAX_DIM) {
+        if (width >= height) { height = Math.round((height * MAX_DIM) / width); width = MAX_DIM; }
+        else { width = Math.round((width * MAX_DIM) / height); height = MAX_DIM; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      URL.revokeObjectURL(objectUrl);
+
+      const attempt = (quality) => {
+        canvas.toBlob((blob) => {
+          if (!blob) { reject(new Error('compress failed')); return; }
+          if (blob.size / 1024 <= TARGET_KB || quality <= 0.4) {
+            resolve(new File([blob], file.name.replace(/\.\w+$/, '.jpg'), { type: 'image/jpeg' }));
+          } else {
+            attempt(quality - 0.15);
+          }
+        }, 'image/jpeg', quality);
+      };
+      attempt(0.85);
+    };
+    img.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error('image load failed')); };
+    img.src = objectUrl;
+  });
+}
+
+// Файлуудыг тохирсон FormData-руу оруулаад upload progress-тойгоор илгээнэ (fetch-д progress байдаггvй тул XHR ашиглав)
+function uploadWithProgress(url, formData, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+    };
+    xhr.onload = () => {
+      try {
+        const data = JSON.parse(xhr.responseText);
+        if (xhr.status >= 200 && xhr.status < 300) resolve(data);
+        else reject(new Error(data.message || 'upload failed'));
+      } catch (err) { reject(err); }
+    };
+    xhr.onerror = () => reject(new Error('network error'));
+    xhr.send(formData);
+  });
+}
+
+const PhotoSlot = ({ label, preview, onSelect, isCover, onSetCover, small }) => {
+  const cameraRef = useRef(null);
+  const galleryRef = useRef(null);
+
+  return (
+    <div
+      className={`relative border-2 rounded-sm overflow-hidden flex flex-col items-center justify-center transition-all bg-zinc-50 ${small ? 'aspect-[16/9] max-w-[220px]' : 'aspect-[4/3]'} ${preview ? 'border-zinc-200' : 'border-dashed border-zinc-300'}`}
+    >
+      <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => onSelect(e.target.files[0])} />
+      <input ref={galleryRef} type="file" accept="image/*" className="hidden" onChange={(e) => onSelect(e.target.files[0])} />
+
+      {preview ? (
+        <img src={preview} alt={label} className="w-full h-full object-contain" />
+      ) : (
+        <>
+          <span className="text-[9px] font-black uppercase text-zinc-700 text-center px-2 mb-2">{label}</span>
+          <div className="flex gap-2">
+            <button type="button" onClick={() => cameraRef.current?.click()} className="p-2.5 bg-white border border-zinc-200 rounded-full text-zinc-600 hover:text-toyota-red hover:border-toyota-red transition-colors" title="Камер">
+              <Camera size={16} />
+            </button>
+            <button type="button" onClick={() => galleryRef.current?.click()} className="p-2.5 bg-white border border-zinc-200 rounded-full text-zinc-600 hover:text-toyota-red hover:border-toyota-red transition-colors" title="Галерей">
+              <ImageIcon size={16} />
+            </button>
+          </div>
+        </>
+      )}
+
+      {preview && onSetCover && (
+        <button
+          type="button"
+          onClick={onSetCover}
+          className={`absolute top-1.5 right-1.5 p-1.5 rounded-full shadow-md transition-all ${isCover ? 'bg-toyota-red text-white' : 'bg-white/90 text-zinc-400 hover:text-toyota-red'}`}
+        >
+          <Star size={12} fill={isCover ? 'currentColor' : 'none'} />
+        </button>
+      )}
+      {preview && (
+        <span className="absolute bottom-1.5 left-1.5 bg-black/60 text-white text-[8px] font-black uppercase px-1.5 py-0.5 rounded-sm">
+          {label}
+        </span>
+      )}
+    </div>
+  );
+};
 
 const ConsignVehicleModal = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
@@ -14,18 +116,20 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
 
   if (!isOpen) return null;
 
-  const handlePhotoChange = (side, file) => {
+  const handlePhotoChange = async (side, file) => {
     if (!file) return;
-    setPhotos(prev => ({ ...prev, [side]: { file, preview: URL.createObjectURL(file) } }));
+    const preview = URL.createObjectURL(file);
+    setPhotos(prev => ({ ...prev, [side]: { file, preview } }));
     if (!coverSide) setCoverSide(side);
   };
 
-  const handleDashboardChange = (file) => {
+  const handleDashboardChange = async (file) => {
     if (!file) return;
     setDashboardPhoto({ file, preview: URL.createObjectURL(file) });
   };
@@ -40,14 +144,18 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
 
     setError('');
     setSubmitting(true);
+    setProgress(0);
     try {
-      const formData = new FormData();
-      SIDES.forEach(side => formData.append('images', photos[side].file));
-      formData.append('images', dashboardPhoto.file);
+      // Илгээхийн өмнө бvх зургийг ~500KB хvртэл шахна
+      const compressed = await Promise.all([
+        ...SIDES.map(side => compressImage(photos[side].file)),
+        compressImage(dashboardPhoto.file)
+      ]);
 
-      const uploadRes = await fetch(`${API_BASE_URL}/api/upload-public`, { method: 'POST', body: formData });
-      const uploadData = await uploadRes.json();
-      if (!uploadRes.ok) throw new Error(uploadData.message || 'upload failed');
+      const formData = new FormData();
+      compressed.forEach(f => formData.append('images', f));
+
+      const uploadData = await uploadWithProgress(`${API_BASE_URL}/api/upload-public`, formData, setProgress);
 
       const images = [
         ...SIDES.map((side, idx) => ({ side, url: uploadData.imageUrls[idx], isCover: side === coverSide })),
@@ -83,6 +191,7 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
     setPhone('');
     setIsSuccess(false);
     setError('');
+    setProgress(0);
     onClose();
   };
 
@@ -129,35 +238,14 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
                 <p className="text-[10px] font-black uppercase tracking-widest text-zinc-700 mb-3">{t('consignModal.photosLabel')}</p>
                 <div className="grid grid-cols-2 gap-3">
                   {SIDES.map(side => (
-                    <label
+                    <PhotoSlot
                       key={side}
-                      className={`relative aspect-[4/3] border-2 rounded-sm overflow-hidden flex flex-col items-center justify-center cursor-pointer transition-all ${photos[side] ? 'border-zinc-200' : 'border-dashed border-zinc-300 hover:border-toyota-red'}`}
-                    >
-                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handlePhotoChange(side, e.target.files[0])} />
-                      {photos[side] ? (
-                        <img src={photos[side].preview} alt={side} className="w-full h-full object-cover" />
-                      ) : (
-                        <>
-                          <Camera size={22} className="text-zinc-500 mb-1" />
-                          <span className="text-[9px] font-black uppercase text-zinc-700">{t(`consignModal.sides.${side}`)}</span>
-                        </>
-                      )}
-                      {photos[side] && (
-                        <button
-                          type="button"
-                          onClick={(e) => { e.preventDefault(); setCoverSide(side); }}
-                          className={`absolute top-1.5 right-1.5 p-1.5 rounded-full shadow-md transition-all ${coverSide === side ? 'bg-toyota-red text-white' : 'bg-white/90 text-zinc-400 hover:text-toyota-red'}`}
-                          title={t('consignModal.setCover')}
-                        >
-                          <Star size={12} fill={coverSide === side ? 'currentColor' : 'none'} />
-                        </button>
-                      )}
-                      {photos[side] && (
-                        <span className="absolute bottom-1.5 left-1.5 bg-black/60 text-white text-[8px] font-black uppercase px-1.5 py-0.5 rounded-sm">
-                          {t(`consignModal.sides.${side}`)}
-                        </span>
-                      )}
-                    </label>
+                      label={t(`consignModal.sides.${side}`)}
+                      preview={photos[side]?.preview}
+                      onSelect={(file) => handlePhotoChange(side, file)}
+                      isCover={coverSide === side}
+                      onSetCover={() => setCoverSide(side)}
+                    />
                   ))}
                 </div>
                 <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.coverHint')}</p>
@@ -165,19 +253,12 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
 
               <div>
                 <p className="text-[10px] font-black uppercase tracking-widest text-zinc-700 mb-3">{t('consignModal.dashboardLabel')}</p>
-                <label
-                  className={`relative aspect-[16/9] border-2 rounded-sm overflow-hidden flex flex-col items-center justify-center cursor-pointer transition-all max-w-[220px] ${dashboardPhoto ? 'border-zinc-200' : 'border-dashed border-zinc-300 hover:border-toyota-red'}`}
-                >
-                  <input type="file" accept="image/*" className="hidden" onChange={(e) => handleDashboardChange(e.target.files[0])} />
-                  {dashboardPhoto ? (
-                    <img src={dashboardPhoto.preview} alt="dashboard" className="w-full h-full object-cover" />
-                  ) : (
-                    <>
-                      <Gauge size={22} className="text-zinc-500 mb-1" />
-                      <span className="text-[9px] font-black uppercase text-zinc-700 text-center px-2">{t('consignModal.dashboardLabel')}</span>
-                    </>
-                  )}
-                </label>
+                <PhotoSlot
+                  label={t('consignModal.dashboardLabel')}
+                  preview={dashboardPhoto?.preview}
+                  onSelect={handleDashboardChange}
+                  small
+                />
                 <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.dashboardHint')}</p>
               </div>
 
@@ -198,13 +279,21 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
 
               {error && <p className="text-xs text-toyota-red font-bold">{error}</p>}
 
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full py-4 bg-toyota-red text-white font-black uppercase tracking-[0.2em] text-xs hover:bg-black transition-all disabled:opacity-50"
-              >
-                {submitting ? t('common.submitting') : t('consignModal.submit')}
-              </button>
+              {submitting ? (
+                <div className="space-y-2">
+                  <div className="w-full h-2.5 bg-zinc-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-toyota-red transition-all duration-200" style={{ width: `${progress}%` }} />
+                  </div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 text-center">{progress}%</p>
+                </div>
+              ) : (
+                <button
+                  type="submit"
+                  className="w-full py-4 bg-toyota-red text-white font-black uppercase tracking-[0.2em] text-xs hover:bg-black transition-all"
+                >
+                  {t('consignModal.submit')}
+                </button>
+              )}
             </form>
           )}
         </motion.div>
