@@ -36,10 +36,12 @@ export default function AdminDashboard() {
   const [showForm, setShowForm] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [staffPositionFilter, setStaffPositionFilter] = useState(null);
 
   useEffect(() => {
     if (!token) navigate('/admin-login');
     fetchData();
+    setStaffPositionFilter(null);
   }, [token, activeTab]);
 
   const fetchData = async () => {
@@ -130,6 +132,17 @@ export default function AdminDashboard() {
 
   const tabs = TAB_ORDER.filter(hasTabAccess);
 
+  // Ажилтнуудыг албан тушаалаар нь бvлэглэх (Staff.position талбарын давхардаагvй утгууд)
+  const staffPositions = activeTab === 'staff'
+    ? Object.values(items.reduce((acc, s) => {
+        const name = (s.position || '').trim();
+        if (!name) return acc;
+        if (!acc[name]) acc[name] = { name, count: 0 };
+        acc[name].count++;
+        return acc;
+      }, {}))
+    : [];
+
   return (
     <div className="min-h-screen flex bg-[#f8f9fa] font-sans text-slate-900 text-sm">
       <div className="w-72 bg-black text-white flex flex-col fixed h-full shadow-2xl z-20">
@@ -174,8 +187,25 @@ export default function AdminDashboard() {
 
       <div className="flex-1 ml-72">
         <header className="bg-white border-b h-24 flex items-center justify-between px-10 sticky top-0 z-10 shadow-sm">
-           <h2 className="text-2xl font-black uppercase tracking-tight text-slate-800">{tabLabels[activeTab]} <span className="text-toyota-red">удирдах</span></h2>
-           {!showForm && !editingItem && activeTab !== 'sales-bookings' && activeTab !== 'service-bookings' && activeTab !== 'toyota-q-requests' && activeTab !== 'activity-logs' && activeTab !== 'shipment' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
+           <h2 className="text-2xl font-black uppercase tracking-tight text-slate-800 flex items-center gap-3">
+             {activeTab === 'staff' && staffPositionFilter && (
+               <button onClick={() => setStaffPositionFilter(null)} className="text-zinc-400 hover:text-toyota-red transition-colors" title="Буцах">
+                 <ChevronLeft size={22} />
+               </button>
+             )}
+             {activeTab === 'staff' && staffPositionFilter ? staffPositionFilter : tabLabels[activeTab]} <span className="text-toyota-red">удирдах</span>
+           </h2>
+           {!showForm && !editingItem && activeTab === 'staff' && !staffPositionFilter && (
+             <button onClick={() => { const name = window.prompt('Шинэ албан тушаалын нэр:'); if (name && name.trim()) setStaffPositionFilter(name.trim()); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10">
+               <Plus size={16} /> Шинэ албан тушаал
+             </button>
+           )}
+           {!showForm && !editingItem && activeTab === 'staff' && staffPositionFilter && (
+             <button onClick={() => { setEditingItem(null); setShowForm(true); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10">
+               <Plus size={16} /> Ажилтан нэмэх
+             </button>
+           )}
+           {!showForm && !editingItem && activeTab !== 'staff' && activeTab !== 'sales-bookings' && activeTab !== 'service-bookings' && activeTab !== 'toyota-q-requests' && activeTab !== 'activity-logs' && activeTab !== 'shipment' && <button onClick={() => { setShowForm(true); setEditingItem(null); }} className="bg-toyota-red text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-toyota-red/10"><Plus size={16} /> Шинэ нэмэх</button>}
            {activeTab === 'activity-logs' && items.length > 0 && (
              <button onClick={handleClearLogs} className="bg-red-600 text-white px-8 py-3.5 rounded-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center gap-2 hover:bg-black transition-all shadow-xl shadow-red-600/10">
                <Trash2 size={16} /> Бvгдийг цэвэрлэх
@@ -198,7 +228,7 @@ export default function AdminDashboard() {
                     ) : activeTab === 'users' ? (
                       <UserAdminForm key={editingItem?.id || 'new'} token={token} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
                     ) : (
-                      <AdminForm key={`${activeTab}-${editingItem?.id || 'new'}`} type={apiPath(activeTab)} presetCategory={PRODUCT_CATEGORY[activeTab]} token={token} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
+                      <AdminForm key={`${activeTab}-${editingItem?.id || 'new'}`} type={apiPath(activeTab)} presetCategory={PRODUCT_CATEGORY[activeTab]} presetPosition={activeTab === 'staff' ? staffPositionFilter : undefined} positionOptions={staffPositions.map(p => p.name)} token={token} initialData={editingItem} onSuccess={() => { setShowForm(false); setEditingItem(null); fetchData(); }} />
                     )}
                   </div>
                 </div>
@@ -437,6 +467,64 @@ export default function AdminDashboard() {
                       </tbody>
                     </table>
                   </div>
+                ) : activeTab === 'staff' ? (
+                  staffPositionFilter === null ? (
+                    <div>
+                      {staffPositions.length > 0 ? (
+                        <div className="divide-y">
+                          {staffPositions.map(pos => (
+                            <button
+                              key={pos.name}
+                              onClick={() => setStaffPositionFilter(pos.name)}
+                              className="w-full flex items-center justify-between p-6 hover:bg-zinc-50 transition-colors text-left"
+                            >
+                              <div>
+                                <p className="font-black uppercase text-[14px] text-slate-800">{pos.name}</p>
+                                <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-1">{pos.count} ажилтан</p>
+                              </div>
+                              <ChevronRight size={20} className="text-zinc-300" />
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="p-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Албан тушаал алга байна</div>
+                      )}
+                    </div>
+                  ) : (
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-zinc-50 border-b">
+                          <th className="p-5 px-8 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Ажилтан</th>
+                          <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Утас</th>
+                          <th className="p-5 px-8 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 text-right">Vйлдэл</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(() => {
+                          const staffInPosition = items.filter(s => s.position === staffPositionFilter);
+                          return staffInPosition.length > 0 ? staffInPosition.map(item => (
+                            <tr key={item.id} className="border-b hover:bg-zinc-50 transition-colors">
+                              <td className="p-5 px-8">
+                                <div className="flex items-center gap-4">
+                                  {item.image && <div className="w-12 h-12 bg-zinc-100 rounded-full overflow-hidden flex-shrink-0 border"><img src={item.image} className="w-full h-full object-cover" /></div>}
+                                  <span className="font-black text-[13px] uppercase tracking-tight text-slate-800">{item.name}</span>
+                                </div>
+                              </td>
+                              <td className="p-5 text-[12px] font-bold text-zinc-600">{item.phone}</td>
+                              <td className="p-5 px-8 text-right">
+                                <div className="flex justify-end gap-2">
+                                  <button onClick={() => setEditingItem(item)} className="w-10 h-10 flex items-center justify-center bg-zinc-100 text-slate-600 rounded-sm hover:bg-black hover:text-white transition-all" title="Засах"><Edit size={16} /></button>
+                                  <button onClick={() => handleDelete(item.id)} className="w-10 h-10 flex items-center justify-center bg-zinc-100 text-toyota-red rounded-sm hover:bg-toyota-red hover:text-white transition-all" title="Устгах"><Trash2 size={16} /></button>
+                                </div>
+                              </td>
+                            </tr>
+                          )) : (
+                            <tr><td colSpan="3" className="p-20 text-center text-zinc-400 font-bold uppercase tracking-widest">Энэ албан тушаалд ажилтан алга байна</td></tr>
+                          );
+                        })()}
+                      </tbody>
+                    </table>
+                  )
                 ) : (
                   <table className="w-full text-left">
                     <thead><tr className="bg-zinc-50 border-b"><th className="p-5 px-8 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Мэдээлэл</th><th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 text-center">Дэлгэрэнгүй</th><th className="p-5 px-8 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 text-right">Үйлдэл</th></tr></thead>
@@ -1445,12 +1533,12 @@ function VehicleComplexForm({ token, initialData, onSuccess }) {
   );
 }
 
-function AdminForm({ type, presetCategory, token, initialData, onSuccess }) {
+function AdminForm({ type, presetCategory, presetPosition, positionOptions, token, initialData, onSuccess }) {
   const [formData, setFormData] = useState(initialData ? {
     ...initialData,
     images: typeof initialData.images === 'string' ? JSON.parse(initialData.images || '[]') : (initialData.images || []),
     variants: typeof initialData.variants === 'string' ? JSON.parse(initialData.variants || '[]') : (initialData.variants || [])
-  } : { stock: 'Бэлэн байгаа', images: [], variants: [], category: presetCategory || '' });
+  } : { stock: 'Бэлэн байгаа', images: [], variants: [], category: presetCategory || '', position: presetPosition || '' });
   const [uploading, setUploading] = useState(false);
   const [uploadingPdf, setUploadingPdf] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -1735,7 +1823,15 @@ function AdminForm({ type, presetCategory, token, initialData, onSuccess }) {
             )}
             {type === 'staff' && (
                <>
-                 <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Албан тушаал</label><input name="position" value={formData.position || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" required /></div>
+                 <div>
+                   <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Албан тушаал</label>
+                   <select name="position" value={formData.position || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" required>
+                     <option value="" disabled>Сонгоно уу</option>
+                     {[...new Set([...(positionOptions || []), formData.position].filter(Boolean))].map(pos => (
+                       <option key={pos} value={pos}>{pos}</option>
+                     ))}
+                   </select>
+                 </div>
                  <div><label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Утас</label><input name="phone" value={formData.phone || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm font-bold" required /></div>
                </>
             )}

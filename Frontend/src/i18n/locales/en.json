@@ -376,7 +376,8 @@
     "teamTitlePlain": "Our",
     "teamTitleRed": "Team",
     "teamDesc": "Get in touch directly with our expert consultants",
-    "noStaff": "No staff information available yet."
+    "noStaff": "No staff information available yet.",
+    "noPosition": "Other"
   },
   "finance": {
     "pageTitle": "Financing",

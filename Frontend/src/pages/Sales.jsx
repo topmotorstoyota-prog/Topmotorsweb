@@ -44,48 +44,56 @@ const Sales = () => {
 
           {loading ? (
             <div className="py-20 text-center font-black uppercase tracking-widest text-zinc-300">{t('vehicles.list.loading')}</div>
+          ) : salesStaff.length === 0 ? (
+            <div className="py-20 text-center text-zinc-400 font-bold uppercase tracking-widest">{t('sales.noStaff')}</div>
           ) : (
-            <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-5">
-              {salesStaff.map((staff, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="group cursor-default"
-                >
-                  <div className="relative aspect-[3/4] bg-zinc-100 overflow-hidden mb-2">
-                     <img
-                       src={staff.image || placeholderImage}
-                       alt={staff.name}
-                       className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
-                     />
-                     {/* Center Bottom Position Label */}
-                     <div className="absolute bottom-0 left-0 right-0 bg-toyota-red/90 h-7 md:h-10 flex items-center justify-center px-1">
-                        <p className="text-white text-[6px] md:text-[8px] font-black uppercase tracking-[0.1em] text-center line-clamp-2">
-                           {staff.position}
-                        </p>
-                     </div>
+            <div className="space-y-10 md:space-y-16">
+              {Object.values(salesStaff.reduce((acc, staff) => {
+                const key = staff.position || t('sales.noPosition');
+                if (!acc[key]) acc[key] = { position: key, members: [] };
+                acc[key].members.push(staff);
+                return acc;
+              }, {})).map((group, gi) => (
+                <div key={group.position}>
+                  <div className="flex items-center gap-3 mb-4 md:mb-6">
+                    <h3 className="text-sm md:text-xl font-black uppercase tracking-tight text-toyota-black">{group.position}</h3>
+                    <div className="flex-1 h-px bg-zinc-200" />
                   </div>
+                  <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-5">
+                    {group.members.map((staff, i) => (
+                      <motion.div
+                        key={staff.id || i}
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.05 }}
+                        className="group cursor-default"
+                      >
+                        <div className="relative aspect-[3/4] bg-zinc-100 overflow-hidden mb-2">
+                           <img
+                             src={staff.image || placeholderImage}
+                             alt={staff.name}
+                             className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
+                           />
+                        </div>
 
-                  <div className="px-0.5">
-                     <h3 className="text-[10px] md:text-lg font-black uppercase tracking-tighter text-toyota-black leading-tight mb-1 truncate">
-                        {staff.name}
-                     </h3>
-                     <a
-                       href={`tel:${staff.phone.replace('-', '')}`}
-                       className="flex items-center gap-1 text-[8px] md:text-xs font-bold text-zinc-900 hover:text-toyota-red transition-colors"
-                     >
-                        <Phone size={10} md:size={14} className="text-toyota-red shrink-0" />
-                        <span>{staff.phone}</span>
-                     </a>
+                        <div className="px-0.5">
+                           <h3 className="text-[10px] md:text-lg font-black uppercase tracking-tighter text-toyota-black leading-tight mb-1 truncate">
+                              {staff.name}
+                           </h3>
+                           <a
+                             href={`tel:${staff.phone.replace('-', '')}`}
+                             className="flex items-center gap-1 text-[8px] md:text-xs font-bold text-zinc-900 hover:text-toyota-red transition-colors"
+                           >
+                              <Phone size={10} md:size={14} className="text-toyota-red shrink-0" />
+                              <span>{staff.phone}</span>
+                           </a>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
-                </motion.div>
+                </div>
               ))}
-              {salesStaff.length === 0 && (
-                <div className="col-span-full py-20 text-center text-zinc-400 font-bold uppercase tracking-widest">{t('sales.noStaff')}</div>
-              )}
             </div>
           )}
         </div>
