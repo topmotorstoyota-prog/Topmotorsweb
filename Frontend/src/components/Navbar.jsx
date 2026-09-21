@@ -87,7 +87,7 @@ const Navbar = () => {
                 alt="Toyota Top Motors"
                 className={clsx(
                   "transition-all duration-300 w-auto",
-                  isScrolled ? "h-12 md:h-16" : "h-12 md:h-24",
+                  isScrolled ? "h-14 md:h-[4.5rem]" : "h-14 md:h-28",
                   (!isWhiteNav || isBlackNav) ? "brightness-0 invert" : ""
                 )}
               />
