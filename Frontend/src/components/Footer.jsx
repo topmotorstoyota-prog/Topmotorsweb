@@ -36,7 +36,7 @@ const Footer = () => {
           {/* 1. Brand Section */}
           <div className="flex flex-col items-center md:items-start space-y-6 text-center md:text-left">
             <Link to="/" className="inline-block">
-              <img src={logo} alt="Toyota Logo" className="h-8 md:h-10 w-auto brightness-0 invert" />
+              <img src={logo} alt="Toyota Logo" className="h-14 md:h-16 w-auto brightness-0 invert" />
             </Link>
 
             <div className="flex gap-6 md:gap-4">
