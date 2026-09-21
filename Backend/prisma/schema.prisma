@@ -137,6 +137,12 @@ model Staff {
   order     Int      @default(0)
 }
 
+// Албан тушаалын жагсаалтын дараалал (Sales хуудсанд аль тушаал эхэнд гарахыг тохируулна)
+model StaffPosition {
+  name  String @id
+  order Int    @default(0)
+}
+
 model HomeBanner {
   id        Int      @id @default(autoincrement())
   image     String

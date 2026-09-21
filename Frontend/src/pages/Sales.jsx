@@ -10,13 +10,17 @@ const Sales = () => {
   const { t } = useTranslation();
   useDocumentTitle(t('sales.pageTitle'), t('sales.pageDescription'));
   const [salesStaff, setSalesStaff] = useState([]);
+  const [positionRanks, setPositionRanks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/staff`)
-      .then(res => res.json())
-      .then(data => {
-        setSalesStaff(Array.isArray(data) ? data : []);
+    Promise.all([
+      fetch(`${API_BASE_URL}/api/staff`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/api/staff-positions`).then(res => res.json())
+    ])
+      .then(([staffData, positionData]) => {
+        setSalesStaff(Array.isArray(staffData) ? staffData : []);
+        setPositionRanks(Array.isArray(positionData) ? positionData : []);
         setLoading(false);
       })
       .catch(err => {
@@ -53,7 +57,14 @@ const Sales = () => {
                 if (!acc[key]) acc[key] = { position: key, members: [] };
                 acc[key].members.push(staff);
                 return acc;
-              }, {})).map((group, gi) => (
+              }, {}))
+                .map(group => ({
+                  ...group,
+                  order: positionRanks.find(r => r.name === group.position)?.order ?? 9999,
+                  members: [...group.members].sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0))
+                }))
+                .sort((a, b) => a.order - b.order)
+                .map((group, gi) => (
                 <div key={group.position}>
                   <div className="flex items-center gap-3 mb-4 md:mb-6">
                     <h3 className="text-sm md:text-xl font-black uppercase tracking-tight text-toyota-black">{group.position}</h3>

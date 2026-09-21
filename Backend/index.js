@@ -750,6 +750,44 @@ setupRoutes('bookings', 'booking', { publicPost: true });
 setupRoutes('staff', 'staff');
 setupRoutes('home-banner', 'homeBanner');
 
+// --- STAFF POSITIONS (Sales хуудсанд албан тушаал бvр ямар дараалалтай гарахыг тохируулна) ---
+app.get('/api/staff-positions', async (req, res) => {
+  try {
+    const positions = await prisma.staffPosition.findMany({ orderBy: { order: 'asc' } });
+    res.json(positions);
+  } catch (err) {
+    console.error('GET /api/staff-positions Error:', err);
+    res.status(500).json({ message: "Мэдээлэл авахад алдаа гарлаа." });
+  }
+});
+
+app.put('/api/staff-positions/:name', authenticateToken, async (req, res) => {
+  try {
+    const name = decodeURIComponent(req.params.name);
+    const order = Number(req.body.order) || 0;
+    const position = await prisma.staffPosition.upsert({
+      where: { name },
+      update: { order },
+      create: { name, order }
+    });
+    res.json(position);
+  } catch (err) {
+    console.error('PUT /api/staff-positions/:name Error:', err);
+    res.status(500).json({ message: "Хадгалахад алдаа гарлаа." });
+  }
+});
+
+app.delete('/api/staff-positions/:name', authenticateToken, async (req, res) => {
+  try {
+    const name = decodeURIComponent(req.params.name);
+    await prisma.staffPosition.delete({ where: { name } }).catch(() => {}); // Аль хэдийн байхгvй бол алгасна
+    res.sendStatus(204);
+  } catch (err) {
+    console.error('DELETE /api/staff-positions/:name Error:', err);
+    res.status(500).json({ message: "Устгахад алдаа гарлаа." });
+  }
+});
+
 // --- ACTIVITY LOG (зөвхөн SUPER_ADMIN) ---
 app.get('/api/activity-logs', authenticateToken, async (req, res) => {
   if (req.user.role !== 'SUPER_ADMIN') return res.sendStatus(403);
