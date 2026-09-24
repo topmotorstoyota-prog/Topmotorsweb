@@ -1630,6 +1630,18 @@ function AdminForm({ type, presetCategory, presetPosition, positionOptions, toke
   const [uploadingPdf, setUploadingPdf] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const submittingRef = useRef(false);
+  const dragImgIndex = useRef(null);
+  const [dragOverIdx, setDragOverIdx] = useState(null);
+
+  const moveGalleryImage = (fromIdx, toIdx) => {
+    if (fromIdx === toIdx || fromIdx == null || toIdx == null) return;
+    setFormData(prev => {
+      const imgs = [...(prev.images || [])];
+      const [moved] = imgs.splice(fromIdx, 1);
+      imgs.splice(toIdx, 0, moved);
+      return { ...prev, images: imgs };
+    });
+  };
 
   const handleFileChange = async (e, isGallery = false) => {
     const files = Array.from(e.target.files || []);
@@ -1861,8 +1873,23 @@ function AdminForm({ type, presetCategory, presetPosition, positionOptions, toke
           <label className="block text-[10px] font-black uppercase text-zinc-400">Зургийн цомог (Gallery)</label>
           <div className="grid grid-cols-5 gap-2">
             {(formData.images || []).map((img, idx) => (
-              <div key={idx} className="relative aspect-square border bg-zinc-50 rounded-sm overflow-hidden">
-                <img src={img} className="w-full h-full object-cover" />
+              <div
+                key={img}
+                draggable
+                onDragStart={() => { dragImgIndex.current = idx; }}
+                onDragOver={(e) => { e.preventDefault(); if (dragOverIdx !== idx) setDragOverIdx(idx); }}
+                onDragLeave={() => setDragOverIdx(prev => (prev === idx ? null : prev))}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  moveGalleryImage(dragImgIndex.current, idx);
+                  dragImgIndex.current = null;
+                  setDragOverIdx(null);
+                }}
+                onDragEnd={() => { dragImgIndex.current = null; setDragOverIdx(null); }}
+                className={`relative aspect-square border-2 bg-zinc-50 rounded-sm overflow-hidden cursor-move transition-colors ${dragOverIdx === idx ? 'border-toyota-red' : 'border-zinc-200'}`}
+              >
+                <img src={img} className="w-full h-full object-cover pointer-events-none" />
+                <span className="absolute bottom-1 left-1 bg-black/60 text-white text-[9px] font-black px-1.5 py-0.5 rounded-sm pointer-events-none">{idx + 1}</span>
                 <button
                   type="button"
                   onClick={() => {
