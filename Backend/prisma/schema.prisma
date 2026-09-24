@@ -106,6 +106,7 @@ model ToyotaQ {
   description String?
   descriptionEn String?
   serviceHistory String? // Засварын түүх PDF URL
+  additionalInfo String? // Дэлгэрэнгvй хуудсанд "Нэмэлт" хайрцагт харагдах нэмэлт мэдээлэл
   updatedAt   DateTime @updatedAt
 }
 

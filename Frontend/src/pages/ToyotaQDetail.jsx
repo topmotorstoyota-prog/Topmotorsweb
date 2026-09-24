@@ -106,15 +106,15 @@ const ToyotaQDetail = () => {
             {/* Gallery / Image Slider */}
             <div className="lg:col-span-8 order-1">
               <div className="relative aspect-[4/3] bg-zinc-100 overflow-hidden shadow-sm group rounded-sm">
-                <AnimatePresence mode="wait">
+                <AnimatePresence>
                   <motion.img
                     key={currentImgIndex}
                     src={allImages[currentImgIndex]}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="w-full h-full object-cover"
+                    transition={{ duration: 0.6, ease: 'easeInOut' }}
+                    className="absolute inset-0 w-full h-full object-cover"
                   />
                 </AnimatePresence>
 
@@ -152,6 +152,18 @@ const ToyotaQDetail = () => {
                   {loc(vehicle.description, vehicle.descriptionEn) || t('toyotaQ.detail.defaultDescription')}
                 </div>
               </div>
+
+              {vehicle.additionalInfo && (
+                <div className="hidden lg:block mt-8 p-6 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
+                  <h4 className="font-black uppercase text-xs tracking-widest mb-3 flex items-center gap-2">
+                    <Info size={14} className="text-toyota-red" />
+                    {t('toyotaQ.detail.additionalInfoTitle')}
+                  </h4>
+                  <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-sm font-medium">
+                    {vehicle.additionalInfo}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Info Panel */}
@@ -240,6 +252,41 @@ const ToyotaQDetail = () => {
               <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-base font-medium">
                 {loc(vehicle.description, vehicle.descriptionEn) || t('toyotaQ.detail.defaultDescription')}
               </div>
+
+              {vehicle.additionalInfo && (
+                <div className="mt-6 p-4 md:p-6 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
+                  <h4 className="font-black uppercase text-[10px] md:text-xs tracking-widest mb-3 flex items-center gap-2">
+                    <Info size={14} className="text-toyota-red" />
+                    {t('toyotaQ.detail.additionalInfoTitle')}
+                  </h4>
+                  <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-sm font-medium">
+                    {vehicle.additionalInfo}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Financing options */}
+          <div className="mt-12 md:mt-16">
+            <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-6 border-l-4 border-toyota-red pl-3 md:pl-4">{t('toyotaQ.detail.financingTitle')}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+              {t('toyotaQ.detail.financingOptions', { returnObjects: true }).map((opt, i) => (
+                <div key={i} className="p-5 md:p-6 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
+                  <h4 className="font-black uppercase text-xs md:text-sm tracking-tight mb-4 flex items-center gap-2 text-toyota-black">
+                    <Info size={16} className="text-toyota-red shrink-0" />
+                    {opt.bank}
+                  </h4>
+                  <ul className="space-y-2.5">
+                    {opt.rows.map((row, j) => (
+                      <li key={j} className="flex items-center justify-between text-[11px] md:text-xs font-bold border-b border-zinc-200/70 pb-2 last:border-0 last:pb-0">
+                        <span className="text-zinc-400 uppercase tracking-wide">{row.label}</span>
+                        <span className="text-toyota-black">{row.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
         </div>

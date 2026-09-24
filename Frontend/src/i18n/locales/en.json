@@ -508,7 +508,37 @@
       "download": "Download",
       "none": "None",
       "advantagesTitle": "Toyota-Q Advantages",
-      "advantages": ["Full 150-point inspection", "Official Toyota warranty", "Parts & service discounts", "Clear, verified history"]
+      "advantages": ["Full 150-point inspection", "Official Toyota warranty", "Parts & service discounts", "Clear, verified history"],
+      "additionalInfoTitle": "Additional Info",
+      "financingTitle": "Financing Options",
+      "financingOptions": [
+        {
+          "bank": "Khan Bank",
+          "rows": [
+            { "label": "Down payment", "value": "10-30%" },
+            { "label": "Interest", "value": "1.59-1.69%" },
+            { "label": "Term", "value": "30-96 months" },
+            { "label": "Approval time", "value": "1-2 days" }
+          ]
+        },
+        {
+          "bank": "Golomt, Trade & Development Bank",
+          "rows": [
+            { "label": "Down payment", "value": "20%" },
+            { "label": "Interest", "value": "1.3-1.9%" },
+            { "label": "Term", "value": "30-96 months" },
+            { "label": "Approval time", "value": "7-14 days" }
+          ]
+        },
+        {
+          "bank": "NBFI Financing",
+          "rows": [
+            { "label": "Down payment", "value": "50%" },
+            { "label": "Term", "value": "30-72 months" },
+            { "label": "Monthly interest", "value": "2.5-2.7%" }
+          ]
+        }
+      ]
     }
   },
   "faq": {
