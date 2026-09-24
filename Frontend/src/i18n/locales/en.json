@@ -420,6 +420,8 @@
     "coverHint": "Click the star on a photo to set it as the cover photo.",
     "dashboardLabel": "Instrument Panel (odometer reading)",
     "dashboardHint": "Upload a photo of the instrument panel showing the odometer reading.",
+    "certificateLabel": "Vehicle Registration",
+    "certificateHint": "Upload a photo of the registration certificate showing the plate number.",
     "namePlaceholder": "Name",
     "phonePlaceholder": "Phone number",
     "submit": "Send Request",

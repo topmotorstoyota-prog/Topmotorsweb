@@ -113,6 +113,7 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
   const [photos, setPhotos] = useState({});
   const [coverSide, setCoverSide] = useState(null);
   const [dashboardPhoto, setDashboardPhoto] = useState(null);
+  const [certificatePhoto, setCertificatePhoto] = useState(null);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -134,7 +135,12 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
     setDashboardPhoto({ file, preview: URL.createObjectURL(file) });
   };
 
-  const allPhotosSelected = SIDES.every(side => photos[side]) && !!dashboardPhoto;
+  const handleCertificateChange = async (file) => {
+    if (!file) return;
+    setCertificatePhoto({ file, preview: URL.createObjectURL(file) });
+  };
+
+  const allPhotosSelected = SIDES.every(side => photos[side]) && !!dashboardPhoto && !!certificatePhoto;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -149,7 +155,8 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
       // Илгээхийн өмнө бvх зургийг ~500KB хvртэл шахна
       const compressed = await Promise.all([
         ...SIDES.map(side => compressImage(photos[side].file)),
-        compressImage(dashboardPhoto.file)
+        compressImage(dashboardPhoto.file),
+        compressImage(certificatePhoto.file)
       ]);
 
       const formData = new FormData();
@@ -159,7 +166,8 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
 
       const images = [
         ...SIDES.map((side, idx) => ({ side, url: uploadData.imageUrls[idx], isCover: side === coverSide })),
-        { side: 'dashboard', url: uploadData.imageUrls[SIDES.length], isCover: false }
+        { side: 'dashboard', url: uploadData.imageUrls[SIDES.length], isCover: false },
+        { side: 'certificate', url: uploadData.imageUrls[SIDES.length + 1], isCover: false }
       ];
 
       const res = await fetch(`${API_BASE_URL}/api/bookings`, {
@@ -187,6 +195,7 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
     setPhotos({});
     setCoverSide(null);
     setDashboardPhoto(null);
+    setCertificatePhoto(null);
     setName('');
     setPhone('');
     setIsSuccess(false);
@@ -251,15 +260,27 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
                 <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.coverHint')}</p>
               </div>
 
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-700 mb-3">{t('consignModal.dashboardLabel')}</p>
-                <PhotoSlot
-                  label={t('consignModal.dashboardLabel')}
-                  preview={dashboardPhoto?.preview}
-                  onSelect={handleDashboardChange}
-                  small
-                />
-                <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.dashboardHint')}</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-700 mb-3">{t('consignModal.dashboardLabel')}</p>
+                  <PhotoSlot
+                    label={t('consignModal.dashboardLabel')}
+                    preview={dashboardPhoto?.preview}
+                    onSelect={handleDashboardChange}
+                    small
+                  />
+                  <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.dashboardHint')}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-700 mb-3">{t('consignModal.certificateLabel')}</p>
+                  <PhotoSlot
+                    label={t('consignModal.certificateLabel')}
+                    preview={certificatePhoto?.preview}
+                    onSelect={handleCertificateChange}
+                    small
+                  />
+                  <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.certificateHint')}</p>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -279,21 +300,23 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
 
               {error && <p className="text-xs text-toyota-red font-bold">{error}</p>}
 
-              {submitting ? (
-                <div className="space-y-2">
-                  <div className="w-full h-2.5 bg-zinc-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-toyota-red transition-all duration-200" style={{ width: `${progress}%` }} />
+              <div className="sticky bottom-0 -mx-5 md:-mx-8 -mb-5 md:-mb-8 px-5 md:px-8 py-4 bg-white border-t border-zinc-100">
+                {submitting ? (
+                  <div className="space-y-2">
+                    <div className="w-full h-2.5 bg-zinc-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-toyota-red transition-all duration-200" style={{ width: `${progress}%` }} />
+                    </div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 text-center">{progress}%</p>
                   </div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 text-center">{progress}%</p>
-                </div>
-              ) : (
-                <button
-                  type="submit"
-                  className="w-full py-4 bg-toyota-red text-white font-black uppercase tracking-[0.2em] text-xs hover:bg-black transition-all"
-                >
-                  {t('consignModal.submit')}
-                </button>
-              )}
+                ) : (
+                  <button
+                    type="submit"
+                    className="w-full py-4 bg-toyota-red text-white font-black uppercase tracking-[0.2em] text-xs hover:bg-black transition-all"
+                  >
+                    {t('consignModal.submit')}
+                  </button>
+                )}
+              </div>
             </form>
           )}
         </motion.div>
