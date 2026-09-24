@@ -1719,6 +1719,9 @@ function AdminForm({ type, presetCategory, presetPosition, positionOptions, toke
         delete body.images;
         delete body.image;
     }
+    if (type !== 'staff') {
+        delete body.position;
+    }
     if (type === 'toyota-q') {
         delete body.stock;
         delete body.category;
