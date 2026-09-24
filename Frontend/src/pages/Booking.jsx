@@ -318,7 +318,7 @@ const Booking = () => {
                       </motion.div>
                     )}
                     <div>
-                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{t('booking.step2.vehicleLabel')}</label>
+                      <label className="block text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-1.5 md:mb-2">{formData.type === 'service' ? t('booking.step2.vehicleLabelService') : t('booking.step2.vehicleLabel')}</label>
                       {formData.type === 'test_drive' || formData.type === 'new_car_order' ? (
                         <select
                           value={formData.vehicle}

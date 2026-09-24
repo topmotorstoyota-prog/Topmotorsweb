@@ -125,6 +125,7 @@
       "titleModelTime": "Model & Time",
       "serviceTypeLabel": "Service Type",
       "vehicleLabel": "Vehicle of Interest",
+      "vehicleLabelService": "Your Vehicle's Model",
       "vehiclePlaceholder": "Vehicle model (LC300...)",
       "oneModelOnly": "(You may select only 1 model)",
       "plateLabel": "License Plate",

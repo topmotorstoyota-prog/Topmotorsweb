@@ -125,6 +125,7 @@
       "titleModelTime": "Загвар ба Хугацаа",
       "serviceTypeLabel": "Үйлчилгээний төрөл",
       "vehicleLabel": "Сонирхож буй загвар",
+      "vehicleLabelService": "Таны машины загвар",
       "vehiclePlaceholder": "Машины загвар (LC300...)",
       "oneModelOnly": "(Зөвхөн 1 загвараа сонгох боломжтой)",
       "plateLabel": "Улсын дугаар",
