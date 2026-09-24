@@ -146,12 +146,13 @@ const ToyotaQDetail = () => {
               </div>
 
               {vehicle.additionalInfo && (
-                <div className="hidden lg:block mt-12 p-6 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
-                  <h4 className="font-black uppercase text-xs tracking-widest mb-3 flex items-center gap-2">
+                <div className="hidden lg:block mt-12 p-6 bg-toyota-red/5 border-2 border-toyota-red/20 rounded-sm relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-toyota-red" />
+                  <h4 className="font-black uppercase text-xs tracking-widest mb-3 flex items-center gap-2 text-toyota-black pl-2">
                     <Info size={14} className="text-toyota-red" />
                     {t('toyotaQ.detail.additionalInfoTitle')}
                   </h4>
-                  <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-sm font-medium">
+                  <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-sm font-medium pl-2">
                     {vehicle.additionalInfo}
                   </div>
                 </div>
@@ -271,12 +272,13 @@ const ToyotaQDetail = () => {
             {/* Mobile Only Description - Stays in old position for mobile flow */}
             <div className="lg:hidden lg:col-span-8 order-3 mt-4">
               {vehicle.additionalInfo && (
-                <div className="mb-6 p-4 md:p-6 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
-                  <h4 className="font-black uppercase text-[10px] md:text-xs tracking-widest mb-3 flex items-center gap-2">
+                <div className="mb-6 p-4 md:p-6 bg-toyota-red/5 border-2 border-toyota-red/20 rounded-sm relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-toyota-red" />
+                  <h4 className="font-black uppercase text-[10px] md:text-xs tracking-widest mb-3 flex items-center gap-2 text-toyota-black pl-2">
                     <Info size={14} className="text-toyota-red" />
                     {t('toyotaQ.detail.additionalInfoTitle')}
                   </h4>
-                  <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-sm font-medium">
+                  <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-sm font-medium pl-2">
                     {vehicle.additionalInfo}
                   </div>
                 </div>
