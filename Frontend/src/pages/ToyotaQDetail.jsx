@@ -145,16 +145,8 @@ const ToyotaQDetail = () => {
                 )}
               </div>
 
-              {/* Desktop Only Description - Fixed gap issue */}
-              <div className="hidden lg:block mt-12">
-                <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-4 border-l-4 border-toyota-red pl-3 md:pl-4">{t('toyotaQ.detail.descriptionTitle')}</h3>
-                <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-base font-medium">
-                  {loc(vehicle.description, vehicle.descriptionEn) || t('toyotaQ.detail.defaultDescription')}
-                </div>
-              </div>
-
               {vehicle.additionalInfo && (
-                <div className="hidden lg:block mt-8 p-6 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
+                <div className="hidden lg:block mt-12 p-6 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
                   <h4 className="font-black uppercase text-xs tracking-widest mb-3 flex items-center gap-2">
                     <Info size={14} className="text-toyota-red" />
                     {t('toyotaQ.detail.additionalInfoTitle')}
@@ -164,6 +156,14 @@ const ToyotaQDetail = () => {
                   </div>
                 </div>
               )}
+
+              {/* Desktop Only Description - Fixed gap issue */}
+              <div className={`hidden lg:block ${vehicle.additionalInfo ? 'mt-8' : 'mt-12'}`}>
+                <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-4 border-l-4 border-toyota-red pl-3 md:pl-4">{t('toyotaQ.detail.descriptionTitle')}</h3>
+                <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-base font-medium">
+                  {loc(vehicle.description, vehicle.descriptionEn) || t('toyotaQ.detail.defaultDescription')}
+                </div>
+              </div>
             </div>
 
             {/* Info Panel */}
@@ -270,13 +270,8 @@ const ToyotaQDetail = () => {
 
             {/* Mobile Only Description - Stays in old position for mobile flow */}
             <div className="lg:hidden lg:col-span-8 order-3 mt-4">
-              <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-4 border-l-4 border-toyota-red pl-3 md:pl-4">{t('toyotaQ.detail.descriptionTitle')}</h3>
-              <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-base font-medium">
-                {loc(vehicle.description, vehicle.descriptionEn) || t('toyotaQ.detail.defaultDescription')}
-              </div>
-
               {vehicle.additionalInfo && (
-                <div className="mt-6 p-4 md:p-6 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
+                <div className="mb-6 p-4 md:p-6 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
                   <h4 className="font-black uppercase text-[10px] md:text-xs tracking-widest mb-3 flex items-center gap-2">
                     <Info size={14} className="text-toyota-red" />
                     {t('toyotaQ.detail.additionalInfoTitle')}
@@ -286,6 +281,11 @@ const ToyotaQDetail = () => {
                   </div>
                 </div>
               )}
+
+              <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-4 border-l-4 border-toyota-red pl-3 md:pl-4">{t('toyotaQ.detail.descriptionTitle')}</h3>
+              <div className="text-zinc-600 leading-relaxed whitespace-pre-wrap text-[11px] md:text-base font-medium">
+                {loc(vehicle.description, vehicle.descriptionEn) || t('toyotaQ.detail.defaultDescription')}
+              </div>
             </div>
           </div>
         </div>
