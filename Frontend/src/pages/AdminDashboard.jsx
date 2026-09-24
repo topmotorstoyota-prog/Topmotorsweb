@@ -2093,12 +2093,12 @@ function AdminForm({ type, presetCategory, presetPosition, positionOptions, toke
         {type === 'toyota-q' && (
           <div>
             <label className="block text-[10px] font-black uppercase text-zinc-400 mb-2">Нэмэлт мэдээлэл (Дэлгэрэнгvй хуудсанд "Нэмэлт" хайрцагт харагдана)</label>
-            <textarea name="additionalInfo" placeholder="Жишээ: 150 цэгийн иж бvрэн оношилгоо..." value={formData.additionalInfo || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-32 resize-none font-medium" />
+            <textarea name="additionalInfo" placeholder="Жишээ: 150 цэгийн иж бvрэн оношилгоо..." value={formData.additionalInfo || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-64 resize-y font-medium text-sm leading-relaxed" />
           </div>
         )}
 
         {formData.category !== 'Обуд' && formData.category !== 'Дугуй' && (
-          <textarea name="description" placeholder="Тайлбар..." value={formData.description || ''} onChange={handleChange} className="w-full p-4 bg-zinc-50 border rounded-sm h-32 resize-none font-medium" />
+          <textarea name="description" placeholder="Тайлбар..." value={formData.description || ''} onChange={handleChange} className={`w-full p-4 bg-zinc-50 border rounded-sm resize-y font-medium text-sm leading-relaxed ${type === 'toyota-q' ? 'h-64' : 'h-32'}`} />
         )}
         {type !== 'staff' && type !== 'toyota-q' && formData.category !== 'Обуд' && formData.category !== 'Дугуй' && (
           <>
