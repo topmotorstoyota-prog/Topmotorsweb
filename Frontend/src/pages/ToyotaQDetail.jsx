@@ -247,18 +247,18 @@ const ToyotaQDetail = () => {
 
                 <div>
                   <h4 className="font-black uppercase text-[10px] md:text-xs tracking-widest mb-3 md:mb-4">{t('toyotaQ.detail.financingTitle')}</h4>
-                  <div className="space-y-3">
+                  <div className="grid grid-cols-3 gap-1.5 md:block md:space-y-3">
                     {t('toyotaQ.detail.financingOptions', { returnObjects: true }).map((opt, i) => (
-                      <div key={i} className="p-4 md:p-5 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
-                        <h5 className="font-black uppercase text-[10px] md:text-xs tracking-tight mb-3 flex items-center gap-2 text-toyota-black">
-                          <Info size={13} className="text-toyota-red shrink-0" />
-                          {opt.bank}
+                      <div key={i} className="p-2 md:p-5 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
+                        <h5 className="font-black uppercase text-[7px] md:text-xs tracking-tight mb-1.5 md:mb-3 flex items-center gap-1 md:gap-2 text-toyota-black leading-tight">
+                          <Info size={13} className="text-toyota-red shrink-0 hidden md:block" />
+                          <span>{opt.bank}</span>
                         </h5>
-                        <ul className="space-y-2">
+                        <ul className="space-y-1 md:space-y-2">
                           {opt.rows.map((row, j) => (
-                            <li key={j} className="flex items-center justify-between text-[9px] md:text-[11px] font-bold border-b border-zinc-200/70 pb-1.5 last:border-0 last:pb-0">
-                              <span className="text-zinc-400 uppercase tracking-wide">{row.label}</span>
-                              <span className="text-toyota-black">{row.value}</span>
+                            <li key={j} className="flex flex-col md:flex-row md:items-center md:justify-between text-[7px] md:text-[11px] font-bold border-b border-zinc-200/70 pb-1 md:pb-1.5 last:border-0 last:pb-0">
+                              <span className="text-zinc-400 uppercase tracking-wide leading-tight">{row.label}</span>
+                              <span className="text-toyota-black leading-tight">{row.value}</span>
                             </li>
                           ))}
                         </ul>
