@@ -243,6 +243,28 @@ const ToyotaQDetail = () => {
                     ))}
                   </ul>
                 </div>
+
+                <div>
+                  <h4 className="font-black uppercase text-[10px] md:text-xs tracking-widest mb-3 md:mb-4">{t('toyotaQ.detail.financingTitle')}</h4>
+                  <div className="space-y-3">
+                    {t('toyotaQ.detail.financingOptions', { returnObjects: true }).map((opt, i) => (
+                      <div key={i} className="p-4 md:p-5 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
+                        <h5 className="font-black uppercase text-[10px] md:text-xs tracking-tight mb-3 flex items-center gap-2 text-toyota-black">
+                          <Info size={13} className="text-toyota-red shrink-0" />
+                          {opt.bank}
+                        </h5>
+                        <ul className="space-y-2">
+                          {opt.rows.map((row, j) => (
+                            <li key={j} className="flex items-center justify-between text-[9px] md:text-[11px] font-bold border-b border-zinc-200/70 pb-1.5 last:border-0 last:pb-0">
+                              <span className="text-zinc-400 uppercase tracking-wide">{row.label}</span>
+                              <span className="text-toyota-black">{row.value}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -264,29 +286,6 @@ const ToyotaQDetail = () => {
                   </div>
                 </div>
               )}
-            </div>
-          </div>
-
-          {/* Financing options */}
-          <div className="mt-12 md:mt-16">
-            <h3 className="text-sm md:text-xl font-black uppercase tracking-tight mb-6 border-l-4 border-toyota-red pl-3 md:pl-4">{t('toyotaQ.detail.financingTitle')}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-              {t('toyotaQ.detail.financingOptions', { returnObjects: true }).map((opt, i) => (
-                <div key={i} className="p-5 md:p-6 bg-toyota-gray-100 border border-zinc-200 rounded-sm">
-                  <h4 className="font-black uppercase text-xs md:text-sm tracking-tight mb-4 flex items-center gap-2 text-toyota-black">
-                    <Info size={16} className="text-toyota-red shrink-0" />
-                    {opt.bank}
-                  </h4>
-                  <ul className="space-y-2.5">
-                    {opt.rows.map((row, j) => (
-                      <li key={j} className="flex items-center justify-between text-[11px] md:text-xs font-bold border-b border-zinc-200/70 pb-2 last:border-0 last:pb-0">
-                        <span className="text-zinc-400 uppercase tracking-wide">{row.label}</span>
-                        <span className="text-toyota-black">{row.value}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
             </div>
           </div>
         </div>
