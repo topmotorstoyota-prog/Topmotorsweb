@@ -1632,21 +1632,30 @@ function AdminForm({ type, presetCategory, presetPosition, positionOptions, toke
   const submittingRef = useRef(false);
 
   const handleFileChange = async (e, isGallery = false) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
     setUploading(true);
-    const data = new FormData();
-    data.append('image', file);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: data });
-      const result = await res.json();
-      if (isGallery) {
-        setFormData(prev => ({ ...prev, images: [...(prev.images || []), result.imageUrl] }));
+      if (isGallery && files.length > 1) {
+        const data = new FormData();
+        files.forEach(f => data.append('images', f));
+        const res = await fetch(`${API_BASE_URL}/api/upload-multiple`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: data });
+        const result = await res.json();
+        setFormData(prev => ({ ...prev, images: [...(prev.images || []), ...(result.imageUrls || [])] }));
       } else {
-        setFormData(prev => ({ ...prev, image: result.imageUrl }));
+        const data = new FormData();
+        data.append('image', files[0]);
+        const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` }, body: data });
+        const result = await res.json();
+        if (isGallery) {
+          setFormData(prev => ({ ...prev, images: [...(prev.images || []), result.imageUrl] }));
+        } else {
+          setFormData(prev => ({ ...prev, image: result.imageUrl }));
+        }
       }
     } catch (err) { alert('Алдаа'); }
     setUploading(false);
+    e.target.value = '';
   };
 
   const handlePdfUpload = async (e) => {
@@ -1867,7 +1876,7 @@ function AdminForm({ type, presetCategory, presetPosition, positionOptions, toke
             <label className="border-2 border-dashed flex flex-col items-center justify-center aspect-square cursor-pointer hover:bg-zinc-50 transition-colors rounded-sm text-zinc-400">
               <Plus size={20}/>
               <span className="text-[8px] font-bold uppercase mt-1">Нэмэх</span>
-              <input type="file" className="hidden" onChange={(e) => handleFileChange(e, true)} />
+              <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => handleFileChange(e, true)} />
             </label>
           </div>
         </div>
