@@ -264,7 +264,7 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex-1 min-h-0 flex flex-col overflow-y-auto px-4 py-3 md:p-5 gap-2.5">
-              <p className="hidden xs:block text-[9px] sm:text-[11px] text-zinc-400 leading-snug">{t('consignModal.desc')}</p>
+              <p className="text-[9px] sm:text-[11px] text-zinc-400 leading-snug">{t('consignModal.desc')}</p>
 
               <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                 {gridSlots.map(slot => (
