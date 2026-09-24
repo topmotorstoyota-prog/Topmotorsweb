@@ -63,13 +63,13 @@ function uploadWithProgress(url, formData, onProgress) {
   });
 }
 
-const PhotoSlot = ({ label, preview, onSelect, isCover, onSetCover, small }) => {
+const PhotoSlot = ({ label, preview, onSelect, isCover, onSetCover }) => {
   const cameraRef = useRef(null);
   const galleryRef = useRef(null);
 
   return (
     <div
-      className={`relative border-2 rounded-sm overflow-hidden flex flex-col items-center justify-center transition-all bg-zinc-50 ${small ? 'aspect-[16/9] max-w-[220px]' : 'aspect-[4/3]'} ${preview ? 'border-zinc-200' : 'border-dashed border-zinc-300'}`}
+      className={`relative border-2 rounded-sm overflow-hidden flex flex-col items-center justify-center transition-all bg-zinc-50 aspect-square ${preview ? 'border-zinc-200' : 'border-dashed border-zinc-300'}`}
     >
       <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => onSelect(e.target.files[0])} />
       <input ref={galleryRef} type="file" accept="image/*" className="hidden" onChange={(e) => onSelect(e.target.files[0])} />
@@ -78,13 +78,13 @@ const PhotoSlot = ({ label, preview, onSelect, isCover, onSetCover, small }) => 
         <img src={preview} alt={label} className="w-full h-full object-contain" />
       ) : (
         <>
-          <span className="text-[9px] font-black uppercase text-zinc-700 text-center px-2 mb-2">{label}</span>
-          <div className="flex gap-2">
-            <button type="button" onClick={() => cameraRef.current?.click()} className="p-2.5 bg-white border border-zinc-200 rounded-full text-zinc-600 hover:text-toyota-red hover:border-toyota-red transition-colors" title="Камер">
-              <Camera size={16} />
+          <span className="text-[6px] xs:text-[7px] sm:text-[9px] font-black uppercase text-zinc-700 text-center px-1 mb-1 leading-tight">{label}</span>
+          <div className="flex gap-1 sm:gap-2">
+            <button type="button" onClick={() => cameraRef.current?.click()} className="p-1 sm:p-2.5 bg-white border border-zinc-200 rounded-full text-zinc-600 hover:text-toyota-red hover:border-toyota-red transition-colors" title="Камер">
+              <Camera size={12} className="sm:w-4 sm:h-4" />
             </button>
-            <button type="button" onClick={() => galleryRef.current?.click()} className="p-2.5 bg-white border border-zinc-200 rounded-full text-zinc-600 hover:text-toyota-red hover:border-toyota-red transition-colors" title="Галерей">
-              <ImageIcon size={16} />
+            <button type="button" onClick={() => galleryRef.current?.click()} className="p-1 sm:p-2.5 bg-white border border-zinc-200 rounded-full text-zinc-600 hover:text-toyota-red hover:border-toyota-red transition-colors" title="Галерей">
+              <ImageIcon size={12} className="sm:w-4 sm:h-4" />
             </button>
           </div>
         </>
@@ -94,13 +94,13 @@ const PhotoSlot = ({ label, preview, onSelect, isCover, onSetCover, small }) => 
         <button
           type="button"
           onClick={onSetCover}
-          className={`absolute top-1.5 right-1.5 p-1.5 rounded-full shadow-md transition-all ${isCover ? 'bg-toyota-red text-white' : 'bg-white/90 text-zinc-400 hover:text-toyota-red'}`}
+          className={`absolute top-1 right-1 p-1 rounded-full shadow-md transition-all ${isCover ? 'bg-toyota-red text-white' : 'bg-white/90 text-zinc-400 hover:text-toyota-red'}`}
         >
-          <Star size={12} fill={isCover ? 'currentColor' : 'none'} />
+          <Star size={10} fill={isCover ? 'currentColor' : 'none'} />
         </button>
       )}
       {preview && (
-        <span className="absolute bottom-1.5 left-1.5 bg-black/60 text-white text-[8px] font-black uppercase px-1.5 py-0.5 rounded-sm">
+        <span className="absolute bottom-0.5 left-0.5 bg-black/60 text-white text-[6px] sm:text-[8px] font-black uppercase px-1 py-0.5 rounded-sm leading-none">
           {label}
         </span>
       )}
@@ -204,9 +204,32 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  const gridSlots = [
+    ...SIDES.map(side => ({
+      key: side,
+      label: t(`consignModal.sides.${side}`),
+      preview: photos[side]?.preview,
+      onSelect: (file) => handlePhotoChange(side, file),
+      isCover: coverSide === side,
+      onSetCover: () => setCoverSide(side),
+    })),
+    {
+      key: 'dashboard',
+      label: t('consignModal.dashboardShortLabel'),
+      preview: dashboardPhoto?.preview,
+      onSelect: handleDashboardChange,
+    },
+    {
+      key: 'certificate',
+      label: t('consignModal.certificateShortLabel'),
+      preview: certificatePhoto?.preview,
+      onSelect: handleCertificateChange,
+    },
+  ];
+
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[70] flex items-center justify-center p-0 md:p-6">
+      <div className="fixed inset-0 z-[70] flex items-center justify-center p-0 md:p-4">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -219,19 +242,19 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: '5%' }}
           transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-          className="relative bg-white w-full max-w-2xl max-h-[95vh] overflow-y-auto rounded-t-2xl md:rounded-sm shadow-2xl"
+          className="relative bg-white w-full h-[100dvh] md:h-auto md:max-h-[92vh] md:max-w-md flex flex-col md:rounded-sm shadow-2xl overflow-hidden"
         >
-          <div className="p-5 md:p-8 border-b border-zinc-100 flex justify-between items-center sticky top-0 bg-white z-10">
-            <h2 className="text-lg md:text-2xl font-black uppercase tracking-tighter">
+          <div className="px-4 py-3 md:p-5 border-b border-zinc-100 flex justify-between items-center shrink-0">
+            <h2 className="text-base md:text-xl font-black uppercase tracking-tighter">
               {t('consignModal.titlePlain')} <span className="text-toyota-red">{t('consignModal.titleRed')}</span>
             </h2>
-            <button onClick={handleClose} className="p-2 hover:bg-zinc-100 transition-colors border border-zinc-100 rounded-sm">
-              <X size={18} />
+            <button onClick={handleClose} className="p-1.5 hover:bg-zinc-100 transition-colors border border-zinc-100 rounded-sm">
+              <X size={16} />
             </button>
           </div>
 
           {isSuccess ? (
-            <div className="p-8 md:p-14 flex flex-col items-center text-center">
+            <div className="p-8 md:p-14 flex-1 flex flex-col items-center justify-center text-center">
               <CheckCircle2 size={48} className="text-green-500 mb-4" />
               <h3 className="text-lg md:text-xl font-black uppercase mb-2">{t('consignModal.successTitle')}</h3>
               <p className="text-sm text-zinc-500 mb-6">{t('consignModal.successDesc')}</p>
@@ -240,78 +263,52 @@ const ConsignVehicleModal = ({ isOpen, onClose }) => {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="p-5 md:p-8 space-y-6">
-              <p className="text-xs md:text-sm text-zinc-500">{t('consignModal.desc')}</p>
+            <form onSubmit={handleSubmit} className="flex-1 min-h-0 flex flex-col overflow-y-auto px-4 py-3 md:p-5 gap-2.5">
+              <p className="hidden xs:block text-[9px] sm:text-[11px] text-zinc-400 leading-snug">{t('consignModal.desc')}</p>
 
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-700 mb-3">{t('consignModal.photosLabel')}</p>
-                <div className="grid grid-cols-2 gap-3">
-                  {SIDES.map(side => (
-                    <PhotoSlot
-                      key={side}
-                      label={t(`consignModal.sides.${side}`)}
-                      preview={photos[side]?.preview}
-                      onSelect={(file) => handlePhotoChange(side, file)}
-                      isCover={coverSide === side}
-                      onSetCover={() => setCoverSide(side)}
-                    />
-                  ))}
-                </div>
-                <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.coverHint')}</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-700 mb-3">{t('consignModal.dashboardLabel')}</p>
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+                {gridSlots.map(slot => (
                   <PhotoSlot
-                    label={t('consignModal.dashboardLabel')}
-                    preview={dashboardPhoto?.preview}
-                    onSelect={handleDashboardChange}
-                    small
+                    key={slot.key}
+                    label={slot.label}
+                    preview={slot.preview}
+                    onSelect={slot.onSelect}
+                    isCover={slot.isCover}
+                    onSetCover={slot.onSetCover}
                   />
-                  <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.dashboardHint')}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-700 mb-3">{t('consignModal.certificateLabel')}</p>
-                  <PhotoSlot
-                    label={t('consignModal.certificateLabel')}
-                    preview={certificatePhoto?.preview}
-                    onSelect={handleCertificateChange}
-                    small
-                  />
-                  <p className="text-[9px] text-zinc-400 mt-2">{t('consignModal.certificateHint')}</p>
-                </div>
+                ))}
               </div>
+              <p className="text-[8px] sm:text-[9px] text-zinc-400">{t('consignModal.gridHint')}</p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <input
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder={t('consignModal.namePlaceholder')}
-                  className="w-full p-3.5 bg-zinc-50 border border-zinc-200 rounded-sm text-sm focus:outline-none focus:border-toyota-red"
+                  className="w-full p-2.5 sm:p-3 bg-zinc-50 border border-zinc-200 rounded-sm text-xs sm:text-sm focus:outline-none focus:border-toyota-red"
                 />
                 <input
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
                   placeholder={t('consignModal.phonePlaceholder')}
-                  className="w-full p-3.5 bg-zinc-50 border border-zinc-200 rounded-sm text-sm focus:outline-none focus:border-toyota-red"
+                  className="w-full p-2.5 sm:p-3 bg-zinc-50 border border-zinc-200 rounded-sm text-xs sm:text-sm focus:outline-none focus:border-toyota-red"
                 />
               </div>
 
-              {error && <p className="text-xs text-toyota-red font-bold">{error}</p>}
+              {error && <p className="text-[10px] sm:text-xs text-toyota-red font-bold">{error}</p>}
 
-              <div className="sticky bottom-0 -mx-5 md:-mx-8 -mb-5 md:-mb-8 px-5 md:px-8 py-4 bg-white border-t border-zinc-100">
+              <div className="mt-auto pt-2 shrink-0">
                 {submitting ? (
-                  <div className="space-y-2">
-                    <div className="w-full h-2.5 bg-zinc-100 rounded-full overflow-hidden">
+                  <div className="space-y-1.5">
+                    <div className="w-full h-2 bg-zinc-100 rounded-full overflow-hidden">
                       <div className="h-full bg-toyota-red transition-all duration-200" style={{ width: `${progress}%` }} />
                     </div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 text-center">{progress}%</p>
+                    <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-zinc-500 text-center">{progress}%</p>
                   </div>
                 ) : (
                   <button
                     type="submit"
-                    className="w-full py-4 bg-toyota-red text-white font-black uppercase tracking-[0.2em] text-xs hover:bg-black transition-all"
+                    className="w-full py-3 sm:py-3.5 bg-toyota-red text-white font-black uppercase tracking-[0.2em] text-[10px] sm:text-xs hover:bg-black transition-all"
                   >
                     {t('consignModal.submit')}
                   </button>
